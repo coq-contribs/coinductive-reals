@@ -1,0 +1,13 @@
+Name: CoinductiveReals
+Title: Real numbers as coinductive ternary streams
+Author: Milad Niqui
+Email: milad@cs.ru.nl
+Homepage: http://www.cs.ru.nl/~milad
+Institution: Radboud University Nijmegen
+Address: http://www.cs.ru.nl
+Date: 24 April 2007
+Description: See the README file
+Url: http://www.cs.ru.nl/~milad/ETrees/coinductive-field/
+License: LGPL
+Keywords: real coinductive corecursion homographic quadratic exact arithmetic
+Require: QArith-Stern-Brocot
