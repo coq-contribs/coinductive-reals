@@ -3,7 +3,7 @@
 (* This file is distributed under the terms of the                      *)
 (* GNU Lesser General Public License Version 2.1                        *)
 (* A copy of the license can be found at                                *)
-(*                  <http://www.gnu.org/licenses/gpl.txt>               *)
+(*                  <http://www.gnu.org/licenses>                       *)
 (************************************************************************)
 
 Require Import digits.
@@ -12,6 +12,8 @@ Require Import Raxioms.
 Require Import RIneq.
 Require Import R_addenda.
 Require Import Fourier_solvable_ineqs.
+
+(** Properties of the predicate [Bounded_T]. *)
 
 Lemma Bounded_T_auxiliary_1: forall (e f g h:Q), Zero<e+f+g+h -> Zero<e-f-g+h -> Zero< -e-f+g+h -> Zero< -e+f-g+h -> Zero<h.
 Proof.

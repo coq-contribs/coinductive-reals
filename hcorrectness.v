@@ -3,7 +3,7 @@
 (* This file is distributed under the terms of the                      *)
 (* GNU Lesser General Public License Version 2.1                        *)
 (* A copy of the license can be found at                                *)
-(*                  <http://www.gnu.org/licenses/gpl.txt>               *)
+(*                  <http://www.gnu.org/licenses>                       *)
 (************************************************************************)
 
 
@@ -15,7 +15,9 @@ Require Import RIneq.
 Require Import R_addenda.
 Require Import rep.
 
-(** This calculates the product of [mu] and the first n element of [alpha]. *)
+(** * Coinductive correctness of the homographic algorithm. *)
+
+(** Calculating the product of [mu] and the first [n] elements of [alpha]. *)
 
 Fixpoint product_init (mu:Matrix) (alpha:Reals) (n:nat) {struct n}: Matrix := 
  match n with
@@ -98,7 +100,7 @@ Proof.
    [ intros mu alpha0 i H2; generalize i
    | intros mu alpha0 i H2; generalize i 
    | intros mu alpha0 i H2; generalize i
-   | intros mu alpha0 i_l i_r i_m f H H2; generalize i_l i_r i_m f H
+   | intros mu alpha0 f H H2; generalize f H
    ];
    pattern alpha0, H2;
    elim H2 using emits_h_ind_dep;
@@ -160,7 +162,7 @@ Lemma depth_h_absorbs:forall (mu:Matrix) (alpha:Reals) (t: emits_h mu alpha),~(I
   forall t', depth_h mu alpha t = S(depth_h (product mu (Streams.hd alpha)) (tl alpha) t').
 Proof.
  intros mu alpha t t_l t_r t_m t'.
- transitivity (depth_h mu alpha (emits_h_absorbs _ _ t_l t_r t_m t')).
+ transitivity (depth_h mu alpha (emits_h_absorbs _ _ t')).
  apply depth_h_PI.
  simpl.
  case (Incl_M_dec_D mu LL); try contradiction;

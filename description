@@ -10,4 +10,4 @@ Description: See the README file
 Url: http://www.cs.ru.nl/~milad/ETrees/coinductive-field/
 License: LGPL
 Keywords: real coinductive corecursion homographic quadratic exact arithmetic
-Require: QArith-Stern-Brocot
+Require: QArithSternBrocot

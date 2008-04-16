@@ -3,12 +3,16 @@
 (* This file is distributed under the terms of the                      *)
 (* GNU Lesser General Public License Version 2.1                        *)
 (* A copy of the license can be found at                                *)
-(*                  <http://www.gnu.org/licenses/gpl.txt>               *)
+(*                  <http://www.gnu.org/licenses>                       *)
 (************************************************************************)
 
 Require Import Reals.
 Require Import R_addenda.
 Require Import Fourier.
+
+(** This is an auxiliary file includes very specific basic facts about
+real numbers in and around the base interval. *)
+
 
 Lemma Two_pos: 0<2.
 Proof.
@@ -54,7 +58,7 @@ Qed.
 Hint Resolve Rlt_0_1 Two_pos Three_pos Four_pos minus_One_neg Half_pos
              minus_Half_neg Third_pos minus_Third_neg.
 
-(** Properties of numbers in base interval *)
+(* Properties of numbers in the base interval *)
 
 Lemma base_plus_3_pos:forall r, -1 <= r ->  0 < (r+3).
 Proof.

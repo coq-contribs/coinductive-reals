@@ -3,15 +3,17 @@
 (* This file is distributed under the terms of the                      *)
 (* GNU Lesser General Public License Version 2.1                        *)
 (* A copy of the license can be found at                                *)
-(*                  <http://www.gnu.org/licenses/gpl.txt>               *)
+(*                  <http://www.gnu.org/licenses>                       *)
 (************************************************************************)
 
 Require Import digits.
 
-(** This returns the lower bound of the interval obtained by applying
-    the initial segment of length [n] of [alpha] to the base interval *)
 
 Close Scope Z_scope.
+
+(** We define a function [lb] that returns the #<em>#upper bound#</em># of the
+interval obtained by applying the initial segment of length [n] of
+[alpha] to the base interval #&#91;#-1,+1#&#93;#.*)
 
 Fixpoint lb (alpha:Reals) (n:nat) {struct n} : Q :=
   match n with

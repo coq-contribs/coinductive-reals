@@ -3,16 +3,16 @@
 (* This file is distributed under the terms of the                      *)
 (* GNU Lesser General Public License Version 2.1                        *)
 (* A copy of the license can be found at                                *)
-(*                  <http://www.gnu.org/licenses/gpl.txt>               *)
+(*                  <http://www.gnu.org/licenses>                       *)
 (************************************************************************)
 
 
 (** Formalisation of the homographic algorithm 
 
 <<
-homographic mu (x:xs) | (Incl_M_L_dec mu)  = "L" : homographic (LL_inv o mu) (x:xs)
-                      | (Incl_M_R_dec mu)  = "R" : homographic (RR_inv o mu) (x:xs)
-                      | (Incl_M_M_dec mu)  = "M" : homographic (MM_inv o mu) (x:xs)
+homographic mu (x:xs) | (Incl_M_L_dec mu)  = LL : homographic (LL_inv o mu) (x:xs)
+                      | (Incl_M_R_dec mu)  = RR : homographic (RR_inv o mu) (x:xs)
+                      | (Incl_M_M_dec mu)  = MM : homographic (MM_inv o mu) (x:xs)
                       | otherwise = homographic (mu o x) xs
 >>
 
@@ -25,7 +25,7 @@ Inductive emits_h : Matrix -> Reals -> Prop :=
   | emits_h_L : forall (mu:Matrix) (alpha:Reals), Incl_M mu LL -> emits_h mu alpha
   | emits_h_R : forall (mu:Matrix) (alpha:Reals), Incl_M mu RR -> emits_h mu alpha
   | emits_h_M : forall (mu:Matrix) (alpha:Reals), Incl_M mu MM -> emits_h mu alpha
-  | emits_h_absorbs : forall (mu:Matrix) (alpha:Reals), ~(Incl_M mu LL)-> ~(Incl_M mu RR) -> ~(Incl_M mu MM)-> 
+  | emits_h_absorbs : forall (mu:Matrix) (alpha:Reals), 
 					  emits_h (product mu (hd alpha)) (tl alpha) -> emits_h mu alpha.
 
 Scheme emits_h_ind_dep := Induction for emits_h Sort Prop.
@@ -62,7 +62,7 @@ Proof.
    [ intros mu alpha0 i H2; generalize i
    | intros mu alpha0 i H2; generalize i 
    | intros mu alpha0 i H2; generalize i
-   | intros mu alpha0 i_l i_r i_m f H H2; generalize i_l i_r i_m f H
+   | intros mu alpha0 f H H2; generalize f H
    ];
    pattern alpha0, H2;
    elim H2 using emits_h_ind_dep;
@@ -123,7 +123,7 @@ Lemma modulus_h_absorbs:forall (mu:Matrix) (alpha:Reals) (t: emits_h mu alpha),~
   forall t', modulus_h mu alpha t = modulus_h (product mu (hd alpha)) (tl alpha) t'.
 Proof.
  intros mu alpha t t_l t_r t_m t'.
- transitivity (modulus_h mu alpha (emits_h_absorbs _ _ t_l t_r t_m t')).
+ transitivity (modulus_h mu alpha (emits_h_absorbs _ _ t')).
  apply modulus_h_PI.
  simpl.
  case (Incl_M_dec_D mu LL); try contradiction;
@@ -238,6 +238,8 @@ H0 (refl_equal (S n)) (refl_equal mu) (refl_equal alpha)
 ).
 Defined.
 
+(** #<em>#Productivity predicate#</em># *)
+
 Inductive productive_h : Matrix -> Reals->Prop :=
   |  productive_h_absorbs : forall (mu:Matrix) (alpha:Reals), 
       (forall n, step_productive_h n mu alpha) -> productive_h mu alpha.
@@ -264,7 +266,7 @@ Proof.
  apply step_productive_h_S_inv_2.
 Defined.
 
-(** Definition of quadratic algorithm *)
+(** Definition of the homographic algorithm *)
 
 CoFixpoint homographic (mu:Matrix) (alpha : Reals) (H : productive_h mu alpha) : Reals :=
   Cons
@@ -275,13 +277,14 @@ CoFixpoint homographic (mu:Matrix) (alpha : Reals) (H : productive_h mu alpha) :
 
 
 
-(* uncomment the following two lines in order to extract to Haskell *)
-(*
+(** At this point one can uncomment the following two lines in order to extract to Haskell.
+<<
 Extraction Language Haskell.
 Extraction "Xhomographic.hs" homographic.
+>>
 *)
 
-(** We now prove the cofixed point equations of homographic algorithm *)
+(** We now prove the cofixed point equations of the homographic algorithm *)
 
 Lemma homographic_unfolded:forall mu alpha p, homographic mu alpha p = Cons
     (fstT (modulus_h mu alpha (productive_h_emits_h mu alpha p)))
@@ -309,7 +312,12 @@ Proof.
  rewrite (modulus_h_PI_strong _ _ _ _ (productive_h_emits_h mu alpha p) (productive_h_emits_h mu' alpha' p')); trivial.
 Defined.
 
-Lemma homographic_absorb :forall mu alpha (p:productive_h mu alpha), ~(Incl_M mu LL)->~(Incl_M mu RR)->~(Incl_M mu MM)->
+Lemma homographic_EPI:forall mu alpha p p', bisim (homographic mu alpha p)  (homographic mu alpha p').
+Proof.
+ intros mu alpha p p'; apply homographic_EPI_strong; reflexivity.
+Defined.
+
+Lemma homographic_absorbs :forall mu alpha (p:productive_h mu alpha), ~(Incl_M mu LL)->~(Incl_M mu RR)->~(Incl_M mu MM)->
                 forall p', bisim (homographic mu alpha p)  (homographic (product mu (hd alpha)) (tl alpha) p').
 Proof.
  intros mu alpha p t_l t_r t_m p'.
@@ -320,13 +328,8 @@ Proof.
  intros H_eq.
  generalize (modulus_h_productive_h mu alpha t p).
  rewrite H_eq.
- intros.
- constructor; simpl;
- [ idtac
- | apply homographic_EPI_strong
- ];
-  rewrite (modulus_h_PI _ _ (emits_h_absorbs_inv mu alpha t_l t_r t_m t) (productive_h_emits_h (product mu (hd alpha)) (tl alpha) p'));
-  trivial.
+ rewrite (modulus_h_PI _ _ (emits_h_absorbs_inv mu alpha t_l t_r t_m t) (productive_h_emits_h (product mu (hd alpha)) (tl alpha) p')).
+ constructor; simpl; trivial; apply homographic_EPI.
 Defined.
 
 Lemma homographic_emits_L :forall mu alpha (p:productive_h mu alpha), (Incl_M mu LL) ->
@@ -342,7 +345,7 @@ Proof.
  intros.
  constructor; simpl; trivial.
  rewrite <- homographic_unfolded;
- apply homographic_EPI_strong; trivial.
+ apply homographic_EPI.
 Defined.
  
 Lemma homographic_emits_R :forall mu alpha (p:productive_h mu alpha), ~(Incl_M mu LL) -> (Incl_M mu RR) ->
@@ -358,7 +361,7 @@ Proof.
  intros.
  constructor; simpl; trivial.
   rewrite <- homographic_unfolded;
-  apply homographic_EPI_strong; trivial.
+  apply homographic_EPI.
 Defined.
 
 Lemma homographic_emits_M :forall mu alpha (p:productive_h mu alpha), ~(Incl_M mu LL) -> ~(Incl_M mu RR) -> (Incl_M mu MM) ->
@@ -374,5 +377,5 @@ Proof.
  intros.
  constructor; simpl; trivial.
   rewrite <- homographic_unfolded;
-  apply homographic_EPI_strong; trivial.
+  apply homographic_EPI.
 Defined.

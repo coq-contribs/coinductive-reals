@@ -3,7 +3,7 @@
 (* This file is distributed under the terms of the                      *)
 (* GNU Lesser General Public License Version 2.1                        *)
 (* A copy of the license can be found at                                *)
-(*                  <http://www.gnu.org/licenses/gpl.txt>               *)
+(*                  <http://www.gnu.org/licenses>                       *)
 (************************************************************************)
 
 Require Import digits.
@@ -16,7 +16,7 @@ Require Import Rcomplete.
 Require Import R_addenda.
 Require Import Fourier_solvable_ineqs.
 
-
+(** This file deals with the correctness of the representation predicate [rep]. *)
 
 Lemma lb_Cauchy:forall alpha, Rseries.Cauchy_crit (lb alpha).
 Proof.
@@ -94,7 +94,7 @@ Qed.
 
 
 
-(** This is the real number in [-1,1] represented by alpha *)
+(** This is the real number in #&#91;#-1,+1#&#93;# represented by [alpha] *)
 Definition real_value alpha := (proj1_sig (Rcomplete.R_complete (lb alpha) (lb_Cauchy alpha))).
 
 Lemma rep_lb: forall (k:nat) alpha r, rep alpha r -> ((lb alpha k)<=r)%R.
@@ -232,6 +232,19 @@ Proof.
   rewrite <- Q_to_R_Qone; rewrite <- Q_to_R_Zero; rewrite <- Q_to_Rplus; apply Rlt_not_eq'; apply Q_to_Rlt; auto.
 Qed.
 
+Lemma real_value_base_interval:forall alpha, (-1 <= real_value alpha <= 1)%R.
+Proof.
+ intros alpha; unfold real_value.
+ destruct (R_complete (fun n : nat => lb alpha n) (lb_Cauchy alpha)) as [y Hy]; simpl; 
+ generalize RiemannInt.Rle_cv_lim; intro H_sandwich; split.
+   
+  apply (H_sandwich (fun (n:nat)=>(-1)%R) (fun n : nat => lb alpha n) (-1)%R y); trivial.
+   intros n; rewrite <- Q_to_R_Qneg_One; apply Q_to_Rle; apply lb_is_in_base_interval_low. 
+   apply CV_const.
+  apply (H_sandwich (fun n : nat => lb alpha n) (fun (n:nat)=>(1)%R) y (1)%R); trivial.
+   intros n; rewrite <- Q_to_R_Qone; apply Q_to_Rle; apply lb_is_in_base_interval_up. 
+   apply CV_const.
+Qed.
 
 Lemma real_value_L:forall alpha, real_value (Cons LL alpha) = (((real_value alpha) -1 )/((real_value alpha)+ 3))%R. 
 Proof.
@@ -344,19 +357,18 @@ Proof.
 Qed.
 
 
-Lemma real_value_base_interval:forall alpha, (-1 <= real_value alpha <= 1)%R.
+Lemma real_value_digits: forall d alpha, real_value (Cons d alpha) = as_Moebius d (real_value alpha).
 Proof.
- intros alpha; unfold real_value.
- destruct (R_complete (fun n : nat => lb alpha n) (lb_Cauchy alpha)) as [y Hy]; simpl; 
- generalize RiemannInt.Rle_cv_lim; intro H_sandwich; split.
-   
-  apply (H_sandwich (fun (n:nat)=>(-1)%R) (fun n : nat => lb alpha n) (-1)%R y); trivial.
-   intros n; rewrite <- Q_to_R_Qneg_One; apply Q_to_Rle; apply lb_is_in_base_interval_low. 
-   apply CV_const.
-  apply (H_sandwich (fun n : nat => lb alpha n) (fun (n:nat)=>(1)%R) y (1)%R); trivial.
-   intros n; rewrite <- Q_to_R_Qone; apply Q_to_Rle; apply lb_is_in_base_interval_up. 
-   apply CV_const.
+ intros [ | | ] alpha; unfold as_Moebius, fst, snd, map_digits;
+ [ rewrite real_value_L
+ | rewrite real_value_R
+ | rewrite real_value_M
+ ];
+ qZ_numerals; realify_Q; auto; field. 
+ assert (H_alpha_base:=proj1 (real_value_base_interval alpha)); auto. 
+ assert (H_alpha_base:=proj2 (real_value_base_interval alpha)); apply Rlt_not_eq'; Fourier.fourier.
 Qed.
+
 
 Theorem rep_real_value : forall alpha, rep alpha (real_value alpha).
 Proof.

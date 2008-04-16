@@ -3,7 +3,7 @@
 (* This file is distributed under the terms of the                      *)
 (* GNU Lesser General Public License Version 2.1                        *)
 (* A copy of the license can be found at                                *)
-(*                  <http://www.gnu.org/licenses/gpl.txt>               *)
+(*                  <http://www.gnu.org/licenses>                       *)
 (************************************************************************)
 
 Require Import digits.
@@ -17,9 +17,11 @@ Require Import Fourier_solvable_ineqs.
 
 Open Scope Q_scope.
 
-(** Here is the only place we use classical properties of
-reals. However, this is also repairable if we use the discriminant of
-the quadratic equation to decide the sign in Q. *)
+(** Properties of the emission condition for tensors. *)
+
+(** Note: in this file classical properties of reals are used.
+However, this use is #<em>#not#</em># inevitable, rather practical. *)
+
 
 Lemma Incl_T_L_unfolded:forall xi r1 r2,(-1<=r1<=1)%R->(-1<=r2<=1)%R->Incl_T xi LL -> (-1<=as_Tensor xi r1 r2<=0)%R.
 Proof.
@@ -153,8 +155,8 @@ Proof.
 Qed.
 
 (* The proof of the following two lemmas is copy-pasted from the
-above, only we have to change Incl_M_L_unfolded_auxiliary_? to
-Incl_M_R_unfolded_auxiliary_?, and the digit-related values after
+above, only we have to change [Incl_M_L_unfolded_auxiliary_?] to
+[Incl_M_R_unfolded_auxiliary_?], and the digit-related values after
 that accordingly. *)
 
 Lemma Incl_T_R_unfolded:forall xi r1 r2,(-1<=r1<=1)%R->(-1<=r2<=1)%R->Incl_T xi RR -> (0<=as_Tensor xi r1 r2<=1)%R.
@@ -772,6 +774,24 @@ Proof.
    rewrite (Rmult_comm (a +  b + c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try Fourier.fourier;
    stepr (1/3)%R; [|field]; stepl ((a*1*1+b*1+c*1+d)/(e*1*1+f*1+g*1+h))%R; [|field; ring_exact_R H_efgh4];
    exact (proj2 (H_xi (1)%R (1)%R one_is_in_base_interval one_is_in_base_interval)).
+Qed.
+
+Lemma Bounded_T_Incl_T_L_folded: forall xi, Bounded_T xi ->
+  (forall r1 r2,(-1 <= r1 <= 1)%R -> (-1 <= r2 <= 1)%R -> (-1 <= as_Tensor xi r1 r2 <= 0)%R) -> Incl_T xi LL.
+Proof.
+ intros xi H_bound; generalize (Bounded_T_denom_nonvanishing_T xi H_bound); apply Incl_T_L_folded.
+Qed.
+
+Lemma Bounded_T_Incl_T_R_folded: forall xi, Bounded_T xi ->
+  (forall r1 r2,(-1 <= r1 <= 1)%R -> (-1 <= r2 <= 1)%R -> (0<= as_Tensor xi r1 r2 <= 1)%R) -> Incl_T xi RR.
+Proof.
+ intros xi H_bound; generalize (Bounded_T_denom_nonvanishing_T xi H_bound); apply Incl_T_R_folded.
+Qed.
+
+Lemma Bounded_T_Incl_T_M_folded: forall xi, Bounded_T xi ->
+     (forall r1 r2,(-1 <= r1 <= 1)%R -> (-1 <= r2 <= 1)%R -> ((-1/3)<= as_Tensor xi r1 r2 <= 1/3)%R) -> Incl_T xi MM.
+Proof.
+ intros xi H_bound; generalize (Bounded_T_denom_nonvanishing_T xi H_bound); apply Incl_T_M_folded.
 Qed.
 
 Close Scope Q_scope.

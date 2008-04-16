@@ -3,7 +3,7 @@
 (* This file is distributed under the terms of the                      *)
 (* GNU Lesser General Public License Version 2.1                        *)
 (* A copy of the license can be found at                                *)
-(*                  <http://www.gnu.org/licenses/gpl.txt>               *)
+(*                  <http://www.gnu.org/licenses>                       *)
 (************************************************************************)
 
 Require Import digits.
@@ -14,15 +14,16 @@ Require Import RIneq.
 Require Import R_addenda.
 Require Import Fourier_solvable_ineqs.
 
+(** Coinductive definition of the representation and its properties. *)
 
 CoInductive rep : Reals -> Rdefinitions.R -> Prop :=
-  | rep_L : forall alpha beta x, (-1<=x<=1)%R-> rep alpha x -> beta (=) (Cons LL alpha) -> rep beta ((x-1)/(x+3))%R
-  | rep_R : forall alpha beta x, (-1<=x<=1)%R-> rep alpha x -> beta (=) (Cons RR alpha) -> rep beta ((x+1)/((-x)+3))%R
-  | rep_M : forall alpha beta x, (-1<=x<=1)%R-> rep alpha x -> beta (=) (Cons MM alpha) -> rep beta (x/3)%R.
+  | rep_L : forall alpha beta x, (-1<=x<=1)%R-> rep alpha x -> bisim beta (Cons LL alpha) -> rep beta ((x-1)/(x+3))%R
+  | rep_R : forall alpha beta x, (-1<=x<=1)%R-> rep alpha x -> bisim beta (Cons RR alpha) -> rep beta ((x+1)/((-x)+3))%R
+  | rep_M : forall alpha beta x, (-1<=x<=1)%R-> rep alpha x -> bisim beta (Cons MM alpha) -> rep beta (x/3)%R.
 
 
 
-Lemma rep_stepl: forall alpha beta x, rep alpha x -> alpha (=) beta -> rep beta x.
+Lemma rep_stepl: forall alpha beta x, rep alpha x -> bisim alpha beta -> rep beta x.
 Proof.
  cofix.
  intros [[ | | ] alpha] [[ | | ] beta] x h_rep h_bisim; try (inversion h_bisim; discriminate H). 

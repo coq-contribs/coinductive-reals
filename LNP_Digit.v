@@ -3,7 +3,7 @@
 (* This file is distributed under the terms of the                      *)
 (* GNU Lesser General Public License Version 2.1                        *)
 (* A copy of the license can be found at                                *)
-(*                  <http://www.gnu.org/licenses/gpl.txt>               *)
+(*                  <http://www.gnu.org/licenses>                       *)
 (************************************************************************)
 
 Require Import Recdef.
@@ -11,7 +11,7 @@ Require Import digits.
 
 
 (** We prove the LNP (Least Number Principle) for a decidable property
-on nat*Digits *)
+on [nat*Digits] *)
 
 Section LNP_for_nat_digits.
 

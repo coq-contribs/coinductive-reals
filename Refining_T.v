@@ -3,7 +3,7 @@
 (* This file is distributed under the terms of the                      *)
 (* GNU Lesser General Public License Version 2.1                        *)
 (* A copy of the license can be found at                                *)
-(*                  <http://www.gnu.org/licenses/gpl.txt>               *)
+(*                  <http://www.gnu.org/licenses>                       *)
 (************************************************************************)
 
 Require Import digits.
@@ -12,6 +12,8 @@ Require Import Bounded_T.
 Require Import R_addenda.
 Require Import Fourier_solvable_ineqs.
 Require Import Fourier.
+
+(** Properties of the predicate [Refining_M]. *)
 
 Open Scope Q_scope.
 
@@ -228,6 +230,23 @@ Proof.
  apply (Is_refining_T_denom_nonvanishing_T _ _ _ H_refining Hr1 Hr2).
 Qed.
 
+Lemma Is_refining_T_Bounded_T_left_right_product:forall xi mu1 mu2,
+         Is_refining_M mu1 -> Is_refining_M mu2 -> Bounded_T xi -> 
+             Bounded_T (right_product (left_product xi mu1) mu2).
+Proof.
+ intros (((a,b),(c,d)),((e,f),(g,h))) ((A,B),(C,D)) ((A',B'),(C',D')) H_refining1 H_refining2 H_bounded.
+ apply denom_nonvanishing_T_Bounded_T; intros r1 r2 Hr1 Hr2.
+ assert (H_mu1:=Is_refining_M_property _ r1 Hr1 H_refining1);
+ assert (H_mu2:=Is_refining_M_property _ r2 Hr2 H_refining2).
+ generalize (Bounded_T_denom_nonvanishing_T _ H_bounded _ _ H_mu1 H_mu2).
+ unfold as_Moebius, denom_nonvanishing_T, right_product, left_product, fst, snd.
+ intros H_denom.
+ realify_Q_goal.
+ stepl (e*(A*r1+B)*(A'*r2+B') + f*(A*r1+B)*(C'*r2+D') + g*(C*r1+D)*(A'*r2+B') + h*(C*r1+D)*(C'*r2+D')); [|ring].
+ apply Rbilinear_non_zero_2; auto. 
+ apply (Is_refining_M_denom_nonvanishing_M _ _ H_refining1 Hr1).
+ apply (Is_refining_M_denom_nonvanishing_M _ _ H_refining2 Hr2).
+Qed.
 
 Lemma as_Tensor_right_left_product_as_Moebius:forall xi mu1 mu2 r1 r2, 
              denom_nonvanishing_M mu1 r1->denom_nonvanishing_M mu2 r2 -> 

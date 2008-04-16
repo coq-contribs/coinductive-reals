@@ -3,7 +3,7 @@
 (* This file is distributed under the terms of the                      *)
 (* GNU Lesser General Public License Version 2.1                        *)
 (* A copy of the license can be found at                                *)
-(*                  <http://www.gnu.org/licenses/gpl.txt>               *)
+(*                  <http://www.gnu.org/licenses>                       *)
 (************************************************************************)
 
 Require Import digits.
@@ -11,6 +11,8 @@ Require Import R_addenda.
 Require Import Fourier_solvable_ineqs.
 Require Import Fourier.
 Require Import Bounded_M.
+
+(** Properties of the predicate [Refining_M]. *)
 
 Open Scope Q_scope.
 
@@ -196,7 +198,22 @@ Proof.
  apply Rlinear_non_zero_2; auto. 
  apply (Is_refining_M_denom_nonvanishing_M _ _ H_refining Hr).
 Qed.
- 
+
+Lemma Is_refining_M_Bounded_M_product:forall mu mu',Is_refining_M mu' -> Bounded_M mu -> 
+                   Bounded_M (product mu mu').
+Proof.
+ intros ((a,b),(c,d)) ((a',b'),(c',d')) H_refining' H_bounded.
+ apply denom_nonvanishing_M_Bounded_M; intros r Hr.
+ assert (H_mu':=Is_refining_M_property _ r Hr H_refining').
+ generalize (Bounded_M_denom_nonvanishing_M _ H_bounded _ H_mu').
+ unfold as_Moebius, denom_nonvanishing_M, product, fst, snd.
+ intros H_denom.
+ repeat rewrite Q_to_Rplus; repeat rewrite Q_to_Rmult.
+ stepl (c*(a'*r+b')+d*(c'*r+d')); [|ring].
+ apply Rlinear_non_zero_2; auto.
+ apply (Is_refining_M_denom_nonvanishing_M _ _ H_refining' Hr).
+Qed.
+
 Lemma as_Moebius_product : forall mu mu' r, denom_nonvanishing_M mu' r -> ((-1)<=as_Moebius mu' r<=1)%R -> 
                      Is_refining_M mu ->  as_Moebius (product mu mu') r = as_Moebius mu (as_Moebius mu' r).
 Proof.

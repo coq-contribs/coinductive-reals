@@ -3,17 +3,16 @@
 (* This file is distributed under the terms of the                      *)
 (* GNU Lesser General Public License Version 2.1                        *)
 (* A copy of the license can be found at                                *)
-(*                  <http://www.gnu.org/licenses/gpl.txt>               *)
+(*                  <http://www.gnu.org/licenses>                       *)
 (************************************************************************)
 
 Require Import digits.
 Require Export lb.
 
 
-
-(** This returns the upper bound of the interval obtained by applying
-    the initial segment of length [n] of [alpha] to the base interval *)
-
+(** We define a function [lb] that returns the #<em>#upper bound#</em># of the
+interval obtained by applying the initial segment of length [n] of
+[alpha] to the base interval #&#91;#-1,+1#&#93;#.*)
 
 Fixpoint ub (alpha:Reals) (n:nat) {struct n} : Q :=
   match n with

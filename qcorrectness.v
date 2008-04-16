@@ -3,7 +3,7 @@
 (* This file is distributed under the terms of the                      *)
 (* GNU Lesser General Public License Version 2.1                        *)
 (* A copy of the license can be found at                                *)
-(*                  <http://www.gnu.org/licenses/gpl.txt>               *)
+(*                  <http://www.gnu.org/licenses>                       *)
 (************************************************************************)
 
 
@@ -15,9 +15,9 @@ Require Import rep.
 Require Import RIneq.
 Require Import R_addenda.
 
+(** * Coinductive correctness of the quadratic algorithm. *)
 
-
-(** This calculates the r_product and l_product of [xi] and the first [n] elements of [alpha] and [beta]. *)
+(** Calculating the left and right products of [xi] and the first [n] elements of [alpha] and [beta]. *)
 
 Fixpoint product_init_zip (xi:Tensor) (alpha beta:Reals) (n:nat) {struct n}: Tensor := 
  match n with
@@ -102,7 +102,7 @@ Proof.
    [ intros xi alpha0 beta0 i H2; generalize i
    | intros xi alpha0 beta0 i H2; generalize i 
    | intros xi alpha0 beta0 i H2; generalize i
-   | intros xi alpha0 beta0 i_l i_r i_m f H H2; generalize i_l i_r i_m f H
+   | intros xi alpha0 beta0 f H H2; generalize f H
    ];
    pattern alpha0, beta0, H2;
    elim H2 using emits_q_ind_dep;
@@ -164,7 +164,7 @@ Lemma depth_q_absorbs:forall (xi:Tensor) (alpha beta:Reals) (t: emits_q xi alpha
   forall t', depth_q xi alpha beta t = S(depth_q (right_product (left_product xi (Streams.hd alpha)) (Streams.hd beta)) (tl alpha) (tl beta) t').
 Proof.
  intros xi alpha beta t t_l t_r t_m t'.
- transitivity (depth_q xi alpha beta (emits_q_absorbs _ _ _ t_l t_r t_m t')).
+ transitivity (depth_q xi alpha beta (emits_q_absorbs _ _ _ t')).
  apply depth_q_PI.
  simpl.
  case (Incl_T_dec_D xi LL); try contradiction;

@@ -3,7 +3,7 @@
 (* This file is distributed under the terms of the                      *)
 (* GNU Lesser General Public License Version 2.1                        *)
 (* A copy of the license can be found at                                *)
-(*                  <http://www.gnu.org/licenses/gpl.txt>               *)
+(*                  <http://www.gnu.org/licenses>                       *)
 (************************************************************************)
 
 Require Import R_addenda.
@@ -17,6 +17,8 @@ Require Import hcorrectness.
 Require Import Refining_M.
 Require Import Bounded_M.
 Require Import Incl_M.
+
+(** * Obtaining the productivity predicate for the refining Moebius maps. *)
 
 Open Scope Z_scope.
 Open Scope Q_scope.
@@ -256,9 +258,10 @@ Proof.
 Qed.
 
 (** This is the main productivity lemma (similar to Lemma 5.6.10 of
-the thesis) that extracts the existence of [n] --- number of
-absorption steps after which emission occurs *)
-Theorem thesis_5_6_10: forall mu alpha, Is_refining_M mu -> {n:nat & { d | Incl_M (product_init mu alpha n) d}}. 
+the thesis) for the homographic algorithm. It extracts [n] --- number
+of the absorption steps after which emission occurs. *)
+
+Theorem thesis_5_6_10: forall mu alpha, Is_refining_M mu -> {n:nat & {d | Incl_M (product_init mu alpha n) d}}. 
 Proof.
  intros ((a,b),(c,d)) alpha H_refining.
  set (det:=a*d-b*c).
@@ -294,8 +297,8 @@ Close Scope Q_scope.
 Close Scope Z_scope.
 
 
-(** Using above we prove that [n] can always be chosen to be the smallest such number. *)
-Lemma semantic_modulus_h_LNP: forall mu alpha, Is_refining_M mu -> 
+(** Using the above we prove that [n] can always be chosen to be the smallest such number. *)
+Lemma semantic_modulus_h: forall mu alpha, Is_refining_M mu -> 
   {n:nat & { d | Incl_M (product_init mu alpha n) d /\
                       (forall m d', (m<n)%nat ->~Incl_M (product_init mu alpha m) d') } }.
 Proof.
@@ -303,16 +306,6 @@ Proof.
  apply LNP_sigS_nat_Digit.
   intros n d; apply Incl_M_dec_D.
   apply thesis_5_6_10; assumption.
-Qed.
-
-Lemma semantic_modulus_h: forall mu alpha, Is_refining_M mu -> 
-  {n:nat & { d | Incl_M (product_init mu alpha n) d /\
-                        Is_refining_M (product (inv_digit d) (product_init mu alpha n)) /\ 
-                      (forall m d', (m<n)%nat ->~Incl_M (product_init mu alpha m) d') } }.
-Proof.
- intros mu alpha H_r.
- destruct (semantic_modulus_h_LNP _ alpha H_r) as [n [d [H1 H2]]].
-  exists n; exists d; split; trivial; split; trivial; apply Incl_M_absorbs_Is_refining_M; assumption.
 Qed.
 
 Lemma semantic_modulus_h_S_product:forall n n' mu alpha (H_r:Is_refining_M mu) H_r', 
@@ -325,8 +318,8 @@ Proof.
  set (d':=(proj1_sig (projT2 smodu')));
  assert (Hd:d=(proj1_sig (projT2 smodu))); trivial;
  assert (Hd':d'=(proj1_sig (projT2 smodu'))); trivial;
- destruct (proj2_sig (projT2 smodu)) as [H1 [_ H3]];
- destruct (proj2_sig (projT2 smodu')) as [H1' [_ H3']].
+ destruct (proj2_sig (projT2 smodu)) as [H1 H3];
+ destruct (proj2_sig (projT2 smodu')) as [H1' H3'].
  rewrite_all <- Hd; rewrite_all <- Hd'; rewrite_all <- Hn; rewrite_all <- Hn'.
  apply eq_S.
  destruct (lt_eq_lt_dec n n') as [[Hnn'|Hnn']|Hnn']; trivial.
@@ -349,7 +342,7 @@ Proof.
  set (d:=(proj1_sig (projT2 smodu)));
  assert (Hn':n'=(projT1 smodu)); trivial;
  assert (Hd:d=(proj1_sig (projT2 smodu))); trivial;
- destruct (proj2_sig (projT2 smodu)) as [H1 [H2 H3]].
+ destruct (proj2_sig (projT2 smodu)) as [H1 H3].
  (* O *)
   simpl in H1.
   case (Incl_M_dec_D mu LL); intros t_l.
@@ -388,9 +381,9 @@ Proof.
  induction n; intros mu alpha H_r smodu Hn;
  set (d:=(proj1_sig (projT2 smodu)));
  assert (Hd':d=(proj1_sig (projT2 smodu))); trivial;
- destruct (proj2_sig (projT2 smodu)) as [H1 [H2 H3]].
+ destruct (proj2_sig (projT2 smodu)) as [H1 H3].
   (* 0 *)
-  revert H1 H2; rewrite <- Hd'; rewrite <- Hn; intros H1 H2.
+  revert H1; rewrite <- Hd'; rewrite <- Hn; intros H1.
   case (Incl_M_dec_D mu LL); intros t_l.
    apply depth_h_L; trivial.
    case (Incl_M_dec_D mu RR); intros t_r.
@@ -399,7 +392,7 @@ Proof.
      apply depth_h_M; trivial.
      destruct d; contradiction.
   (* S n *)
-  generalize H1 H2 (H3 O); clear H1 H2 H3; rewrite <- Hd'; rewrite <- Hn; intros H1 H2 H3.
+  generalize H1 (H3 O); clear H1 H3; rewrite <- Hd'; rewrite <- Hn; intros H1 H3.
   case (Incl_M_dec_D mu LL); intros t_l.
    rewrite depth_h_L; trivial; generalize (H3 LL (lt_O_Sn _)); simpl; intros H4; contradiction. 
    case (Incl_M_dec_D mu RR); intros t_r.
@@ -417,7 +410,7 @@ Proof.
      rewrite (eq_add_S _ _ (H_Sn (lt_O_Sn _) (refl_equal _) Hn)); trivial.
 Qed.
 
-Lemma Is_refining_M_moduls_h:forall mu alpha (H_r:Is_refining_M mu), 
+Lemma Is_refining_M_modulus_h:forall mu alpha (H_r:Is_refining_M mu), 
   let modu:=modulus_h mu alpha (Is_refining_M_emits_h mu alpha H_r) in
    let mu' := fstT (sndT modu) in 
       Is_refining_M mu'.
@@ -430,7 +423,7 @@ Proof.
  assert (Hd':d'=(proj1_sig (projT2 smodu))); trivial.
  assert (H_depth: depth_h mu alpha (Is_refining_M_emits_h mu alpha H_r) = n);[apply (Is_refining_M_depth_h n _ alpha H_r Hn)|].
  destruct (depth_h_modulus_h mu alpha (Is_refining_M_emits_h mu alpha H_r) n (Is_refining_M_depth_h n _ _ _ Hn)) as [d Hd].
- destruct (proj2_sig (projS2 smodu)) as [H_Incl [H_ref _]].
+ destruct (proj2_sig (projS2 smodu)) as [H_Incl _].
  rewrite Hd; simpl.
  apply Incl_M_absorbs_Is_refining_M.
  destruct (depth_h_Incl_M_inf_strong_general _ _ (Is_refining_M_emits_h mu alpha H_r) n H_depth) as [d'' [Hd''1 Hd''2]].
@@ -444,12 +437,11 @@ Qed.
 Lemma Is_refining_M_step_productive_h: forall n mu alpha, Is_refining_M mu -> step_productive_h n mu alpha.
 Proof.
  induction n;
- intros mu alpha H_refining;  generalize (Is_refining_M_emits_h _ alpha H_refining); intros H_emits.
- (* 0 *) constructor; trivial.
- (* S *) apply (step_productive_h_S n _ _ H_emits).
+ intros mu alpha H_refining. 
+ (* 0 *) constructor; apply Is_refining_M_emits_h; trivial.
+ (* S *) apply (step_productive_h_S n _ _ (Is_refining_M_emits_h _ alpha H_refining)). 
  apply IHn.
- rewrite (modulus_h_PI _ _ H_emits (Is_refining_M_emits_h _ alpha H_refining)).
- apply (Is_refining_M_moduls_h _ alpha H_refining).
+ apply (Is_refining_M_modulus_h _ alpha H_refining).
 Qed.
 
 Theorem Is_refining_M_productive_h: forall mu alpha, Is_refining_M mu -> productive_h mu alpha.

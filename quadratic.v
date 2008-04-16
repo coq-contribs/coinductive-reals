@@ -3,17 +3,17 @@
 (* This file is distributed under the terms of the                      *)
 (* GNU Lesser General Public License Version 2.1                        *)
 (* A copy of the license can be found at                                *)
-(*                  <http://www.gnu.org/licenses/gpl.txt>               *)
+(*                  <http://www.gnu.org/licenses>                       *)
 (************************************************************************)
 
 
 (** Formalisation of the quadratic algorithm 
 
 <<
-quadratic xi (x:xs) (y:ys) | (Incl_T_L_dec xi)  = "L" : quadratic (LL_inv o xi) (x:xs) (y:ys)
-                           | (Incl_T_R_dec xi)  = "R" : quadratic (RR_inv o xi) (x:xs) (y:ys)
-                           | (Incl_T_M_dec xi)  = "M" : quadratic (MM_inv o xi) (x:xs) (y:ys)
-                           | otherwise = quadratic (xi oo x oo' y) xs ys
+quadratic xi (x:xs) (y:ys) | (Incl_T_L_dec xi)  = LL : quadratic (LL_inv o xi) (x:xs) (y:ys)
+                           | (Incl_T_R_dec xi)  = RR : quadratic (RR_inv o xi) (x:xs) (y:ys)
+                           | (Incl_T_M_dec xi)  = MM : quadratic (MM_inv o xi) (x:xs) (y:ys)
+                           | otherwise = quadratic (xi o_l x o_r y) xs ys
 >>
 
 *)
@@ -26,9 +26,9 @@ Inductive emits_q : Tensor -> Reals -> Reals -> Prop :=
   | emits_q_L : forall (xi:Tensor) (alpha beta:Reals), Incl_T xi LL -> emits_q xi alpha beta
   | emits_q_R : forall (xi:Tensor) (alpha beta:Reals), Incl_T xi RR -> emits_q xi alpha beta
   | emits_q_M : forall (xi:Tensor) (alpha beta:Reals), Incl_T xi MM -> emits_q xi alpha beta
-  | emits_q_absorbs : forall (xi:Tensor) (alpha beta:Reals), ~(Incl_T xi LL)-> ~(Incl_T xi RR) -> ~(Incl_T xi MM)-> 
-	              		  emits_q (right_product (left_product xi (hd alpha)) (hd beta)) (tl alpha) (tl beta) ->
-                                  emits_q xi alpha beta.
+  | emits_q_absorbs : forall (xi:Tensor) (alpha beta:Reals), 
+              		  emits_q (right_product (left_product xi (hd alpha)) (hd beta)) (tl alpha) (tl beta) ->
+                          emits_q xi alpha beta.
 
 Scheme emits_q_ind_dep := Induction for emits_q Sort Prop.
 
@@ -66,7 +66,7 @@ Proof.
    [ intros xi alpha0 beta0 i H2; generalize i
    | intros xi alpha0 beta0 i H2; generalize i 
    | intros xi alpha0 beta0 i H2; generalize i
-   | intros xi alpha0 beta0 i_l i_r i_m f H H2; generalize i_l i_r i_m f H
+   | intros xi alpha0 beta0 f H H2; generalize f H
    ];
    pattern alpha0, beta0, H2;
    elim H2 using emits_q_ind_dep;
@@ -128,7 +128,7 @@ Lemma modulus_q_absorbs:forall (xi:Tensor) (alpha beta:Reals) (t: emits_q xi alp
   forall t', modulus_q xi alpha beta t = modulus_q (right_product (left_product xi (hd alpha)) (hd beta)) (tl alpha) (tl beta) t'.
 Proof.
  intros xi alpha beta t t_l t_r t_m t'.
- transitivity (modulus_q xi alpha beta (emits_q_absorbs _ _ _ t_l t_r t_m t')).
+ transitivity (modulus_q xi alpha beta (emits_q_absorbs _ _ _ t')).
  apply modulus_q_PI.
  simpl.
  case (Incl_T_dec_D xi LL); try contradiction;
@@ -309,6 +309,7 @@ H0 (refl_equal (S n)) (refl_equal xi) (refl_equal alpha) (refl_equal beta)
 Defined.
 
 
+(** #<em>#Productivity predicate#</em># *)
 
 Inductive productive_q : Tensor -> Reals -> Reals ->Prop :=
   |  productive_q_absorbs : forall (xi:Tensor) (alpha beta:Reals), 
@@ -340,7 +341,7 @@ Proof.
 Defined.
 
 
-(** Definition of quadratic algorithm *)
+(** Definition of the quadratic algorithm *)
 
 CoFixpoint quadratic (xi:Tensor) (alpha beta:Reals) (H :productive_q xi alpha beta) : Reals :=
   Cons (fstT (modulus_q xi alpha beta (productive_q_emits_q xi alpha beta H)))
@@ -350,14 +351,14 @@ CoFixpoint quadratic (xi:Tensor) (alpha beta:Reals) (H :productive_q xi alpha be
                   (modulus_q_productive_q xi alpha beta (productive_q_emits_q xi alpha beta H) H)).
 
 
-(* uncomment the following two lines in order to extract to Haskell *)
-(*
+(** At this point one can uncomment the following two lines in order to extract to Haskell.
+<<
 Extraction Language Haskell.
 Extraction "Xquadratic.hs" quadratic.
+>>
 *)
 
-
-(** We now prove the cofixed point equations of quadratic algorithm *)
+(** We now prove the cofixed point equations of the quadratic algorithm *)
 
 Lemma quadratic_unfolded:forall xi alpha beta p, quadratic xi alpha beta p =
     Cons (fstT (modulus_q xi alpha beta (productive_q_emits_q xi alpha beta p)))
@@ -386,7 +387,12 @@ Proof.
  rewrite (modulus_q_PI_strong _ _ _ _ _ _ (productive_q_emits_q xi alpha beta p) (productive_q_emits_q xi' alpha' beta' p')); trivial.
 Defined.
 
-Lemma quadratic_absorb :forall xi alpha beta (p:productive_q xi alpha beta), ~(Incl_T xi LL)->~(Incl_T xi RR)->~(Incl_T xi MM)->
+Lemma quadratic_EPI:forall xi alpha beta p p', bisim (quadratic xi alpha beta p)  (quadratic xi alpha beta p').
+Proof.
+ intros xi alpha beta p p'; apply quadratic_EPI_strong; reflexivity.
+Defined.
+
+Lemma quadratic_absorbs :forall xi alpha beta (p:productive_q xi alpha beta), ~(Incl_T xi LL)->~(Incl_T xi RR)->~(Incl_T xi MM)->
                 forall p', bisim (quadratic xi alpha beta p)  (quadratic (right_product (left_product xi (hd alpha)) (hd beta)) (tl alpha) (tl beta) p').
 Proof.
  intros xi alpha beta p t_l t_r t_m p'.
@@ -395,14 +401,9 @@ Proof.
  generalize (productive_q_emits_q _ _ _ p); intros t.
  generalize (modulus_q_productive_q xi alpha beta t p).
  rewrite (modulus_q_absorbs _ _ _ t t_l t_r t_m (emits_q_absorbs_inv _ _ _ t_l t_r t_m t)).
- intros.
- constructor; simpl;
- [ idtac
- | apply quadratic_EPI_strong
- ];
   rewrite (modulus_q_PI _ _ _ (emits_q_absorbs_inv xi alpha beta t_l t_r t_m t)
-                       (productive_q_emits_q (right_product (left_product xi (hd alpha)) (hd beta)) (tl alpha) (tl beta) p'));
-  trivial.
+                       (productive_q_emits_q (right_product (left_product xi (hd alpha)) (hd beta)) (tl alpha) (tl beta) p')).
+ constructor; simpl; trivial; apply quadratic_EPI.
 Defined.
 
 Lemma quadratic_emits_L :forall xi alpha beta (p:productive_q xi alpha beta), (Incl_T xi LL) ->
@@ -418,7 +419,7 @@ Proof.
  intros.
  constructor; simpl; trivial.
  rewrite <- quadratic_unfolded;
- apply quadratic_EPI_strong; trivial.
+ apply quadratic_EPI.
 Defined.
  
 Lemma quadratic_emits_R :forall xi alpha beta (p:productive_q xi alpha beta), ~(Incl_T xi LL) -> (Incl_T xi RR) ->
@@ -434,7 +435,7 @@ Proof.
  intros.
  constructor; simpl; trivial.
   rewrite <- quadratic_unfolded;
-  apply quadratic_EPI_strong; trivial.
+  apply quadratic_EPI.
 Defined.
 
 Lemma quadratic_emits_M :forall xi alpha beta (p:productive_q xi alpha beta), ~(Incl_T xi LL) -> ~(Incl_T xi RR) -> (Incl_T xi MM) ->
@@ -450,5 +451,5 @@ Proof.
  intros.
  constructor; simpl; trivial.
   rewrite <- quadratic_unfolded;
-  apply quadratic_EPI_strong; trivial.
+  apply quadratic_EPI.
 Defined.

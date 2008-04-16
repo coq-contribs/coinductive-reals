@@ -3,7 +3,7 @@
 (* This file is distributed under the terms of the                      *)
 (* GNU Lesser General Public License Version 2.1                        *)
 (* A copy of the license can be found at                                *)
-(*                  <http://www.gnu.org/licenses/gpl.txt>               *)
+(*                  <http://www.gnu.org/licenses>                       *)
 (************************************************************************)
 
 Require Import Reals.
@@ -21,6 +21,9 @@ Import Bounded_T.
 Require Import quadratic.
 Require Import qcorrectness.
 Require Import productivity_M.
+
+(** * Obtaining the productivity predicate for the refining tensors. *)
+
 
 Open Scope Z_scope.
 Open Scope Q_scope.
@@ -536,7 +539,7 @@ Close Scope Z_scope.
 Close Scope Q_scope.
 
 
-Lemma semantic_modulus_q_LNP: forall xi alpha beta, Is_refining_T xi -> 
+Lemma semantic_modulus_q: forall xi alpha beta, Is_refining_T xi -> 
   {n:nat & { d | Incl_T (product_init_zip xi alpha beta n) d /\
                       (forall m d', (m<n)%nat ->~Incl_T (product_init_zip xi alpha beta m) d') } }.
 Proof.
@@ -544,16 +547,6 @@ Proof.
  apply LNP_sigS_nat_Digit.
   intros n d; apply Incl_T_dec_D.
   apply thesis_5_6_10'; assumption.
-Qed.
-
-Lemma semantic_modulus_q: forall xi alpha beta, Is_refining_T xi -> 
-  {n:nat & { d | Incl_T (product_init_zip xi alpha beta n) d /\
-                        Is_refining_T (m_product (inv_digit d) (product_init_zip xi alpha beta n)) /\ 
-                      (forall m d', (m<n)%nat ->~Incl_T (product_init_zip xi alpha beta m) d') } }.
-Proof.
- intros xi alpha beta H_r.
- destruct (semantic_modulus_q_LNP _ alpha beta H_r) as [n [d [H1 H2]]].
-  exists n; exists d; split; trivial; split; trivial; apply Incl_T_absorbs_Is_refining_T; assumption.
 Qed.
 
 Lemma semantic_modulus_q_S_product:forall n n' xi alpha beta (H_r:Is_refining_T xi) H_r', 
@@ -567,8 +560,8 @@ Proof.
  set (d':=(proj1_sig (projT2 smodu')));
  assert (Hd:d=(proj1_sig (projT2 smodu))); trivial;
  assert (Hd':d'=(proj1_sig (projT2 smodu'))); trivial;
- destruct (proj2_sig (projT2 smodu)) as [H1 [_ H3]];
- destruct (proj2_sig (projT2 smodu')) as [H1' [_ H3']].
+ destruct (proj2_sig (projT2 smodu)) as [H1 H3];
+ destruct (proj2_sig (projT2 smodu')) as [H1' H3'].
  rewrite_all <- Hd; rewrite_all <- Hd'; rewrite_all <- Hn; rewrite_all <- Hn'.
  apply eq_S.
  destruct (lt_eq_lt_dec n n') as [[Hnn'|Hnn']|Hnn']; trivial.
@@ -591,7 +584,7 @@ Proof.
  set (d:=(proj1_sig (projT2 smodu)));
  assert (Hn':n'=(projT1 smodu)); trivial;
  assert (Hd:d=(proj1_sig (projT2 smodu))); trivial;
- destruct (proj2_sig (projT2 smodu)) as [H1 [H2 H3]].
+ destruct (proj2_sig (projT2 smodu)) as [H1 H3].
  (* O *)
   simpl in H1.
   case (Incl_T_dec_D xi LL); intros t_l.
@@ -632,9 +625,9 @@ Proof.
  induction n; intros xi alpha beta H_r smodu Hn;
  set (d:=(proj1_sig (projT2 smodu)));
  assert (Hd':d=(proj1_sig (projT2 smodu))); trivial;
- destruct (proj2_sig (projT2 smodu)) as [H1 [H2 H3]].
+ destruct (proj2_sig (projT2 smodu)) as [H1 H3].
   (* 0 *)
-  revert H1 H2; rewrite <- Hd'; rewrite <- Hn; intros H1 H2.
+  revert H1; rewrite <- Hd'; rewrite <- Hn; intros H1.
   case (Incl_T_dec_D xi LL); intros t_l.
    apply depth_q_L; trivial.
    case (Incl_T_dec_D xi RR); intros t_r.
@@ -643,7 +636,7 @@ Proof.
      apply depth_q_M; trivial.
      destruct d; contradiction.
   (* S n *)
-  generalize H1 H2 (H3 O); clear H1 H2 H3; rewrite <- Hd'; rewrite <- Hn; intros H1 H2 H3.
+  generalize H1 (H3 O); clear H1 H3; rewrite <- Hd'; rewrite <- Hn; intros H1 H3.
   case (Incl_T_dec_D xi LL); intros t_l.
    rewrite depth_q_L; trivial; generalize (H3 LL (lt_O_Sn _)); simpl; intros H4; contradiction. 
    case (Incl_T_dec_D xi RR); intros t_r.
@@ -662,7 +655,7 @@ Proof.
      rewrite (eq_add_S _ _ (H_Sn (lt_O_Sn _) (refl_equal _) Hn)); trivial.
 Qed.
 
-Lemma Is_refining_T_moduls_q:forall xi alpha beta (H_r:Is_refining_T xi), 
+Lemma Is_refining_T_modulus_q:forall xi alpha beta (H_r:Is_refining_T xi), 
   let modu:=modulus_q xi alpha beta (Is_refining_T_emits_q xi alpha beta H_r) in
    let xi' := fstT (sndT modu) in 
       Is_refining_T xi'.
@@ -675,7 +668,7 @@ Proof.
  assert (Hd':d'=(proj1_sig (projT2 smodu))); trivial.
  assert (H_depth: depth_q xi alpha beta (Is_refining_T_emits_q xi alpha beta H_r) = n);[apply (Is_refining_T_depth_q n _ alpha beta H_r Hn)|].
  destruct (depth_q_modulus_q xi alpha beta (Is_refining_T_emits_q xi alpha beta H_r) n (Is_refining_T_depth_q n _ _ _ _ Hn)) as [d Hd].
- destruct (proj2_sig (projS2 smodu)) as [H_Incl [H_ref _]].
+ destruct (proj2_sig (projS2 smodu)) as [H_Incl _].
  rewrite Hd; simpl.
  apply Incl_T_absorbs_Is_refining_T.
  destruct (depth_q_Incl_T_inf_strong_general _ _ _ (Is_refining_T_emits_q xi alpha beta H_r) n H_depth) as [d'' [Hd''1 Hd''2]].
@@ -689,12 +682,11 @@ Qed.
 Lemma Is_refining_T_step_productive_q: forall n xi alpha beta, Is_refining_T xi -> step_productive_q n xi alpha beta.
 Proof.
  induction n;
- intros xi alpha beta H_refining;  generalize (Is_refining_T_emits_q _ alpha beta H_refining); intros H_emits.
- (* 0 *) constructor; trivial.
- (* S *) apply (step_productive_q_S n _ _ _ H_emits).
+ intros xi alpha beta H_refining.
+ (* 0 *) constructor; apply Is_refining_T_emits_q; trivial.
+ (* S *) apply (step_productive_q_S n _ _ _ (Is_refining_T_emits_q _ alpha beta H_refining)).
  apply IHn.
- rewrite (modulus_q_PI _ _ _ H_emits (Is_refining_T_emits_q _ alpha beta H_refining)).
- apply (Is_refining_T_moduls_q _ alpha beta H_refining).
+ apply (Is_refining_T_modulus_q _ alpha beta H_refining).
 Qed.
 
 Lemma Is_refining_T_productive_q: forall xi alpha beta, Is_refining_T xi -> productive_q xi alpha beta.

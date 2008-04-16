@@ -3,14 +3,17 @@
 (* This file is distributed under the terms of the                      *)
 (* GNU Lesser General Public License Version 2.1                        *)
 (* A copy of the license can be found at                                *)
-(*                  <http://www.gnu.org/licenses/gpl.txt>               *)
+(*                  <http://www.gnu.org/licenses>                       *)
 (************************************************************************)
 
 
-Require Export QArith_Stern_Brocot.   (* Rtional Numbers of QArith package *)
+Require Export QArith_Stern_Brocot.   (* Rational Numbers of QArithSternBrocot package *)
 Require Export Streams.   (* Streams from the standard library *)
 Require Import Streams_addenda.
 Require Import Raxioms.
+
+(** The definition of the digits and the basic operations on matrices
+and tensors. *)
 
 
 Unset Printing Notations.
@@ -24,7 +27,6 @@ Definition Matrix := Vector*Vector.
 Definition Tensor := Matrix*Matrix.
 
 Set Printing Notations.
-
 
 
 
@@ -42,6 +44,7 @@ Open Scope Z_scope.
 Open Scope Q_scope.
 
 
+(** #<em>#Digits#</em># as Moebius maps *)
 Definition map_digits (d: Digit) : Matrix := 
   match d with 
   | LL =>  (1/2, (-1)/2, (1/2,3/2))
@@ -51,6 +54,7 @@ Definition map_digits (d: Digit) : Matrix :=
 
 Coercion map_digits : Digit >-> Matrix.
 
+(** Inverses of the digits *)
 Definition inv_LL := ((3/2,1/2),((-1)/2,1/2)). 
 Definition inv_RR := ((3/2,(-1)/2),(1/2,1/2)). 
 Definition inv_MM := ((1/1,0/1),(0/1,1/3)). 
@@ -62,7 +66,7 @@ Definition inv_digit (D : Digit) : Matrix :=
   | MM => inv_MM
   end.  
 
-(** Product of two matrices *)
+(** #<em>#Product#</em># of two matrices *)
 
 Definition product (M N:Matrix):Matrix := 
   let (a1,b1) := (fst (fst M), snd (fst M)) in
@@ -72,7 +76,7 @@ Definition product (M N:Matrix):Matrix :=
 	  ((a1 * a2 + b1 * c2, a1 * b2 + b1 * d2),
             (c1 * a2 + d1 * c2, c1 * b2 + d1 * d2)).
 
-(** Product of a matrix and a tensor *)
+(** #<em>#Product#</em># of a matrix and a tensor *)
 
 Definition m_product (M:Matrix) (T:Tensor) : Tensor := 
   let (A,B) := (fst (fst M), snd (fst M)) in
@@ -84,7 +88,7 @@ Definition m_product (M:Matrix) (T:Tensor) : Tensor :=
           (((A*a + B*e),(A*b + B*f), ((A*c + B*g), (A*d + B*h))),
            ((C*a + D*e),(C*b + D*f), ((C*c + D*g), (C*d + D*h)))).
 
-(** Left product of a tensor and a matrix *)
+(** #<em>#Left product#</em># of a tensor and a matrix *)
 
 Definition left_product (T:Tensor) (M:Matrix) : Tensor := 
   let (a,b) := (fst (fst (fst T)), snd (fst (fst T))) in
@@ -96,7 +100,7 @@ Definition left_product (T:Tensor) (M:Matrix) : Tensor :=
           (((a*A + c*C),(b*A + d*C), ((a*B + c*D), (b*B + d*D))),
            ((e*A + g*C),(f*A + h*C), ((e*B + g*D), (f*B + h*D)))).
 
-(** Right product of a tensor and a matrix *)
+(** #<em>#Right product#</em># of a tensor and a matrix *)
 
 Definition right_product (T:Tensor) (M:Matrix) : Tensor := 
   let (a,b) := (fst (fst (fst T)), snd (fst (fst T))) in
@@ -109,7 +113,9 @@ Definition right_product (T:Tensor) (M:Matrix) : Tensor :=
            ((e*A + f*C),(e*B + f*D), ((g*A + h*C), (g*B + h*D)))).
 
 
-(** This is the set Digits^{\infty} (stream of elements of Digits). *)
+(** This is the set
+#<code>Digit</code><sup>&#8734;</sup>#$\texttt{Digit}^\infty$ (streams
+of the elements of Digits). *)
 
 Definition Reals := (Stream Digit).
 
@@ -117,12 +123,14 @@ Definition map_reals  : Reals ->  EStream  := Streams.map map_digits.
 
 Coercion map_reals :Reals >-> EStream.
 
+(** #<em>#Bounded#</em># Moebius map on #&#91;#-1,+1#&#93;#. *)
 
 Definition Bounded_M (M:Matrix):=
   let (a,b) := (fst (fst M), snd (fst M)) in
     let (c,d) := (fst (snd M), snd (snd M)) in
       (Qlt Zero (d+c) /\ Qlt Zero (d-c)) \/  (* 0<cx+d *)
       (Qlt (d+c) Zero /\ Qlt (d-c) Zero).   (* cx+d<0 *)
+
 
 Lemma Bounded_M_dec: forall (M:Matrix), {Bounded_M M} + {~(Bounded_M M)}.
 Proof.
@@ -135,12 +143,14 @@ Proof.
 Qed.
 
 
-(** Our base interval is I_base:=[-1,+1] (Due to choice of digits set,
-    and hence the following means:
+(** #<em>#Emission condition#</em># for the matrices:
 
-  M(I_base)\subseteq  D(I_base).
+    Our base interval is #I<sub>0</sub>#=#&#91;#-1,+1#&#93;# (due to the choice of the
+    digits set), and hence the following definition means
 
-  Note also that 0< dig4-dig3, dig4+dig3 *) 
+  M(#I<sub>0</sub>#) #&#8838;#$\subseteq$  D(#I<sub>0</sub>#).
+
+  Note also that 0< dig4-dig3, dig4+dig3. *) 
 
 
 Definition Incl_M (M:Matrix) (D:Digit) :=
@@ -168,6 +178,7 @@ Proof.
         case (Qle_dec ((d+c)*((a+b)*(dig3+dig4))) ((d+c)*((c+d)*(dig1+dig2)))); intros; tauto.
 Qed.
 
+(** #<em>#Bounded#</em># tensor on #&#91;#-1,+1#&#93;# #&#215;# #&#91;#-1,+1#&#93;#. *)
 
 Definition Bounded_T (T:Tensor):=
   let (a,b) := (fst (fst (fst T)), snd (fst (fst T))) in
@@ -189,6 +200,9 @@ Proof.
 	  case (Qlt_dec (-e-f+g+h) Zero); intros;
 	    case (Qlt_dec (-e+f-g+h) Zero); intros; tauto.
 Qed.
+
+(** #<em>#Emission condition#</em># for the tensors *)
+
 
 Definition Incl_T (T:Tensor) (D:Digit) :=
   let (a,b) := (fst (fst (fst T)), snd (fst (fst T))) in
@@ -224,7 +238,7 @@ Proof.
                   left; split; trivial; repeat split; assumption.
 Qed.
 
-
+(** #<em>#Refining#</em># Moebius map on #&#91;#-1,+1#&#93;#. *)
 
 Definition Is_refining_M M:= 
   let (a,b) := (fst (fst M), snd (fst M)) in
@@ -232,6 +246,8 @@ Definition Is_refining_M M:=
       Bounded_M M /\
       ((Qle Zero (a+b+c+d) /\ Qle Zero (a-b-c+d) /\ Qle Zero (-a-b+c+d) /\ Qle Zero (-a+b-c+d)) \/  (* 0<axy+bx+cy+d *)
        (Qle (a+b+c+d) Zero /\ Qle (a-b-c+d) Zero /\ Qle (-a-b+c+d) Zero /\ Qle (-a+b-c+d) Zero)).    (* axy+bx+cy+d<0 *)
+
+(** #<em>#Refining#</em># tensor on #&#91;#-1,+1#&#93;# #&#215;# #&#91;#-1,+1#&#93;#. *)
 
 Definition Is_refining_T T:=
   let (a,b) := (fst (fst (fst T)), snd (fst (fst T))) in
@@ -250,7 +266,7 @@ Definition Is_refining_T T:=
  
 
 
-(** The iedntity mobius map *)
+(** The #<em>#iedntity#</em># mobius map *)
 Definition idM :=  (1 / 1, 0 / 1, (0 / 1, 1 / 1)).
 
 Lemma Is_refining_M_idM:Is_refining_M idM.
@@ -258,11 +274,15 @@ Proof.
  red; unfold idM, Bounded_M, fst, snd; qZ_numerals; split; left; repeat split; auto.
 Qed.
 
-(** This calculates the product of the inverses of the first n elements of [alpha] (in reverse order) 
-    (n=4)   a_0:a_1:a_2:a_3:...  |-------> a_3^ o a_2^ o a_1^ o a_0^: ...
+(** This calculates the product of the inverses of the first [n]
+elements of [alpha] in the #<em>#reverse order#</em>#, eg
+
+ a#<sub>0</sub>#:a#<sub>1</sub>#:a#<sub>2</sub>#:a#<sub>3</sub>#:...  |-------> a#<sub>3</sub># #<sup>-1</sup># o a#<sub>2</sub># #<sup>-1</sup># o a#<sub>1</sub># #<sup>-1</sup># o a#<sub>0</sub># #<sup>-1</sup>#: ...    for n=4
+
 *)
 Definition product_init_rev alpha n: Matrix := List.fold_right product idM (List.rev (Streams_addenda.take n (Streams.map inv_digit alpha))).
 
+(** Calculating the product of the first [n] elements of [alpha]. *)
 Definition product_init_pure (alpha:Reals) n := List.fold_right product idM (Streams_addenda.take n (map_reals alpha)).
 
 Lemma product_associative:forall M N P, product M (product N P) = product (product M N) P.
@@ -378,10 +398,14 @@ Proof.
  qZ_numerals; field ;auto.
 Qed.
 
+(** Moebius map applied to a rational number. *)
+
 Definition as_Moebius_Q (M:Matrix) := 
   let (a,b) := (fst (fst M), snd (fst M)) in 
     let (c,d) := (fst (snd M), snd (snd M)) in
       fun (x:Q) => ((a*x+b)/(c*x+d)).
+
+(** Tensor applied to two rational numbers. *)
 
 Definition as_Tensor_Q (T:Tensor) := 
   let (a,b) := (fst (fst (fst T)), snd (fst (fst T))) in
@@ -514,10 +538,14 @@ Proof.
  apply Qle_mult_nonneg_nonneg; auto; apply Qle_Qminus_Zero; auto.
 Qed.
 
+(** #<em>#Determinant#</em># of a matrix *)
+
 Definition Determinant M :=   
   let (a,b) := (fst (fst M), snd (fst M)) in
     let (c,d) := (fst (snd M), snd (snd M)) in
 	  (a * d - b * c).
+
+(** #<em>#Diameter#</em># of a application of a Moebius map on #&#91;#-1,+1#&#93;#. *)
 
 Definition diameter mu (H_refining:Is_refining_M mu) : Q := Qabs (as_Moebius_Q mu Qone - as_Moebius_Q mu (-Qone)).
 
@@ -529,6 +557,7 @@ Qed.
 Definition min_one_is_in_base_interval_Q := conj (Qle_reflexive (-Qone)) (Qlt_le_weak (-Qone) Qone Qopp_Qone_Qlt_Qone).
 Definition one_is_in_base_interval_Q :=conj (Qlt_le_weak (- Qone) Qone Qopp_Qone_Qlt_Qone) (Qle_reflexive Qone).
 
+(** #<em>#Redundancy#</em># of the digit set. *)
 Definition redundancy := 1/3.
 
 Lemma redundancy_pos:Zero < redundancy.
@@ -536,6 +565,7 @@ Proof.
  auto.
 Qed.
 
+(** #<em>#Diameter#</em># of a tensor on #&#91;#-1,+1#&#93;# #&#215;# #&#91;#-1,+1#&#93;#. *)
 (* I_1=[x_1,x_2], I_2=[y_1,y_2] *)
 Definition diameter2 xi (H_xi: Is_refining_T xi) x1 y1 x2 y2 (Hx1:-Qone<=x1/\x1<=Qone) (Hy1:-Qone<=y1/\y1<=Qone)
    (Hx2:-Qone<=x2/\x2<=Qone) (Hy2:-Qone<=y2/\y2<=Qone) :=
@@ -551,11 +581,15 @@ Definition eta_discriminant (M:Matrix) :=
   let (c,d) := (fst (snd M), snd (snd M)) in
 	  ((0/1,1/1),(c,d)).
 
+(** This predicate states that the denominator of a Moebius map does
+not vanish in #&#91;#-1,+1#&#93;#. *)
 Definition denom_nonvanishing_M (mu:Matrix) r:= 
   let (a,b) := (fst (fst mu), snd (fst mu)) in
     let (c,d) := (fst (snd mu), snd (snd mu)) in
       (c*r+d<>0)%R.
 
+(** The denominator of a tensor does not vanish in #&#91;#-1,+1#&#93;#
+#&#215;# #&#91;#-1,+1#&#93;#. *)
 Definition denom_nonvanishing_T (xi:Tensor) r1 r2:= 
   let (a,b) := (fst (fst (fst xi)), snd (fst (fst xi))) in
    let (c,d) := (fst (snd (fst xi)), snd (snd (fst xi))) in
@@ -563,11 +597,13 @@ Definition denom_nonvanishing_T (xi:Tensor) r1 r2:=
      let (g,h) := (fst (snd (snd xi)), snd (snd (snd xi))) in
       (e*r1*r2+f*r1+g*r2+h<>0)%R.
 
+(** Moebius map applied to a real number.*)
 Definition as_Moebius (M:Matrix) := 
   let (a,b) := (fst (fst M), snd (fst M)) in 
     let (c,d) := (fst (snd M), snd (snd M)) in
       fun (x:R) => ((a*x+b)/(c*x+d))%R.
 
+(** Tensor applied to two real number.*)
 Definition as_Tensor (T:Tensor) := 
   let (a,b) := (fst (fst (fst T)), snd (fst (fst T))) in
    let (c,d) := (fst (snd (fst T)), snd (snd (fst T))) in
@@ -575,6 +611,7 @@ Definition as_Tensor (T:Tensor) :=
      let (g,h) := (fst (snd (snd T)), snd (snd (snd T))) in
       fun x y=> ((a*x*y+b*x+c*y+d)/(e*x*y+f*x+g*y+h))%R.
 
+(** Tensor #<em>#partially#</em># applied to a rational number.*)
 Definition Tensor_Moebius_Q_l (xi:Tensor) x := 
   let (a,b) := (fst (fst (fst xi)), snd (fst (fst xi))) in
    let (c,d) := (fst (snd (fst xi)), snd (snd (fst xi))) in
@@ -589,6 +626,7 @@ Definition Tensor_Moebius_Q_r (xi:Tensor) y :=
      let (g,h) := (fst (snd (snd xi)), snd (snd (snd xi))) in
         ((a*y+b,c*y+d),(e*y+f,g*y+h)).
 
+(** Tensor #<em>#partially#</em># applied to a rational number resulting a Moebius map.*)
 Definition as_Tensor_Moebius_Q_l xi x:= as_Moebius_Q (Tensor_Moebius_Q_l xi x).
 
 Definition as_Tensor_Moebius_Q_r xi x:= as_Moebius_Q (Tensor_Moebius_Q_r xi x).

@@ -21,14 +21,14 @@ This includes:
 USAGE
 
  The files should be compiled using Coq version 8.1 or higher. They
- also need the rational numbers of QArith-Stern-Brocot package which
+ also need the rational numbers of QArithSternBrocot package which
  could be downloaded from:
 
-  http://coq.inria.fr/contribs/QArith-Stern-Brocot.tar.gz
+  http://coq.inria.fr/contribs/QArithSternBrocot.tar.gz
  
- or from svn archive in the subdirectory Nijmegen/QArith.
+ or from svn archive in the subdirectory Nijmegen/QArithSternBrocot.
 
- First compile the QArith_Stern_Brocot package and make sure it is in
+ First compile the QArithSternBrocot package and make sure it is in
  the load path for your coqc command.
 
  Then you can compile this contribution using the provided
@@ -44,12 +44,12 @@ REFERENCES
     Corecursion', In N. Ghani and J. Power (Eds.), Proceedings of 8th
     Workshop on Coalgebraic Methods in Computer Science (CMCS 2006),
     Vienna, Austria 25-27 March 2006, ENTCS 164.1.
-    http://www.cs.ru.nl/~milad/publications/TYPES06.html
+    http://www.cs.ru.nl/~milad/publications/CMCS06.html
 
 [2] Milad Niqui; `Coinductive Correctness of Homographic and Quadratic
     Algorithms for Exact Real Numbers', To appear in the LNCS
     Proceedings of TYPES 2006 Workshop.
-    http://www.cs.ru.nl/~milad/publications/CMCS06.html
+    http://www.cs.ru.nl/~milad/publications/TYPES06.html
 
 [3] Milad Niqui; PhD Thesis; Formalising Exact Arithmetic:
     Representations, Algorithms and Proofs, Radboud University

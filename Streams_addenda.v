@@ -3,15 +3,19 @@
 (* This file is distributed under the terms of the                      *)
 (* GNU Lesser General Public License Version 2.1                        *)
 (* A copy of the license can be found at                                *)
-(*                  <http://www.gnu.org/licenses/gpl.txt>               *)
+(*                  <http://www.gnu.org/licenses>                       *)
 (************************************************************************)
 
 Require Export List.
 Require Export Streams.
 Require Omega.
 
-Notation " A (=) B " := (EqSt A B) (at level 70).
+(** This file includes some random facts about streams (and lists)
+which at the moment of writing this are not found in the standard
+library. Some of the lemmas here are not used in the present
+development but are rather useful.  *)
 
+Notation " A (=) B " := (EqSt A B) (at level 70).
 
 (* tactic for proving cofixpoint equations *)
 
@@ -46,7 +50,7 @@ Section drop.
 
 (** 
 
-We define the functin [drop] that the first [n] element of a stream:
+We define the functin that drops the first [n] element of a stream:
 
 <<
 drop n [] = []
@@ -101,6 +105,9 @@ End drop.
 
 Section take.
 
+(** [take] outputs a list containing an initial segment of the input
+stream. *)
+
 Fixpoint take (n:nat) (xs: Stream A) {struct n} : List.list A :=
   match n with 
   | 0 => List.nil
@@ -148,7 +155,7 @@ End map_properties.
 
 Section odd_and_even.
 
-(** odd: takes the elemnts that are in the odd place *)
+(** [odd] takes the elements that are in the odd place in a stream. *)
 CoFixpoint  odd  (s:Str) : Str:= (hd s)|:|(odd (tl (tl s))).
     
 Lemma  odd_unfolded:forall x y xs, (odd (x|:|(y|:|xs)))=(x|:|(odd xs)).
@@ -250,7 +257,7 @@ End combine.
 
 Section enumFrom.
 
-(** stream of natural numbers *)
+(** Stream of consecutive natural numbers: *)
 CoFixpoint enumFrom:nat->(Stream nat):=fun n:nat => (Cons n (enumFrom (S n))).
 
 Lemma enumFrom_unfolded:forall (n:nat), (enumFrom n)= (Cons n (enumFrom (S n))). 
