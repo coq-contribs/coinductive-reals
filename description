@@ -11,3 +11,4 @@ Url: http://www.cs.ru.nl/~milad/ETrees/coinductive-field/
 License: LGPL
 Keywords: real coinductive corecursion homographic quadratic exact arithmetic
 Require: QArithSternBrocot
+Category: Mathematics/Arithmetic and Number Theory/Real numbers
