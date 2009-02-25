@@ -60,7 +60,7 @@ Proof.
   simpl; rewrite product_idM_identity_right; trivial.
   (* S n *)
   rewrite Streams_addenda.take_S_n;
-  rewrite (Streams_addenda.fold_right_cons _ _ product);
+  rewrite (Streams_addenda.fold_right_cons product);
   rewrite product_associative;
   rewrite product_init_folds;
   rewrite (IHn (product mu (Streams.hd alpha)) (tl alpha)); trivial.

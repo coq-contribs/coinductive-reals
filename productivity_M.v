@@ -153,8 +153,8 @@ Proof.
   (* S n *)
   rewrite ub_S_n.
   rewrite Streams_addenda.take_S_n;
-  rewrite (Streams_addenda.fold_right_cons _ _ product).
-  unfold map_reals. rewrite Streams_addenda.map_unfolded.
+  rewrite (Streams_addenda.fold_right_cons product).
+  unfold map_reals. rewrite Streams_addenda.map_spelled.
   unfold hd, tl. 
   fold  map_reals. 
   rewrite <- (IHn alpha).
@@ -175,8 +175,8 @@ Lemma product_init_pure_lb:forall alpha n, as_Moebius_Q (product_init_pure alpha
   (* S n *)
   rewrite lb_S_n.
   rewrite Streams_addenda.take_S_n;
-  rewrite (Streams_addenda.fold_right_cons _ _ product).
-  unfold map_reals. rewrite Streams_addenda.map_unfolded.
+  rewrite (Streams_addenda.fold_right_cons product).
+  unfold map_reals. rewrite Streams_addenda.map_spelled.
   unfold hd, tl. 
   fold  map_reals. 
   rewrite <- (IHn alpha).

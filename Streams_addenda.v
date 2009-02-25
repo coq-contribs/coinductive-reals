@@ -16,6 +16,8 @@ library. Some of the lemmas here are not used in the present
 development but are rather useful.  *)
 
 Notation " A (=) B " := (EqSt A B) (at level 70).
+Notation " x |:| xs " := (Cons x xs) (at level 60, right associativity).
+
 
 (* tactic for proving cofixpoint equations *)
 
@@ -30,27 +32,44 @@ Ltac decomp_coind := intros; let L := LHS in rewrite (Streams.unfold_Stream L); 
 
 Set Implicit Arguments. 
 
-Section Additionial_Functions.
+Section Stream_functions_with_one_implicit_argument.
 
-Variable A:Set.
+Variable A:Type.
 
 
 Notation Local Str := (Stream A).
-
-Notation " x |:| xs " := (Cons x xs) (at level 60, right associativity).
-
 
 Lemma hd_tl_id:forall xs:Str, xs = hd xs |:| tl xs.
 Proof.
  intros [x xs]; trivial.
 Defined.
 
+Section replicate.
+
+CoFixpoint replicate (a:A) := Cons a (replicate a).
+
+Lemma replicate_spelled (a:A) : replicate a = Cons a (replicate a).
+Proof.
+ intros a; rewrite (Streams.unfold_Stream (replicate a)) at 1; trivial.
+Qed.
+
+End replicate.
+
+Section Str_nth_properties.
+
+Lemma Str_nth_S:forall n x (xs:Stream A), Str_nth (S n) (x|:|xs) = Str_nth n xs. 
+Proof.
+ intros n x xs.
+ unfold Str_nth; reflexivity.
+Defined. 
+
+End Str_nth_properties.
 
 Section drop.
 
 (** 
 
-We define the functin that drops the first [n] element of a stream:
+We define the function that drops the first [n] elements of a stream:
 
 <<
 drop n [] = []
@@ -88,7 +107,6 @@ Proof.
  ].
 Defined.
 
-
 Lemma drop_plus_tl:forall xs m n, drop m (drop n xs)=drop (m+n) xs.
 Proof.
  intros xs m n; generalize xs; clear xs.
@@ -100,6 +118,25 @@ Proof.
    rewrite <- (IHn (tl xs))
  ]; trivial.
 Defined.
+
+Lemma drop_Str_nth:forall n (xs:Stream A), hd (drop n xs) = Str_nth n xs.
+Proof.
+ intros n; induction n; intros [x xs];  trivial.
+ rewrite drop_1; rewrite Str_nth_S; trivial.
+Qed.
+
+Lemma drop_S_tl:forall (xs:Stream A) n, drop (S n) xs = drop n (tl xs).
+Proof.
+ intros [x xs] n; trivial.
+Qed.
+
+Lemma drop_tl_S: forall n (xs:Stream A), drop (S n) xs = tl (drop n xs).
+Proof.
+ intros n; induction n; intros [x xs]; trivial.
+ transitivity (tl (drop n xs)); trivial.
+ rewrite drop_S_tl; trivial.
+Qed.
+
 
 End drop.
 
@@ -122,80 +159,49 @@ Defined.
 
 End take.
 
-Section fold_left.
+Section even_and_odd.
 
-Variable B:Set.
-
-Lemma fold_left_cons : forall (f:A->B->A) l b a0, fold_left f (b::l) a0 = fold_left f l (f a0 b).
-Proof.
- intros; reflexivity.
-Defined.
-
-End fold_left.
-
-Section Str_nth_properties.
-
-Lemma Str_nth_S:forall n x (xs:Stream A), Str_nth (S n) (x|:|xs) = Str_nth n xs. 
-Proof.
- intros n x xs.
- unfold Str_nth; reflexivity.
-Defined. 
-
-End Str_nth_properties.
-
-Section map_properties.
-Variable B:Set.
-
-Lemma map_unfolded:forall (f:A->B) xs, Streams.map f xs = (f (hd xs)) |:| (Streams.map f (tl xs)).
-Proof.
- decomp_coind.
-Defined.
-
-End map_properties.
-
-Section odd_and_even.
-
-(** [odd] takes the elements that are in the odd place in a stream. *)
-CoFixpoint  odd  (s:Str) : Str:= (hd s)|:|(odd (tl (tl s))).
+(** [even] takes the elements that are in the even place in a stream. *)
+CoFixpoint  even  (s:Str) : Str:= (hd s)|:|(even (tl (tl s))).
     
-Lemma  odd_unfolded:forall x y xs, (odd (x|:|(y|:|xs)))=(x|:|(odd xs)).
+Lemma  even_spelled:forall x y xs, (even (x|:|(y|:|xs)))=(x|:|(even xs)).
 Proof.
  decomp_coind.
 Defined.
 
-Lemma odd_unfolded_2:forall (s:Str), (odd s)=(Cons (hd s) (odd (tl (tl s)))).
+Lemma even_spelled_2:forall (s:Str), (even s)=(Cons (hd s) (even (tl (tl s)))).
 Proof.
  decomp_coind.
 Defined.
 
-CoFixpoint even (s:Str) : Str:= hd (tl s) |:| (even (tl (tl s))).
+CoFixpoint odd (s:Str) : Str:= hd (tl s) |:| (odd (tl (tl s))).
 
-Lemma even_unfolded:forall x y xs, (even (x|:|(y|:|xs)))=(y|:|(even xs)).
+Lemma odd_spelled:forall x y xs, (odd (x|:|(y|:|xs)))=(y|:|(odd xs)).
 Proof.
  decomp_coind.
 Defined.
 
-Lemma even_odd_tl:forall s, even s (=) (odd (tl s)).
+Lemma odd_even_tl:forall s, odd s (=) (even (tl s)).
 Proof.
  cofix.
  intros [x [y xs]].
- rewrite even_unfolded. 
+ rewrite odd_spelled. 
  simpl.
- rewrite odd_unfolded_2. 
+ rewrite even_spelled_2. 
  constructor.
  reflexivity.
  simpl.
- apply even_odd_tl.
+ apply odd_even_tl.
 Defined.
 
-Lemma odd_eventh:forall xs n, Str_nth n (odd xs) = Str_nth (2*n) xs.
+Lemma even_oddth:forall xs n, Str_nth n (even xs) = Str_nth (2*n) xs.
 Proof.
  intros xs n.
  generalize xs.
  clear xs.
  induction n.
  intros xs.
- rewrite odd_unfolded_2.
+ rewrite even_spelled_2.
  unfold Str_nth.
  reflexivity.
 
@@ -209,7 +215,7 @@ Proof.
  apply (IHn (tl (tl xs))).
 Defined.
 
-End odd_and_even.
+End even_and_odd.
 
 Section combine.
 
@@ -217,50 +223,71 @@ Section combine.
 
 CoFixpoint combine (x:Str) (y:Str) : Str :=(Cons (hd x) (combine y (tl x))).
 
-Lemma combine_unfolded:forall s1 s2, (combine s1 s2)=(Cons (hd s1) (combine s2 (tl s1))).
+Lemma combine_spelled:forall s1 s2, (combine s1 s2)=(Cons (hd s1) (combine s2 (tl s1))).
 Proof.
  decomp_coind.
 Defined.
 
-Lemma combine_unfolded_2: forall x (xs ys:Str), (combine (x|:|xs) ys)=(x|:|(combine ys xs)).
+Lemma combine_spelled_2: forall x (xs ys:Str), (combine (x|:|xs) ys)=(x|:|(combine ys xs)).
 Proof.
  decomp_coind.
 Defined.
 
-Lemma combine_unfolded_3: forall x y (xs ys:Str), combine (x|:|xs) (y|:|ys) = x|:| y |:| (combine xs ys).
+Lemma combine_spelled_3: forall x y (xs ys:Str), combine (x|:|xs) (y|:|ys) = x|:| y |:| (combine xs ys).
 Proof.
  intros x y xs ys.
- rewrite combine_unfolded_2.
+ rewrite combine_spelled_2.
  apply (@f_equal2 A Str Str (@Cons A)); trivial.
- apply combine_unfolded_2.
+ apply combine_spelled_2.
 Defined.
 
 
-Lemma combine_even_odd_is_id:forall (s:Str), (combine (odd s) (even s))(=)s.
+Lemma combine_odd_even_is_id:forall (s:Str), (combine (even s) (odd s))(=)s.
 Proof.
  cofix.
  intros [x [y xs]].
- rewrite odd_unfolded.
- rewrite combine_unfolded_2.
- rewrite even_unfolded.
+ rewrite even_spelled.
+ rewrite combine_spelled_2.
+ rewrite odd_spelled.
  constructor.
  reflexivity.
- rewrite combine_unfolded.
+ rewrite combine_spelled.
  constructor.
  reflexivity.
  simpl.
- apply combine_even_odd_is_id.
+ apply combine_odd_even_is_id.
 Defined.
 
-End combine.
+Lemma combine_odd: forall (xs ys zs: Stream A), combine xs ys (=) zs -> ys (=) odd zs.
+Proof.
+ cofix.
+ intros [x0 xs] [y0 ys] (z0 & z1 & zs) H_bisim;
+ rewrite combine_spelled_3 in H_bisim;
+ inversion H_bisim;
+ constructor.
+  inversion H0; trivial.
+  rewrite odd_spelled; apply combine_odd with xs; inversion H0; assumption.
+Qed.
+  
+Lemma combine_even: forall (xs ys zs: Stream A), combine xs ys (=) zs -> xs (=) even zs.
+Proof.
+ cofix.
+ intros [x0 xs] [y0 ys] (z0 & z1 & zs) H_bisim;
+ rewrite combine_spelled_3 in H_bisim;
+ inversion H_bisim;
+ constructor.
+  inversion H0; trivial.
+  rewrite even_spelled; apply combine_even with ys; inversion H0; assumption.
+Qed.
 
+End combine.
 
 Section enumFrom.
 
 (** Stream of consecutive natural numbers: *)
 CoFixpoint enumFrom:nat->(Stream nat):=fun n:nat => (Cons n (enumFrom (S n))).
 
-Lemma enumFrom_unfolded:forall (n:nat), (enumFrom n)= (Cons n (enumFrom (S n))). 
+Lemma enumFrom_spelled:forall (n:nat), (enumFrom n)= (Cons n (enumFrom (S n))). 
 Proof.
  decomp_coind.
 Defined.
@@ -269,51 +296,242 @@ Definition nats := enumFrom 0.
 
 End enumFrom.
 
-End Additionial_Functions.
+Section tails.
 
-Unset Implicit Arguments.
+CoFixpoint tails (xs:Stream A) := Cons (tl xs) (tails (tl xs)).
 
-(* Various lemma's with explicit arguments *)
-
-Lemma rev_cons:forall (A : Type) (l:list A) a, rev (a :: l)=  rev l ++ (a :: nil).
+Lemma tails_spelled (xs:Stream A) : tails xs = Cons (tl xs) (tails (tl xs)).
 Proof.
- intros A [|l] a; reflexivity.
+ decomp_coind.
 Qed.
 
-Lemma rev_take_S_Str_nth:forall n (A :Set) (xs:Stream A), rev (take (S n) xs) =  (Str_nth n xs) :: (rev (take n xs)).
+End tails.
+
+End Stream_functions_with_one_implicit_argument.
+
+Section Stream_functions_with_two_implicit_argument.
+
+Variable A B:Type.
+
+Section map_properties.
+
+Lemma map_spelled:forall (f:A->B) xs, Streams.map f xs = (f (hd xs)) |:| (Streams.map f (tl xs)).
 Proof.
- intros n; induction n; intros A [x xs];
+ decomp_coind.
+Defined.
+
+Lemma Str_nth_map_pointwise:forall n xs (f:A->B), f (Str_nth n xs) = Str_nth n (Streams.map f xs).
+Proof.
+ intros n; induction n; intros [x xs] f.
+  unfold Str_nth, Str_nth_tl; rewrite map_spelled; trivial. 
+  rewrite map_spelled; unfold hd,tl; repeat rewrite Str_nth_S; trivial.
+Qed.
+
+End map_properties.
+
+End Stream_functions_with_two_implicit_argument.
+
+(* ****************************** List functions ****************************** *)
+
+Section List_functions_with_one_implicit_argument.
+
+Variable A:Type.
+
+Section rev_properties.
+
+Lemma rev_cons:forall (l:list A) a, rev (a :: l)=  rev l ++ (a :: nil).
+Proof.
+ intros [|l] a; reflexivity.
+Qed.
+
+Lemma rev_take_S_Str_nth:forall n (xs:Stream A), rev (take (S n) xs) =  (Str_nth n xs) :: (rev (take n xs)).
+Proof.
+ intros n; induction n; intros [x xs];
   [ simpl; unfold Str_nth, Str_nth_tl, hd; reflexivity
   | rewrite take_S_n; unfold hd,tl; rewrite rev_cons; rewrite IHn; trivial].
 Qed.
 
-Lemma fold_right_cons : forall (A B:Type) (f:B->A->A) (l:list B) b a0, fold_right f a0 (b::l) = f b (fold_right f a0 l).
+End rev_properties.
+
+Section init.
+
+Section length_properties.
+
+Lemma length_S:forall x xs, length (x::xs)=S (@length A xs).
+Proof.
+ trivial.
+Qed.
+
+Lemma length_O_nil:forall xs, @length A xs=O -> xs = nil.
+Proof.
+ intros [|x xs] H; trivial; discriminate.
+Qed.
+
+End length_properties.
+
+Definition init := removelast.
+
+Lemma init_cons_cons:forall x y xs, init (x::y::xs)=x::(@init A (y::xs)).
+Proof.
+ trivial.
+Qed.
+
+End init.
+
+Section safer_nth.
+
+Definition safer_nth (xs : list A) :=
+match xs as l return (forall n : nat, n < length l -> A) with
+| nil => fun n Hn => False_rect A (False_ind False (Lt.lt_n_O n Hn))
+| x :: xs0 => fun n Hn => let f:=
+    (fix safer_nth'' (xs1:list A) (n0:nat) {struct n0}:n0<length (x::xs1)->A :=
+       match n0 as n1 return (n1 < length (x :: xs1) -> A) with
+       | 0 => fun _ => x
+       | S n1 => fun Hn0 => safer_nth'' xs1 n1 (Lt.lt_trans n1 (S n1) (length (x :: xs1)) (Lt.lt_n_Sn n1) Hn0)
+       end) in 
+    f xs0 n Hn
+end.
+
+End safer_nth.
+
+Section safe_last.
+
+Fixpoint safe_last (l:list A) : option A :=
+         match l with
+         | nil => None
+         | x0 :: nil => Some x0
+         | x0 :: (x1 :: xs) as l0 => safe_last l0
+         end.
+
+End safe_last.
+
+Section List_functions_for_decidable_equality.
+
+Hypothesis eq_dec:forall (x y:A),{x=y}+{~x=y}.
+
+(** We define [nub] that removes duplicate elements from the list,
+    keeping only the first occurence of each element.  *)
+
+Fixpoint nub (l:list A) : list A := 
+ match l with
+ | nil => nil
+ | x :: xs => if In_dec eq_dec x xs then nub xs else x :: nub xs
+    end. 
+
+Fixpoint nub_append (l ys : list A) {struct l} : list A :=
+  match l with
+  | nil => ys
+  | x :: xs => if In_dec eq_dec x ys then nub_append xs ys else x :: nub_append xs ys
+  end.
+
+Lemma nub_In_cons:forall x xs, In x xs -> nub (x :: xs)=nub xs.
+Proof.
+ intros x [|y ys]; simpl; [intros H_; contradiction H_|];
+ intros [H1|H1].
+  destruct (eq_dec y x) as [H2|H2];[destruct (In_dec eq_dec y ys) as [H3|H3]; trivial|contradiction H2].
+  destruct (eq_dec y x) as [H2|H2];[destruct (In_dec eq_dec y ys) as [H3|H3]; trivial|];
+  destruct (In_dec eq_dec x ys) as [H3|H3]; trivial; contradiction H3.
+Qed.    
+
+
+Lemma nub_notIn_cons:forall x xs, ~In x xs -> nub (x :: xs)=x::nub xs.
+Proof.
+ intros x [|y ys];simpl. 
+  intros _; trivial.
+  intros H1.
+  destruct (eq_dec y x) as [H2|H2];[contradiction H1;left;assumption|destruct (In_dec eq_dec x ys) as [H3|H3]]; trivial.
+  contradiction H1; right; assumption.
+Qed.
+
+Lemma nub_In: forall (l:list A) x, In x (nub l) -> In x l.
+Proof.
+ intros l; induction l as [|y ys]; intros x H_nub.
+  contradiction H_nub. 
+  destruct (In_dec eq_dec y ys) as [H|H].
+   apply in_cons; apply IHys; rewrite <- (nub_In_cons y ys H); assumption.
+   rewrite (nub_notIn_cons y ys H) in H_nub;
+   destruct (in_inv H_nub) as [H1|H1].
+    subst y; apply in_eq. 
+    apply in_cons; apply IHys; assumption.
+Qed.
+
+Lemma incl_dec_inf:forall xs ys, {incl xs ys} + {~(@incl A xs ys)}.
+Proof.
+ intros xs; induction xs as [|x xs IH]. 
+  left; red; simpl; intros a0 H_; contradiction H_.
+  intros ys; destruct (IH ys) as [H_ind|H_ind].
+   destruct (In_dec eq_dec x ys) as [H_in_dec|H_in_dec].
+    left; apply incl_cons; assumption.
+    right; intros H_; apply (H_in_dec); apply H_; apply in_eq. 
+   right; intros H_; apply H_ind; red; intros a Ha; apply (H_ a); apply in_cons; assumption.
+Qed.
+
+Lemma in_inv_inf: forall (a b : A) (l : list A), In b (a :: l) -> {a = b}+{In b l}.
+Proof.
+ intros a b [|x xs] H_in.
+  left; destruct (in_inv H_in); trivial; contradiction H.
+  destruct (eq_dec a b) as [H1|H2].
+   left; trivial.
+   right; destruct H_in; trivial; contradiction H2.
+Qed.
+
+End List_functions_for_decidable_equality.
+
+
+
+End List_functions_with_one_implicit_argument.
+
+Section List_functions_with_two_implicit_argument.
+
+
+Variable A B:Type.
+
+
+Section fold_right_properties.
+
+Lemma fold_right_cons : forall (f:B->A->A) (l:list B) b a0, fold_right f a0 (b::l) = f b (fold_right f a0 l).
 Proof.
  intros; reflexivity.
 Defined.
 
-Lemma Str_nth_map_pointwise:forall (A B:Set) n xs (f:A->B), f (Str_nth n xs) = Str_nth n (Streams.map f xs).
-Proof.
- intros A B n; induction n; intros [x xs] f.
-  unfold Str_nth, Str_nth_tl; rewrite map_unfolded; trivial.
-  rewrite map_unfolded; unfold hd,tl; repeat rewrite Str_nth_S; trivial. 
-Qed.
+End fold_right_properties.
 
-Lemma drop_Str_nth:forall (A:Set) n (xs:Stream A), hd (drop n xs) = Str_nth n xs.
-Proof.
- intros A n; induction n; intros [x xs];  trivial.
- rewrite drop_1; rewrite Str_nth_S; trivial.
-Qed.
+Section fold_left.
 
-Lemma drop_S_tl:forall (A:Set) (xs:Stream A) n, drop (S n) xs = drop n (tl xs).
+Lemma fold_left_cons : forall (f:A->B->A) l b a0, fold_left f (b::l) a0 = fold_left f l (f a0 b).
 Proof.
- intros A [x xs] n; trivial.
-Qed.
+ intros; reflexivity.
+Defined.
 
-Lemma drop_tl_S: forall (A:Set) n (xs:Stream A), drop (S n) xs = tl (drop n xs).
-Proof.
- intros A n; induction n; intros [x xs]; trivial.
- transitivity (tl (drop n xs)); trivial.
- rewrite drop_S_tl; trivial.
-Qed.
+End fold_left.
 
+Section zipWith.
+
+Fixpoint zipWith (C:Type) (z:A->B->C) (la:list A) (lb:list B) {struct la}: list C:=
+         match la, lb  with
+         | x :: xs, y::ys  => z x y :: zipWith z xs ys
+         | _,_ => nil
+         end.
+
+Implicit Arguments zipWith [C].
+
+Definition zip:=zipWith (@pair A B).
+
+End zipWith.
+
+Section concatMap.
+
+Definition concatMap (xs:list A) (f:A->list B):=flat_map f xs.
+
+End concatMap.
+
+End List_functions_with_two_implicit_argument.
+
+Section more_list_functions.
+
+(* This is called prod in the standard library *)
+Definition pairs (A B:Type) (xs:list A) (ys:list B) := concatMap xs (fun x=> concatMap ys (fun y=> (x,y)::nil)).
+
+End more_list_functions.
+
+Unset Implicit Arguments.

@@ -67,7 +67,7 @@ Proof.
   simpl; rewrite right_left_product_idM_identity_right; trivial.
   (* S n *)
   repeat rewrite Streams_addenda.take_S_n;
-  repeat rewrite (Streams_addenda.fold_right_cons _ _ product);
+  repeat rewrite (Streams_addenda.fold_right_cons product);
   rewrite <- product_left_right_product_associative;
   rewrite product_init_zip_folds;
   rewrite (IHn (right_product (left_product xi (Streams.hd alpha)) (Streams.hd beta)) (tl alpha) (tl beta)); trivial.

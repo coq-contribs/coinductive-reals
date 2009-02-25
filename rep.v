@@ -173,14 +173,14 @@ Proof.
  rewrite rev_take_S_Str_nth; rewrite fold_right_cons. 
   replace (fold_right product idM (rev (take n (Streams.map inv_digit alpha)))) with (product_init_rev alpha n); trivial.
   unfold map_reals; rewrite <- Str_nth_map_pointwise.
-  generalize (drop_Str_nth _ n alpha).
+  generalize (drop_Str_nth n alpha).
   destruct (Str_nth n alpha); intros H_drop_n; 
   destruct (IHn alpha _ _ Hr H_drop_n) as [[Hind1 Hind2] [Hind_rep H_denom]].
 
    (* L *)
    rewrite (hd_tl_id (drop n alpha)) in Hind_rep;
    rewrite H_drop_n in Hind_rep;
-   rewrite <- (drop_tl_S _ n alpha) in Hind_rep;
+   rewrite <- (drop_tl_S n alpha) in Hind_rep;
    generalize (rep_L_inv _ _ Hind_rep);
    intros H_rep_Sn.
 
@@ -199,7 +199,7 @@ Proof.
    (* R *)
    rewrite (hd_tl_id (drop n alpha)) in Hind_rep;
    rewrite H_drop_n in Hind_rep;
-   rewrite <- (drop_tl_S _ n alpha) in Hind_rep;
+   rewrite <- (drop_tl_S n alpha) in Hind_rep;
    generalize (rep_R_inv _ _ Hind_rep);
    intros H_rep_Sn.
 
@@ -218,7 +218,7 @@ Proof.
    (* M *)
    rewrite (hd_tl_id (drop n alpha)) in Hind_rep;
    rewrite H_drop_n in Hind_rep;
-   rewrite <- (drop_tl_S _ n alpha) in Hind_rep;
+   rewrite <- (drop_tl_S n alpha) in Hind_rep;
    generalize (rep_M_inv _ _ Hind_rep);
    intros H_rep_Sn.
 

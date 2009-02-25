@@ -818,10 +818,10 @@ Proof.
   simpl; apply Is_refining_M_idM.
   (* S n *)
   rewrite Streams_addenda.take_S_n;
-  rewrite (Streams_addenda.fold_right_cons _ _ product).
+  rewrite (Streams_addenda.fold_right_cons product).
   apply Is_refining_M_product.
    simpl; destruct d; [apply Is_refining_M_L|apply Is_refining_M_R|apply Is_refining_M_M].
-   unfold map_reals; rewrite Streams_addenda.map_unfolded; simpl; apply (IHn alpha).
+   unfold map_reals; rewrite Streams_addenda.map_spelled; simpl; apply (IHn alpha).
 Qed.
 
 Close Scope Q_scope.
