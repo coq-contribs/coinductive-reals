@@ -7,7 +7,7 @@ Institution: Radboud University Nijmegen
 Address: http://www.cs.ru.nl
 Date: 24 April 2007
 Description: See the README file
-URL: http://www.cs.ru.nl/~milad/ETrees/coinductive-field/
+Url: http://www.cs.ru.nl/~milad/ETrees/coinductive-field/
 License: LGPL
 Keywords: real numbers, co-inductive types, co-recursion, exact arithmetic
 Require: QArithSternBrocot
