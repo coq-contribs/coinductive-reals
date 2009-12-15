@@ -32,7 +32,7 @@ Proof.
 Qed.
 
 Lemma product_init_folds:forall mu alpha n,
-               (product_init mu alpha (S n) = (product_init (product mu (Streams.hd alpha)) (tl alpha) n)).
+               (product_init mu alpha (S n) = (product_init (product mu (Streams.hd alpha)) (Streams.tl alpha) n)).
 Proof.
  intros mu alpha n; generalize mu alpha; clear mu alpha; induction n; intros mu alpha; simpl; trivial;
  rewrite <- IHn; rewrite product_init_S; apply (f_equal2 product); trivial.
@@ -63,7 +63,7 @@ Proof.
   rewrite (Streams_addenda.fold_right_cons product);
   rewrite product_associative;
   rewrite product_init_folds;
-  rewrite (IHn (product mu (Streams.hd alpha)) (tl alpha)); trivial.
+  rewrite (IHn (product mu (Streams.hd alpha)) (Streams.tl alpha)); trivial.
 Qed.
 
 Lemma Is_refining_M_product_init: forall mu alpha n, Is_refining_M mu -> Is_refining_M (product_init mu alpha n).
@@ -84,7 +84,7 @@ Fixpoint depth_h (mu:Matrix) (alpha:Reals) (H1:emits_h mu alpha) {struct H1}: na
            match Incl_M_dec_D mu MM with
            | left _ => 0
            | right H_emission_M =>
-               S(depth_h (product mu (Streams.hd alpha)) (tl alpha)
+               S(depth_h (product mu (Streams.hd alpha)) (Streams.tl alpha)
                  (emits_h_absorbs_inv mu alpha H_emission_L H_emission_R
                     H_emission_M H1))
            end
@@ -159,7 +159,7 @@ Proof.
 Defined.
 
 Lemma depth_h_absorbs:forall (mu:Matrix) (alpha:Reals) (t: emits_h mu alpha),~(Incl_M mu LL)->~(Incl_M mu RR)->~(Incl_M mu MM)->
-  forall t', depth_h mu alpha t = S(depth_h (product mu (Streams.hd alpha)) (tl alpha) t').
+  forall t', depth_h mu alpha t = S(depth_h (product mu (Streams.hd alpha)) (Streams.tl alpha) t').
 Proof.
  intros mu alpha t t_l t_r t_m t'.
  transitivity (depth_h mu alpha (emits_h_absorbs _ _ t')).

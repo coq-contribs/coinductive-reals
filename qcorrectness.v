@@ -35,7 +35,7 @@ Qed.
 
 Lemma product_init_zip_folds:forall xi alpha beta n, 
    product_init_zip xi alpha beta (S n) =
-       product_init_zip (right_product (left_product xi (Streams.hd alpha)) (Streams.hd beta)) (tl alpha) (tl beta) n.
+       product_init_zip (right_product (left_product xi (Streams.hd alpha)) (Streams.hd beta)) (Streams.tl alpha) (Streams.tl beta) n.
 Proof.
  intros xi alpha beta n; generalize xi alpha beta; clear xi alpha beta; induction n; intros xi alpha beta; simpl; trivial;
  rewrite <- IHn; rewrite product_init_zip_S; apply (f_equal2 right_product); trivial.
@@ -70,7 +70,7 @@ Proof.
   repeat rewrite (Streams_addenda.fold_right_cons product);
   rewrite <- product_left_right_product_associative;
   rewrite product_init_zip_folds;
-  rewrite (IHn (right_product (left_product xi (Streams.hd alpha)) (Streams.hd beta)) (tl alpha) (tl beta)); trivial.
+  rewrite (IHn (right_product (left_product xi (Streams.hd alpha)) (Streams.hd beta)) (Streams.tl alpha) (Streams.tl beta)); trivial.
 Qed.
 
 
@@ -86,7 +86,7 @@ Fixpoint depth_q (xi:Tensor) (alpha beta:Reals) (H1:emits_q xi alpha beta) {stru
            match Incl_T_dec_D xi MM with
            | left _ => 0
            | right H_emission_M =>
-               S(depth_q (right_product (left_product xi (Streams.hd alpha)) (Streams.hd beta)) (tl alpha) (tl beta)
+               S(depth_q (right_product (left_product xi (Streams.hd alpha)) (Streams.hd beta)) (Streams.tl alpha) (Streams.tl beta)
                  (emits_q_absorbs_inv xi alpha beta H_emission_L H_emission_R H_emission_M H1))
            end
        end
@@ -161,7 +161,7 @@ Proof.
 Defined.
 
 Lemma depth_q_absorbs:forall (xi:Tensor) (alpha beta:Reals) (t: emits_q xi alpha beta),~(Incl_T xi LL)->~(Incl_T xi RR)->~(Incl_T xi MM)->
-  forall t', depth_q xi alpha beta t = S(depth_q (right_product (left_product xi (Streams.hd alpha)) (Streams.hd beta)) (tl alpha) (tl beta) t').
+  forall t', depth_q xi alpha beta t = S(depth_q (right_product (left_product xi (Streams.hd alpha)) (Streams.hd beta)) (Streams.tl alpha) (Streams.tl beta) t').
 Proof.
  intros xi alpha beta t t_l t_r t_m t'.
  transitivity (depth_q xi alpha beta (emits_q_absorbs _ _ _ t')).
