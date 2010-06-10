@@ -330,7 +330,7 @@ Defined.
 
 
 
-Theorem homographic_correctness (mu:Matrix) (alpha : Reals) (H : productive_h mu alpha) (r:R): 
+Theorem homographic_correctness : forall (mu:Matrix) (alpha : Reals) (H : productive_h mu alpha) (r:R),
      rep alpha r ->  rep (homographic mu alpha H) (as_Moebius mu r).
 Proof.
  cofix.
