@@ -298,7 +298,7 @@ Proof.
 Defined.
 
 
-Theorem quadratic_correctness (xi:Tensor) (alpha beta:Reals) (H:productive_q xi alpha beta) (r1 r2:Rdefinitions.R): 
+Theorem quadratic_correctness : forall (xi:Tensor) (alpha beta:Reals) (H:productive_q xi alpha beta) (r1 r2:Rdefinitions.R),
      rep alpha r1 ->  rep beta r2-> rep (quadratic xi alpha beta H) (as_Tensor xi r1 r2).
 Proof.
  cofix.

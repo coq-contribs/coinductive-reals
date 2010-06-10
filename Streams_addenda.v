@@ -50,7 +50,7 @@ CoFixpoint replicate (a:A) := Cons a (replicate a).
 
 Lemma replicate_spelled (a:A) : replicate a = Cons a (replicate a).
 Proof.
- intros a; rewrite (Streams.unfold_Stream (replicate a)) at 1; trivial.
+ rewrite (Streams.unfold_Stream (replicate a)) at 1; trivial.
 Qed.
 
 End replicate.
