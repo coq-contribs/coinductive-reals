@@ -769,9 +769,9 @@ Lemma det_nonneg_refining_endpoints:forall a b c d, Is_refining_M ((a,b),(c,d)) 
 Proof.
  intros a b c d [H_bounded _] H_det.
  unfold as_Moebius_Q; simpl.
- generalize (det_nonneg_nondecreasing _ _ _ _ (-1) 1 H_bounded H_det min_one_is_in_base_interval one_is_in_base_interval
- one_is_in_base_interval_subproof).
- let t_local:=  (destruct H_bounded as [[H1 H2]|[H1 H2]]; simpl in H1, H2; auto) in rationalify_R_goal; 
+ assert (H : (-1 <= 1)%R) by fourier.
+ generalize (det_nonneg_nondecreasing _ _ _ _ (-1) 1 H_bounded H_det min_one_is_in_base_interval one_is_in_base_interval H).
+  let t_local:=  (destruct H_bounded as [[H1 H2]|[H1 H2]]; simpl in H1, H2; auto) in rationalify_R_goal; 
  [ intro H_Rle; apply Q_to_R_Qle; assumption 
  | stepl (d-c); try ring; t_local 
  | stepl (d+c); try ring;t_local
@@ -783,8 +783,8 @@ Lemma det_nonpos_refining_endpoints:forall a b c d, Is_refining_M ((a,b),(c,d)) 
 Proof.
  intros a b c d [H_bounded _] H_det.
  unfold as_Moebius_Q; simpl.
- generalize (det_nonpos_nonincreasing _ _ _ _ (-1) 1 H_bounded H_det min_one_is_in_base_interval one_is_in_base_interval
- one_is_in_base_interval_subproof).
+ assert (H : (-1 <= 1)%R) by fourier.
+ generalize (det_nonpos_nonincreasing _ _ _ _ (-1) 1 H_bounded H_det min_one_is_in_base_interval one_is_in_base_interval H).
  let t_local:=  (destruct H_bounded as [[H1 H2]|[H1 H2]]; simpl in H1, H2; auto) in rationalify_R_goal; 
  [ intro H_Rle; apply Q_to_R_Qle; assumption 
  | stepl (d-c); try ring; t_local 
