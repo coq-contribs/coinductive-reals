@@ -8,7 +8,7 @@
 
 Require Export List.
 Require Export Streams.
-Require Omega.
+Require Import Omega.
 
 (** This file includes some random facts about streams (and lists)
 which at the moment of writing this are not found in the standard
