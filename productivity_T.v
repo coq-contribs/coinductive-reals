@@ -7,7 +7,7 @@
 (************************************************************************)
 
 Require Import Reals.
-Require Import R_addenda.
+From QArithSternBrocot Require Import R_addenda.
 Require Import Fourier_solvable_ineqs.
 Require Import Fourier.
 Require Import digits.

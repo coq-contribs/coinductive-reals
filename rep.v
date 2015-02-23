@@ -11,7 +11,7 @@ Require Import Refining_M.
 Require Import Streams_addenda.
 Require Import Raxioms.
 Require Import RIneq.
-Require Import R_addenda.
+From QArithSternBrocot Require Import R_addenda.
 Require Import Fourier_solvable_ineqs.
 
 (** Coinductive definition of the representation and its properties. *)

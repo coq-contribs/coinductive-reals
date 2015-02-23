@@ -13,7 +13,7 @@ Require Import Rseries.
 Require Import Rdefinitions.
 Require Import RIneq.
 Require Import Rcomplete.
-Require Import R_addenda.
+From QArithSternBrocot Require Import R_addenda.
 Require Import Fourier_solvable_ineqs.
 
 (** This file deals with the correctness of the representation predicate [rep]. *)

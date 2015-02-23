@@ -10,7 +10,7 @@ Require Import digits.
 Require Import Bounded_M.
 Require Import Raxioms.
 Require Import RIneq.
-Require Import R_addenda.
+From QArithSternBrocot Require Import R_addenda.
 Require Import Fourier_solvable_ineqs.
 
 (** Properties of the predicate [Bounded_T]. *)

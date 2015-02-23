@@ -12,7 +12,7 @@ Require Import Bounded_T.
 Require Import Incl_M.
 Require Import Raxioms.
 Require Import RIneq.
-Require Import R_addenda.
+From QArithSternBrocot Require Import R_addenda.
 Require Import Fourier_solvable_ineqs.
 
 Open Scope Q_scope.

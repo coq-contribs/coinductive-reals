@@ -7,7 +7,7 @@
 (************************************************************************)
 
 Require Import Reals.
-Require Import R_addenda.
+From QArithSternBrocot Require Import R_addenda.
 Require Import Fourier.
 
 (** This is an auxiliary file includes very specific basic facts about

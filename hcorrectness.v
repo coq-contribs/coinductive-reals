@@ -12,7 +12,7 @@ Require Import Refining_M.
 Require Import homographic.
 Require Import Streams_addenda.
 Require Import RIneq.
-Require Import R_addenda.
+From QArithSternBrocot Require Import R_addenda.
 Require Import rep.
 
 (** * Coinductive correctness of the homographic algorithm. *)
