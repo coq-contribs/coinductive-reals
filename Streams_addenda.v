@@ -23,8 +23,8 @@ Notation " x |:| xs " := (Cons x xs) (at level 60, right associativity).
 
 Ltac LHS :=
 match goal with
-| |-(?a = _) => constr: a
-| |-(_ ?a _) => constr: a
+| |-(?a = _) => constr:(a)
+| |-(_ ?a _) => constr:(a)
 end.
 
 Ltac decomp_coind := intros; let L := LHS in rewrite (Streams.unfold_Stream L); reflexivity.
