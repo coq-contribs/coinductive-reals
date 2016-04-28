@@ -1,0 +1,3 @@
+[submodule "qarith-stern-brocot"]
+	path = qarith-stern-brocot
+	url = https://scm.gforge.inria.fr/anonscm/git/coq-contribs/qarith-stern-brocot.git

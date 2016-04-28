@@ -7,7 +7,7 @@
 (************************************************************************)
 
 
-Require Export QArith_Stern_Brocot.   (* Rational Numbers of QArithSternBrocot package *)
+From QArithSternBrocot Require Export QArith_Stern_Brocot.   (* Rational Numbers of QArithSternBrocot package *)
 Require Export Streams.   (* Streams from the standard library *)
 Require Import Streams_addenda.
 Require Import Raxioms.

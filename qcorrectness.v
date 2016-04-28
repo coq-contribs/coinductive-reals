@@ -13,7 +13,7 @@ Require Import quadratic.
 Require Import Streams_addenda.
 Require Import rep.
 Require Import RIneq.
-Require Import R_addenda.
+From QArithSternBrocot Require Import R_addenda.
 
 (** * Coinductive correctness of the quadratic algorithm. *)
 
