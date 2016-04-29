@@ -1,0 +1,3 @@
+[submodule "qarith-stern-brocot"]
+	path = qarith-stern-brocot
+	url = https://github.com/coq-contribs/qarith-stern-brocot.git
