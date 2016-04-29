@@ -6,11 +6,11 @@ clean: Makefile.coq
 	rm -f Makefile.coq
 
 Makefile.coq: Make
-	if [ -z $(DSTROOT) ]; then \
-		$(COQBIN)coq_makefile -R qarith-stern-brocot QArithSternBrocot -f Make -o Makefile.coq; \
-	else \
-		$(COQBIN)coq_makefile -R $(DSTROOT)$(COQLIBINSTALL)/QArithSternBrocot QArithSternBrocot -f Make -o Makefile.coq; \
-	fi
+ifeq ($(USE_GIT_SUBMODULES),yes)
+	$(COQBIN)coq_makefile -f Make -o Makefile.coq -R qarith-stern-brocot QArithSternBrocot
+else
+	$(COQBIN)coq_makefile -f Make -o Makefile.coq -R `coqtop -where`/user-contrib/QArithSternBrocot QArithSternBrocot
+endif
 
 %: Makefile.coq
 	+make -f Makefile.coq $@
