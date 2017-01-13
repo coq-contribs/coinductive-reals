@@ -1,5 +1,4 @@
 -R . CoinductiveReals
--R qarith-stern-brocot QArithSternBrocot
 
 qcorrectness.v
 Streams_addenda.v
