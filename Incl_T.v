@@ -311,7 +311,7 @@ Proof.
    destruct (Qle_dec_weak 0 ((c-a)*(h-f)-(d-b)*(g-e))) as [H_det|H_det].
     (* q(-1,-1)<=q(-1,r2) *)
     apply Rle_trans with (((a-c)+(d-b))/((e-g)+(h-f)))%R.
-     rationalify_R; apply Incl_M_M_unfolded_auxiliary_7; trivial.
+     simpl. rationalify_R; apply Incl_M_M_unfolded_auxiliary_7; trivial.
        ring_exact_Q H_efgh1.
        ring_exact_Q H1...
       stepl (((Qminus c a)*(-1)+(Qminus d b))/((Qminus g e)*(-1)+(Qminus h f)))%R.
@@ -319,7 +319,7 @@ Proof.
       realify_Q_goal; apply (f_equal2 Rdiv); ring... 
     (* q(-1,1)<=q(-1,r2) *)
     apply Rle_trans with (((c-a)+(d-b))/((g-e)+(h-f)))%R.
-     rationalify_R; apply Incl_M_M_unfolded_auxiliary_7; trivial. 
+     simpl; rationalify_R; apply Incl_M_M_unfolded_auxiliary_7; trivial. 
        ring_exact_Q H_efgh2.
        ring_exact_Q H3...
      stepl (((Qminus c a)*1+(Qminus d b))/((Qminus g e)*1+(Qminus h f)))%R.
@@ -348,7 +348,7 @@ Proof.
       apply (det_nonneg_nondecreasing (a+c) (b+d) (e+g) (f+h) r2 (1)%R H_vanish2 H_det H_r2 one_is_in_base_interval
                                          (proj2 H_r2)).
       realify_Q_goal; apply (f_equal2 Rdiv); ring... 
-     rationalify_R; apply Incl_M_M_unfolded_auxiliary_6; trivial. 
+     simpl; rationalify_R; apply Incl_M_M_unfolded_auxiliary_6; trivial. 
       ring_exact_Q H_efgh4.
       ring_exact_Q H8...
     (* q(1,r2)<=q(1,-1) *)
@@ -357,7 +357,7 @@ Proof.
       apply (det_nonpos_nonincreasing (a+c) (b+d) (e+g) (f+h) (-1)%R r2 H_vanish2 H_det min_one_is_in_base_interval H_r2 (proj1 H_r2)).
       realify_Q_goal; apply (f_equal2 Rdiv); ring... 
 
-     rationalify_R; apply Incl_M_M_unfolded_auxiliary_8; trivial. 
+     simpl; rationalify_R; apply Incl_M_M_unfolded_auxiliary_8; trivial. 
       ring_exact_Q H6...
   (* END 0<=Det2, SPLIT 2 *)
 
@@ -369,14 +369,14 @@ Proof.
     (* q(1,-1)<=q(1,r2) *)
     apply Rle_trans with (((b+d)-(a+c))/((f+h)-(e+g)))%R.
 
-     rationalify_R; apply Incl_M_M_unfolded_auxiliary_5; trivial. 
+     simpl; rationalify_R; apply Incl_M_M_unfolded_auxiliary_5; trivial. 
       ring_exact_Q H5...
      stepl (((Qplus a c)*(-1)+(Qplus b d))/((Qplus e g)*(-1)+(Qplus f h)))%R.
       apply (det_nonneg_nondecreasing (a+c) (b+d) (e+g) (f+h) (-1)%R r2 H_vanish2 H_det min_one_is_in_base_interval H_r2 (proj1 H_r2)).
       realify_Q_goal; apply (f_equal2 Rdiv); ring... 
     (* q(1,1)<=q(1,r2) *)
     apply Rle_trans with (((a+c)+(b+d))/((e+g)+(f+h)))%R.
-     rationalify_R; apply Incl_M_M_unfolded_auxiliary_7; trivial. 
+     simpl; rationalify_R; apply Incl_M_M_unfolded_auxiliary_7; trivial. 
       ring_exact_Q H_efgh4.
       ring_exact_Q H7...
      stepl (((Qplus a c)*1+(Qplus b d))/((Qplus e g)*(1)+(Qplus f h)))%R.
@@ -407,7 +407,7 @@ Proof.
       apply (det_nonneg_nondecreasing (c-a) (d-b) (g-e) (h-f) r2 (1)%R H_vanish1 H_det H_r2 one_is_in_base_interval (proj2 H_r2)).
       realify_Q_goal; apply (f_equal2 Rdiv); ring...
 
-     rationalify_R; apply Incl_M_M_unfolded_auxiliary_6; trivial. 
+     simpl; rationalify_R; apply Incl_M_M_unfolded_auxiliary_6; trivial. 
       ring_exact_Q H_efgh2.
       ring_exact_Q H4...
     (* q(-1,r2)<=q(-1,-1) *)
@@ -415,7 +415,7 @@ Proof.
      stepr (((Qminus c a)*(-1)+(Qminus d b))/((Qminus g e)*(-1)+(Qminus h f)))%R.
       apply (det_nonpos_nonincreasing (c-a) (d-b) (g-e) (h-f) (-1)%R r2 H_vanish1 H_det min_one_is_in_base_interval H_r2 (proj1 H_r2)).
       realify_Q_goal; apply (f_equal2 Rdiv); ring...
-     rationalify_R; apply Incl_M_M_unfolded_auxiliary_6; trivial. 
+     simpl; rationalify_R; apply Incl_M_M_unfolded_auxiliary_6; trivial. 
       ring_exact_Q H_efgh1.
       ring_exact_Q H2...
   (* END Det2<=0, SPLIT 2 *)

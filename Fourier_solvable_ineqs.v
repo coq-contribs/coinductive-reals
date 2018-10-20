@@ -87,7 +87,7 @@ Qed.
 Hint Resolve base_plus_3_nonzero min_base_plus_3_nonzero.
 
 Lemma rep_lb_auxiliary_L:forall l' r, 0 <= l' + 1 -> 0 < l' + 3 -> -1 <= r -> r <= 0 -> l' <= (3 * r + 1) / (- r + 1) ->
-   (l' - 1) / (l' + (2 + 1)) <= r.
+   (l' - 1) / (l' + 3) <= r.
 Proof.
  intros l' r H1 H2 Hr1 Hr2 IH.
  apply Rle_zero_Rminus.
@@ -103,7 +103,7 @@ Qed.
 
 
 Lemma rep_lb_auxiliary_R:forall l' r, 0 <= -l' + 1 -> 0 < -l' + 3 -> 0 <= r -> r <= 1 -> l' <= (3 * r - 1) / (r + 1) ->
-   (l' + 1) / (-l' + (2 + 1)) <= r.
+   (l' + 1) / (-l' + 3) <= r.
 Proof.
  intros l' r H1 H2 Hr1 Hr2 IH.
  apply Rle_zero_Rminus.
@@ -117,13 +117,13 @@ Proof.
  stepr (3*r-1-(r+1)*l'); auto; ring.
 Qed.
 
-Lemma rep_lb_auxiliary_M:forall l' r, l' <= 3*r -> l'/(2 + 1) <= r.
+Lemma rep_lb_auxiliary_M:forall l' r, l' <= 3*r -> l'/3 <= r.
 Proof.
  intros l' r IH; fourier.
 Qed.
 
 Lemma rep_ub_auxiliary_L:forall u' r, 0 <= u' + 1 -> 0 < u' + 3 -> -1 <= r -> r <= 0 -> (3 * r + 1) / (- r + 1) <= u' ->
-   r <= (u' - 1) / (u' + (2 + 1)).
+   r <= (u' - 1) / (u' + 3).
 Proof.
  intros u' r H1 H2 Hr1 Hr2 IH.
  apply Rle_zero_Rminus.
@@ -138,7 +138,7 @@ Proof.
 Qed.
 
 Lemma rep_ub_auxiliary_R:forall u' r, 0 <= -u' + 1 -> 0 < -u' + 3 -> 0 <= r -> r <= 1 -> (3 * r - 1) / (r + 1) <= u' ->
-   r <= (u' + 1) / (-u' + (2 + 1)).
+   r <= (u' + 1) / (-u' + 3).
 Proof.
  intros u' r H1 H2 Hr1 Hr2 IH.
  apply Rle_zero_Rminus.
@@ -152,7 +152,7 @@ Proof.
  stepr ((r+1)*u'-(3*r-1)); auto; ring.
 Qed.
 
-Lemma rep_ub_auxiliary_M:forall u' r, 3*r <= u' -> r <= u'/(2 + 1).
+Lemma rep_ub_auxiliary_M:forall u' r, 3*r <= u' -> r <= u'/ 3.
 Proof.
  intros u' r IH; fourier.
 Qed.

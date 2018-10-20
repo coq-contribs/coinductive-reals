@@ -52,35 +52,35 @@ Proof.
     apply Q_to_Rle; apply thesis_5_7_9.
 
     (* TP: 0 < IZR N +1 *)
-    assert (H_N_plus_one_pos:(0 < Raxioms.IZR N +1)%R);
-    [ apply RIneq.Rle_lt_trans with (Raxioms.IZR N); rewrite <- INR_IZR_INZ; auto with real| ].
+    assert (H_N_plus_one_pos:(0 < Rdefinitions.IZR N +1)%R);
+    [ apply RIneq.Rle_lt_trans with (Rdefinitions.IZR N); rewrite <- INR_IZR_INZ; auto with real| ].
     (* TP: IZR N +1 <> 0 *)
-    assert (H_N_plus_one_nonzero:(Raxioms.IZR N +1<>0)%R); auto with real.
+    assert (H_N_plus_one_nonzero:(Rdefinitions.IZR N +1<>0)%R); auto with real.
 
     elim (Raxioms.archimed (2/eps)); intros H_N _.
     rewrite <- (Z_of_nat_Zabs_nat_pos (up(2/eps))) in H_N.
     rewrite Q_to_Rdiv.
     rewrite Q_to_Rplus.
     repeat rewrite Z_to_Q_to_R_IZR.
-    assert (2/eps-1<(Raxioms.IZR N))%R.
+    assert (2/eps-1<(Rdefinitions.IZR N))%R.
 
      apply Raxioms.Rlt_trans with (2/eps)%R; auto.
       apply RIneq.Rminus_lt.
-      stepl (Ropp (Raxioms.IZR 1%nat)).
+      stepl (Ropp (Rdefinitions.IZR 1%nat)).
       simpl.
       apply RIneq.Ropp_lt_gt_0_contravar.
       apply Fourier_util.Rlt_zero_1.
       simpl; ring.
 
      simpl.
-     apply Rmult_lt_reg_l with ((Raxioms.IZR N + 1)*(Rinv eps))%R.
+     apply Rmult_lt_reg_l with ((Rdefinitions.IZR N + 1)*(Rinv eps))%R.
      apply Fourier_util.Rlt_mult_inv_pos; auto.
 
       stepl (2/eps)%R.
-       stepr (Raxioms.IZR N+1)%R.
+       stepr (Rdefinitions.IZR N+1)%R.
         apply Rplus_lt_reg_r with (Ropp 1).
 	stepl (2/eps -1)%R; try ring.
-	stepr (Raxioms.IZR N)%R; auto; try ring.
+	stepr (Rdefinitions.IZR N)%R; auto; try ring.
        field; auto with real.
       field; auto with real.
 
@@ -215,7 +215,7 @@ Proof.
 Qed.
 
 
-Lemma rep_interval : forall (k:nat) alpha r1 r2, rep alpha r1 -> rep alpha r2 ->  (-2/(k+1) <= r1-r2 <= 2/(k+1))%R.
+Lemma rep_interval : forall (k:nat) alpha r1 r2, rep alpha r1 -> rep alpha r2 ->  (-(2)/(k+1) <= r1-r2 <= 2/(k+1))%R.
 Proof.
  intros k alpha r1 r2 Hr1 Hr2.
  (* TP: O <= k  *) 
@@ -229,7 +229,7 @@ Proof.
  rewrite Q_to_Rdiv; auto; rewrite Q_to_Rminus; rewrite Q_to_Rplus;
  rewrite Z_to_Q_to_R_IZR; simpl; fold Qone; rewrite Q_to_R_Qone; intro H_ub_lb; rewrite Rdiv_Ropp_numerator.
   apply rep_interval_auxiliary with (lb alpha k) (ub alpha k); trivial.
-  rewrite <- Q_to_R_Qone; rewrite <- Q_to_R_Zero; rewrite <- Q_to_Rplus; apply Rlt_not_eq'; apply Q_to_Rlt; auto.
+  change R0 with 0%R; rewrite <- Q_to_R_Qone; rewrite <- Q_to_R_Zero; rewrite <- Q_to_Rplus; apply Rlt_not_eq'; apply Q_to_Rlt; auto.
 Qed.
 
 Lemma real_value_base_interval:forall alpha, (-1 <= real_value alpha <= 1)%R.
@@ -410,14 +410,14 @@ Proof.
  rewrite <- (Z_of_nat_Zabs_nat_pos (up(2/eps))) in H_N; [|apply Zlt_le_weak; auto].
  apply Rbasic_fun.Rabs_def1.
 
-   apply Rle_lt_trans with (2/((Raxioms.IZR N)+1))%R.
+   apply Rle_lt_trans with (2/((Rdefinitions.IZR N)+1))%R.
     stepr (2 / (N + 1))%R; auto.
     rewrite Z_to_Q_to_R_IZR; trivial.
     apply N_2_epsilon_plus_one; auto.
 
-   apply Rlt_le_trans with (-(2/((Raxioms.IZR N)+1)))%R.
+   apply Rlt_le_trans with (-(2/((Rdefinitions.IZR N)+1)))%R.
     apply Ropp_lt_contravar; apply N_2_epsilon_plus_one; auto.
     stepl (-2 / (N + 1))%R; auto.
-    rewrite Z_to_Q_to_R_IZR; unfold Rdiv; rewrite Ropp_mult_distr_l_reverse; trivial.
+    rewrite Z_to_Q_to_R_IZR; unfold Rdiv; rewrite IZR_Zneg_Zpos; rewrite Ropp_mult_distr_l_reverse; trivial.
 Qed.
 
