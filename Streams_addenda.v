@@ -37,7 +37,7 @@ Section Stream_functions_with_one_implicit_argument.
 Variable A:Type.
 
 
-Notation Local Str := (Stream A).
+Local Notation Str := (Stream A).
 
 Lemma hd_tl_id:forall xs:Str, xs = hd xs |:| tl xs.
 Proof.
