@@ -69,7 +69,7 @@ Proof.
       stepl (Ropp (Rdefinitions.IZR 1%nat)).
       simpl.
       apply RIneq.Ropp_lt_gt_0_contravar.
-      apply Fourier_util.Rlt_zero_1.
+      apply Rlt_gt, Rlt_0_1.
       simpl; ring.
 
      simpl.
@@ -366,7 +366,7 @@ Proof.
  ];
  qZ_numerals; realify_Q; auto; field. 
  assert (H_alpha_base:=proj1 (real_value_base_interval alpha)); auto. 
- assert (H_alpha_base:=proj2 (real_value_base_interval alpha)); apply Rlt_not_eq'; Fourier.fourier.
+ assert (H_alpha_base:=proj2 (real_value_base_interval alpha)); apply Rlt_not_eq'; lra.
 Qed.
 
 

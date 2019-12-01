@@ -643,7 +643,7 @@ Proof.
  [ rewrite as_Moebius_L_min_one
  | rewrite as_Moebius_R_min_one
  | rewrite as_Moebius_M_min_one
- ]; fourier.
+ ]; lra.
 Qed.
 
 Lemma as_Moebius_endpoints_digits_base_r: forall d:Digit, (as_Moebius d 1%R<=1)%R.
@@ -652,7 +652,7 @@ Proof.
  [ rewrite as_Moebius_L_one
  | rewrite as_Moebius_R_one
  | rewrite as_Moebius_M_one
- ]; fourier.
+ ]; lra.
 Qed.
 
 Open Scope Z_scope.
@@ -669,7 +669,7 @@ Proof.
  assert (H_dc:d+c <>Zero);
  [apply Q_to_R_Qneq; realify_Q_goal; stepl (c*1+d)%R; [|ring]; apply (H_denom (1)%R one_is_in_base_interval)|].
  assert (Hd: d<>Zero);
- [apply Q_to_R_Qneq; realify_Q_goal; stepl (c*0+d)%R; [|ring]; apply H_denom; split; fourier|].
+ [apply Q_to_R_Qneq; realify_Q_goal; stepl (c*0+d)%R; [|ring]; apply H_denom; split; lra|].
  split; [ apply denom_nonvanishing_M_Bounded_M; assumption|].
  simpl.
  destruct (denom_nonvanishing_M_Bounded_M ((a,b),(c,d)) H_denom) as [[H1 H2]|[H1 H2]]; simpl in H1, H2.
@@ -769,7 +769,7 @@ Lemma det_nonneg_refining_endpoints:forall a b c d, Is_refining_M ((a,b),(c,d)) 
 Proof.
  intros a b c d [H_bounded _] H_det.
  unfold as_Moebius_Q; simpl.
- assert (H : (-1 <= 1)%R) by fourier.
+ assert (H : (-1 <= 1)%R) by lra.
  generalize (det_nonneg_nondecreasing _ _ _ _ (-1) 1 H_bounded H_det min_one_is_in_base_interval one_is_in_base_interval H).
   let t_local:=  (destruct H_bounded as [[H1 H2]|[H1 H2]]; simpl in H1, H2; auto) in rationalify_R_goal; 
  [ intro H_Rle; apply Q_to_R_Qle; assumption 
@@ -783,7 +783,7 @@ Lemma det_nonpos_refining_endpoints:forall a b c d, Is_refining_M ((a,b),(c,d)) 
 Proof.
  intros a b c d [H_bounded _] H_det.
  unfold as_Moebius_Q; simpl.
- assert (H : (-1 <= 1)%R) by fourier.
+ assert (H : (-1 <= 1)%R) by lra.
  generalize (det_nonpos_nonincreasing _ _ _ _ (-1) 1 H_bounded H_det min_one_is_in_base_interval one_is_in_base_interval H).
  let t_local:=  (destruct H_bounded as [[H1 H2]|[H1 H2]]; simpl in H1, H2; auto) in rationalify_R_goal; 
  [ intro H_Rle; apply Q_to_R_Qle; assumption 

@@ -9,6 +9,7 @@
 Require Import Reals.
 From QArithSternBrocot Require Import R_addenda.
 Require Import Fourier.
+Require Export Lra.
 
 (** This is an auxiliary file includes very specific basic facts about
 real numbers in and around the base interval. *)
@@ -16,42 +17,42 @@ real numbers in and around the base interval. *)
 
 Lemma Two_pos: 0<2.
 Proof.
- fourier.
+ lra.
 Qed.
 
 Lemma Three_pos: 0<3.
 Proof. 
- fourier.
+ lra.
 Qed.
 
 Lemma Four_pos: 0<4.
 Proof. 
- fourier.
+ lra.
 Qed.
 
 Lemma minus_One_neg: (-1)<0.
 Proof.
- fourier.
+ lra.
 Qed.
 
 Lemma Half_pos: 0<1/2.
 Proof.
- fourier.
+ lra.
 Qed.
 
 Lemma minus_Half_neg: (-1)/2<0.
 Proof.
- fourier.
+ lra.
 Qed.
 
 Lemma Third_pos: 0<1/3.
 Proof.
- fourier.
+ lra.
 Qed.
 
 Lemma minus_Third_neg: (-1)/3<0.
 Proof.
- fourier.
+ lra.
 Qed.
 
 
@@ -62,7 +63,7 @@ Hint Resolve Rlt_0_1 Two_pos Three_pos Four_pos minus_One_neg Half_pos
 
 Lemma base_plus_3_pos:forall r, -1 <= r ->  0 < (r+3).
 Proof.
- intros r Hr; fourier.
+ intros r Hr; lra.
 Qed.
 
 Hint Resolve base_plus_3_pos.
@@ -74,7 +75,7 @@ Qed.
 
 Lemma min_base_plus_3_pos:forall r, r <= 1 ->  0 < (-r+3).
 Proof.
- intros r Hr; fourier.
+ intros r Hr; lra.
 Qed.
 
 Hint Resolve min_base_plus_3_pos.
@@ -92,13 +93,12 @@ Proof.
  intros l' r H1 H2 Hr1 Hr2 IH.
  apply Rle_zero_Rminus.
  generalize (Rle_Rminus_zero _ _ IH); clear IH.
- rewrite Rminus_Rdiv_Rmult; try (solve [apply Rlt_not_eq ; fourier| apply Rlt_not_eq' ; fourier]).
- rewrite Rdiv_Rminus_Rmult; try (solve [apply Rlt_not_eq ; fourier| apply Rlt_not_eq' ; fourier]).
+ rewrite Rminus_Rdiv_Rmult; try (solve [apply Rlt_not_eq ; lra| apply Rlt_not_eq' ; lra]).
+ rewrite Rdiv_Rminus_Rmult; try (solve [apply Rlt_not_eq ; lra| apply Rlt_not_eq' ; lra]).
  intro IH.
- assert (Hr3:0< -r+1); [fourier|].
+ assert (Hr3:0< -r+1); [lra|].
  generalize (Rle_pos_nonneg_Rdiv _ _ Hr3 IH); clear IH; intro IH.
- unfold Rdiv; apply Rle_mult_inv_pos; try fourier. 
- stepr (3*r+1-(-r+1)*l'); auto; ring.
+ unfold Rdiv; apply Rle_mult_inv_pos; try lra. 
 Qed.
 
 
@@ -108,18 +108,17 @@ Proof.
  intros l' r H1 H2 Hr1 Hr2 IH.
  apply Rle_zero_Rminus.
  generalize (Rle_Rminus_zero _ _ IH); clear IH.
- rewrite Rminus_Rdiv_Rmult; try (solve [apply Rlt_not_eq ; fourier| apply Rlt_not_eq' ; fourier]).
- rewrite Rdiv_Rminus_Rmult; try (solve [apply Rlt_not_eq ; fourier| apply Rlt_not_eq' ; fourier]).
+ rewrite Rminus_Rdiv_Rmult; try (solve [apply Rlt_not_eq ; lra| apply Rlt_not_eq' ; lra]).
+ rewrite Rdiv_Rminus_Rmult; try (solve [apply Rlt_not_eq ; lra| apply Rlt_not_eq' ; lra]).
  intro IH.
- assert (Hr3:0< r+1); [fourier|].
+ assert (Hr3:0< r+1); [lra|].
  generalize (Rle_pos_nonneg_Rdiv _ _ Hr3 IH); clear IH; intro IH.
- unfold Rdiv; apply Rle_mult_inv_pos; try fourier. 
- stepr (3*r-1-(r+1)*l'); auto; ring.
+ unfold Rdiv; apply Rle_mult_inv_pos; try lra. 
 Qed.
 
 Lemma rep_lb_auxiliary_M:forall l' r, l' <= 3*r -> l'/3 <= r.
 Proof.
- intros l' r IH; fourier.
+ intros l' r IH; lra.
 Qed.
 
 Lemma rep_ub_auxiliary_L:forall u' r, 0 <= u' + 1 -> 0 < u' + 3 -> -1 <= r -> r <= 0 -> (3 * r + 1) / (- r + 1) <= u' ->
@@ -128,13 +127,12 @@ Proof.
  intros u' r H1 H2 Hr1 Hr2 IH.
  apply Rle_zero_Rminus.
  generalize (Rle_Rminus_zero _ _ IH); clear IH.
- rewrite Rminus_Rdiv_Rmult; try (solve [apply Rlt_not_eq ; fourier| apply Rlt_not_eq' ; fourier]).
- rewrite Rdiv_Rminus_Rmult; try (solve [apply Rlt_not_eq ; fourier| apply Rlt_not_eq' ; fourier]).
+ rewrite Rminus_Rdiv_Rmult; try (solve [apply Rlt_not_eq ; lra| apply Rlt_not_eq' ; lra]).
+ rewrite Rdiv_Rminus_Rmult; try (solve [apply Rlt_not_eq ; lra| apply Rlt_not_eq' ; lra]).
  intro IH.
- assert (Hr3:0< -r+1); [fourier|].
+ assert (Hr3:0< -r+1); [lra|].
  generalize (Rle_pos_nonneg_Rdiv _ _ Hr3 IH); clear IH; intro IH.
- unfold Rdiv; apply Rle_mult_inv_pos; try fourier. 
- stepr ((-r+1)*u'-(3*r+1)); auto; ring.
+ unfold Rdiv; apply Rle_mult_inv_pos; try lra. 
 Qed.
 
 Lemma rep_ub_auxiliary_R:forall u' r, 0 <= -u' + 1 -> 0 < -u' + 3 -> 0 <= r -> r <= 1 -> (3 * r - 1) / (r + 1) <= u' ->
@@ -143,18 +141,17 @@ Proof.
  intros u' r H1 H2 Hr1 Hr2 IH.
  apply Rle_zero_Rminus.
  generalize (Rle_Rminus_zero _ _ IH); clear IH.
- rewrite Rminus_Rdiv_Rmult; try (solve [apply Rlt_not_eq ; fourier| apply Rlt_not_eq' ; fourier]).
- rewrite Rdiv_Rminus_Rmult; try (solve [apply Rlt_not_eq ; fourier| apply Rlt_not_eq' ; fourier]).
+ rewrite Rminus_Rdiv_Rmult; try (solve [apply Rlt_not_eq ; lra| apply Rlt_not_eq' ; lra]).
+ rewrite Rdiv_Rminus_Rmult; try (solve [apply Rlt_not_eq ; lra| apply Rlt_not_eq' ; lra]).
  intro IH.
- assert (Hr3:0< r+1); [fourier|].
+ assert (Hr3:0< r+1); [lra|].
  generalize (Rle_pos_nonneg_Rdiv _ _ Hr3 IH); clear IH; intro IH.
- unfold Rdiv; apply Rle_mult_inv_pos; try fourier. 
- stepr ((r+1)*u'-(3*r-1)); auto; ring.
+ unfold Rdiv; apply Rle_mult_inv_pos; try lra. 
 Qed.
 
 Lemma rep_ub_auxiliary_M:forall u' r, 3*r <= u' -> r <= u'/ 3.
 Proof.
- intros u' r IH; fourier.
+ intros u' r IH; lra.
 Qed.
 
 
@@ -193,75 +190,75 @@ Hint Resolve up_2_epsilon.
 
 Lemma very_sepcific_0:forall l y, l - y < 2 -> -1 <= l -> 0 < y + 3.
 Proof.
- intros; fourier.
+ intros; lra.
 Qed.
 
 Lemma very_sepcific_1:forall l y, -2 < l - y -> l <= 1 -> 0 < -y + 3.
 Proof.
- intros; fourier.
+ intros; lra.
 Qed.
 
 
 Lemma rep_interval_auxiliary: forall b l u r1 r2, r2 <= u -> r1 <= u -> l <= r2 -> l <= r1 -> u - l <= b->
                          -b <= r1-r2 <= b.
 Proof.
- intros; split; fourier.
+ intros; split; lra.
 Qed.
 
 Lemma Bounded_M_pos_auxiliary_1:forall c d r, 0 < d - c -> (0 < c)%R -> (-1 <= r <= 1)%R -> 0<c*r+d.
 Proof. 
  intros c d r Hdc Hc [Hr1 Hr2];
  apply Rlt_le_trans with (d-c); trivial;
- stepl (c*(-1)+d); [|ring]; apply Rplus_le_compat_r; apply Rfourier_le; trivial.
+ stepl (c*(-1)+d); [|ring]; apply Rplus_le_compat_r; apply Rmult_le_compat_l; trivial; lra.
 Qed.
 
 Lemma Bounded_M_pos_auxiliary_2:forall c d r, 0 < d + c -> (c < 0)%R -> (-1 <= r <= 1)%R -> 0<c*r+d.
 Proof. 
  intros c d r Hdc Hc [Hr1 Hr2];
  apply Rlt_le_trans with (d+c); trivial;
- stepl (c*(1)+d); [|ring]; apply Rplus_le_compat_r; apply Rmult_le_compat_neg_l; trivial; fourier.
+ stepl (c*(1)+d); [|ring]; apply Rplus_le_compat_r; apply Rmult_le_compat_neg_l; trivial; lra.
 Qed.
 
 Lemma Bounded_M_pos_auxiliary_3:forall c d r, 0 <= d - c -> (0 < c)%R -> (-1 <= r <= 1)%R -> 0<=c*r+d.
 Proof. 
  intros c d r Hdc Hc [Hr1 Hr2];
  apply Rle_trans with (d-c); trivial;
- stepl (c*(-1)+d); [|ring]; apply Rplus_le_compat_r; apply Rfourier_le; trivial.
+ stepl (c*(-1)+d); [|ring]; apply Rplus_le_compat_r; apply Rmult_le_compat_l; trivial; lra.
 Qed.
 
 Lemma Bounded_M_pos_auxiliary_4:forall c d r, 0 <= d + c -> (c < 0)%R -> (-1 <= r <= 1)%R -> 0<=c*r+d.
 Proof. 
  intros c d r Hdc Hc [Hr1 Hr2];
  apply Rle_trans with (d+c); trivial;
- stepl (c*(1)+d); [|ring]; apply Rplus_le_compat_r; apply Rmult_le_compat_neg_l; trivial; fourier.
+ stepl (c*(1)+d); [|ring]; apply Rplus_le_compat_r; apply Rmult_le_compat_neg_l; trivial; lra.
 Qed.
 
 Lemma Bounded_M_neg_auxiliary_1:forall c d r, d + c < 0 -> (0 < c)%R -> (-1 <= r <= 1)%R -> c*r+d<0.
 Proof. 
  intros c d r Hdc Hc [Hr1 Hr2];
  apply Rle_lt_trans with (d+c); trivial;
- stepr (c*(1)+d); [|ring]; apply Rplus_le_compat_r; apply Rfourier_le; trivial.
+ stepr (c*(1)+d); [|ring]; apply Rplus_le_compat_r; apply Rmult_le_compat_l; trivial; lra.
 Qed.
 
 Lemma Bounded_M_neg_auxiliary_2:forall c d r, d - c < 0 -> (c < 0)%R -> (-1 <= r <= 1)%R -> c*r+d<0.
 Proof. 
  intros c d r Hdc Hc [Hr1 Hr2];
  apply Rle_lt_trans with (d-c); trivial;
- stepr (c*(-1)+d); [|ring]; apply Rplus_le_compat_r; apply Rmult_le_compat_neg_l; trivial; fourier.
+ stepr (c*(-1)+d); [|ring]; apply Rplus_le_compat_r; apply Rmult_le_compat_neg_l; trivial; lra.
 Qed.
 
 Lemma Bounded_M_neg_auxiliary_3:forall c d r, d + c <= 0 -> (0 < c)%R -> (-1 <= r <= 1)%R -> c*r+d<=0.
 Proof. 
  intros c d r Hdc Hc [Hr1 Hr2];
  apply Rle_trans with (d+c); trivial;
- stepr (c*(1)+d); [|ring]; apply Rplus_le_compat_r; apply Rfourier_le; trivial.
+ stepr (c*(1)+d); [|ring]; apply Rplus_le_compat_r; apply Rmult_le_compat_l; trivial; lra.
 Qed.
 
 Lemma Bounded_M_neg_auxiliary_4:forall c d r, d - c <= 0 -> (c < 0)%R -> (-1 <= r <= 1)%R -> c*r+d<=0.
 Proof. 
  intros c d r Hdc Hc [Hr1 Hr2];
  apply Rle_trans with (d-c); trivial;
- stepr (c*(-1)+d); [|ring]; apply Rplus_le_compat_r; apply Rmult_le_compat_neg_l; trivial; fourier.
+ stepr (c*(-1)+d); [|ring]; apply Rplus_le_compat_r; apply Rmult_le_compat_neg_l; trivial; lra.
 Qed.
 
 
@@ -273,12 +270,12 @@ Qed.
 
 Lemma min_one_is_in_base_interval:-1 <= -1 <= 1.
 Proof.
- split; fourier.
+ split; lra.
 Qed.
 
 Lemma one_is_in_base_interval:-1 <= 1 <= 1.
 Proof.
- split; fourier.
+ split; lra.
 Qed.
 
 Lemma Incl_M_L_unfolded_auxiliary_1: forall a b c d, d - c <> 0 -> 
@@ -297,7 +294,7 @@ Proof.
  rewrite Rmult_0_r; rewrite Rmult_1_r;
  intros H1 H2; stepl ((-1)/1); [|field;auto]; apply Rmult_Rdiv_pos_Rle; auto.
   assert (H3:0<=d-c).
-   apply Ropp_le_cancel; stepl ((d-c)*(-1));[|ring]; apply Rle_trans with (b-a); trivial; fourier.
+   apply Ropp_le_cancel; stepl ((d-c)*(-1));[|ring]; apply Rle_trans with (b-a); trivial; lra.
    destruct (Rle_lt_or_eq_dec _ _ H3) as [H4|H4]; trivial; apply False_ind; apply Hdc; auto. 
   stepl ((d - c) * -1); [|ring]; stepr (b - a); [|ring]; trivial.
 Qed. 
@@ -317,9 +314,9 @@ Proof.
  rewrite Rmult_0_r; rewrite Rmult_1_r.
  intros H1 H2; stepr (0/1); [|field;auto]; apply Rmult_Rdiv_pos_Rle; auto.
   assert (H3:0<=c+d).
-   apply Ropp_le_cancel; stepl ((c+d)*(-1));[|ring]; apply Rle_trans with (a+b); trivial; fourier.
+   apply Ropp_le_cancel; stepl ((c+d)*(-1));[|ring]; apply Rle_trans with (a+b); trivial; lra.
    destruct (Rle_lt_or_eq_dec _ _ H3) as [H4|H4]; trivial; apply False_ind; apply Hdc; auto. 
-  stepr 0; [|ring]; stepl (a+b); [|ring]; fourier.
+  stepr 0; [|ring]; stepl (a+b); [|ring]; lra.
 Qed. 
 
 
@@ -337,7 +334,7 @@ Proof.
  rewrite Rmult_0_r; rewrite Rmult_1_r;
  intros H1 H2; stepl ((-1)/1); [|field;auto]; apply Rmult_Rdiv_pos_Rle; auto.
   assert (H3:0<=c+d).
-   apply Ropp_le_cancel; stepl ((c+d)*(-1));[|ring]; apply Rle_trans with (a+b); trivial; fourier.
+   apply Ropp_le_cancel; stepl ((c+d)*(-1));[|ring]; apply Rle_trans with (a+b); trivial; lra.
    destruct (Rle_lt_or_eq_dec _ _ H3) as [H4|H4]; trivial; apply False_ind; apply Hdc; auto. 
   stepl ((c + d) * -1); [|ring]; stepr (a+b); [|ring]; trivial. 
 Qed. 
@@ -358,9 +355,9 @@ Proof.
  rewrite Rmult_0_r; rewrite Rmult_1_r;
  intros H1 H2; stepr (0/1); [|field;auto]; apply Rmult_Rdiv_pos_Rle; auto.
   assert (H3:0<=d-c).
-   apply Ropp_le_cancel; stepl ((d-c)*(-1));[|ring]; apply Rle_trans with (b-a); trivial; fourier.
+   apply Ropp_le_cancel; stepl ((d-c)*(-1));[|ring]; apply Rle_trans with (b-a); trivial; lra.
    destruct (Rle_lt_or_eq_dec _ _ H3) as [H4|H4]; trivial; apply False_ind; apply Hdc; auto. 
-  stepr 0; [|ring]; stepl (b-a); [|ring]; fourier.
+  stepr 0; [|ring]; stepl (b-a); [|ring]; lra.
 Qed. 
 
 Lemma Incl_M_R_unfolded_auxiliary_1: forall a b c d, d - c <> 0 -> 
@@ -379,9 +376,9 @@ Proof.
  rewrite Rmult_0_r; rewrite Rmult_1_r.
  intros H1 H2; stepl (0/1); [|field;auto]; apply Rmult_Rdiv_pos_Rle; auto.
   assert (H3:0<=d-c).
-   stepr ((d-c)*1);[|ring]; apply Rle_trans with (b-a); trivial; fourier.
+   stepr ((d-c)*1);[|ring]; apply Rle_trans with (b-a); trivial; lra.
    destruct (Rle_lt_or_eq_dec _ _ H3) as [H4|H4]; trivial; apply False_ind; apply Hdc; auto. 
-  stepl 0; [|ring]; stepr (b - a); [|ring]; fourier.
+  stepl 0; [|ring]; stepr (b - a); [|ring]; lra.
 Qed. 
 
 Lemma Incl_M_R_unfolded_auxiliary_2: forall a b c d, c + d <> 0 -> 
@@ -398,7 +395,7 @@ Proof.
  rewrite Rmult_0_r; rewrite Rmult_1_r.
  intros H1 H2; stepr (1/1); [|field;auto]; apply Rmult_Rdiv_pos_Rle; auto.
   assert (H3:0<=c+d).
-   stepr ((c+d)*1);[|ring]; apply Rle_trans with (a+b); trivial; fourier.
+   stepr ((c+d)*1);[|ring]; apply Rle_trans with (a+b); trivial; lra.
    destruct (Rle_lt_or_eq_dec _ _ H3) as [H4|H4]; trivial; apply False_ind; apply Hdc; auto. 
   stepr ((c + d)*1); [|ring]; stepl (a+b); [|ring]; trivial. 
 Qed. 
@@ -417,9 +414,9 @@ Proof.
  rewrite Rmult_0_r; rewrite Rmult_1_r.
  intros H1 H2; stepl (0/1); [|field;auto]; apply Rmult_Rdiv_pos_Rle; auto.
   assert (H3:0<=c+d).
-   stepr ((c+d)*1);[|ring]; apply Rle_trans with (a+b); trivial; fourier.
+   stepr ((c+d)*1);[|ring]; apply Rle_trans with (a+b); trivial; lra.
    destruct (Rle_lt_or_eq_dec _ _ H3) as [H4|H4]; trivial; apply False_ind; apply Hdc; auto. 
-  stepl 0; [|ring]; stepr (a+b); [|ring]; fourier. 
+  stepl 0; [|ring]; stepr (a+b); [|ring]; lra. 
 Qed. 
 
 Lemma Incl_M_R_unfolded_auxiliary_4: forall a b c d, d - c <> 0 -> 
@@ -436,7 +433,7 @@ Proof.
  rewrite Rmult_0_r; rewrite Rmult_1_r.
  intros H1 H2; stepr (1/1); [|field;auto]; apply Rmult_Rdiv_pos_Rle; auto.
   assert (H3:0<=d-c).
-   stepr ((d-c)*1);[|ring]; apply Rle_trans with (b-a); trivial; fourier.
+   stepr ((d-c)*1);[|ring]; apply Rle_trans with (b-a); trivial; lra.
    destruct (Rle_lt_or_eq_dec _ _ H3) as [H4|H4]; trivial; apply False_ind; apply Hdc; auto. 
   stepr ((d-c)*1); [|ring]; stepl (b-a); [|ring]; trivial.
 Qed. 
@@ -456,7 +453,7 @@ Proof.
  rewrite Rmult_1_r.
  intros H1 H2; apply Rmult_Rdiv_pos_Rle; auto.
   assert (H3:0<=d-c).
-   fourier.
+   lra.
    destruct (Rle_lt_or_eq_dec _ _ H3) as [H4|H4]; trivial; apply False_ind; apply Hdc; auto. 
   stepl (- (d - c)); [|ring]; stepr ((b-a)+(b-a)+(b-a)); [|ring]; trivial.
 Qed. 
@@ -476,7 +473,7 @@ Proof.
  rewrite Rmult_1_r.
  intros H1 H2; apply Rmult_Rdiv_pos_Rle; auto.
   assert (H3:0<=c+d).
-   fourier.
+   lra.
    destruct (Rle_lt_or_eq_dec _ _ H3) as [H4|H4]; trivial; apply False_ind; apply Hdc; auto. 
   stepr (c + d); [|ring]; stepl ((a+b)+(a+b)+(a+b)); [|ring]; trivial. 
 Qed. 
@@ -497,7 +494,7 @@ Proof.
  rewrite Rmult_1_r.
  intros H1 H2; apply Rmult_Rdiv_pos_Rle; auto.
   assert (H3:0<=c+d).
-   fourier.
+   lra.
    destruct (Rle_lt_or_eq_dec _ _ H3) as [H4|H4]; trivial; apply False_ind; apply Hdc; auto. 
   stepl (-(c + d)); [|ring]; stepr ((a+b)+(a+b)+(a+b)); [|ring]; trivial. 
 Qed.
@@ -517,7 +514,7 @@ Proof.
  rewrite Rmult_1_r.
  intros H1 H2; apply Rmult_Rdiv_pos_Rle; auto.
   assert (H3:0<=d-c).
-   fourier.
+   lra.
    destruct (Rle_lt_or_eq_dec _ _ H3) as [H4|H4]; trivial; apply False_ind; apply Hdc; auto. 
   stepr (d - c); [|ring]; stepl ((b-a)+(b-a)+(b-a)); [|ring]; trivial.
 Qed.

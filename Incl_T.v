@@ -438,104 +438,104 @@ Proof.
   destruct (not_Qeq_inf _ _ H_efgh1) as [H_|H_]; apply Q_to_R_Qle; realify_Q; auto;
   intros H_efgh1 H_efgh2 H_efgh3 H_efgh4 H_h H_egh1m.
    (* 1l *) 
-   apply Rmult_le_compat_neg_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (a + - b + - c + d)%R); apply Rdiv_Rmult_pos_neg_Rle'; auto; try Fourier.fourier;
+   apply Rmult_le_compat_neg_l; [lra|];
+   rewrite (Rmult_comm (a + - b + - c + d)%R); apply Rdiv_Rmult_pos_neg_Rle'; auto; try lra;
    stepl (-1)%R; [|field]; stepr ((a*(-1)*(-1)+b*(-1)+c*(-1)+d)/(e*(-1)*(-1)+f*(-1)+g*(-1)+h))%R; [|field; ring_exact_R H_efgh1];
    exact (proj1 (H_xi (-1)%R (-1)%R min_one_is_in_base_interval min_one_is_in_base_interval)).
    (* 1r *) 
-   apply Rmult_le_compat_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (a + - b + - c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try Fourier.fourier;
+   apply Rmult_le_compat_l; [lra|];
+   rewrite (Rmult_comm (a + - b + - c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try lra;
    stepl (-1)%R; [|field]; stepr ((a*(-1)*(-1)+b*(-1)+c*(-1)+d)/(e*(-1)*(-1)+f*(-1)+g*(-1)+h))%R; [|field; ring_exact_R H_efgh1];
    exact (proj1 (H_xi (-1)%R (-1)%R min_one_is_in_base_interval min_one_is_in_base_interval)).
   (* Refining 2 *)
   destruct (not_Qeq_inf _ _ H_efgh1) as [H_|H_]; apply Q_to_R_Qle; realify_Q; auto;
   intros H_efgh1 H_efgh2 H_efgh3 H_efgh4 H_h H_egh1m.
    (* 2l *)
-   apply Rmult_le_compat_neg_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (a + - b + - c + d)%R); apply Rdiv_Rmult_neg_pos_Rle'; auto; try Fourier.fourier;
+   apply Rmult_le_compat_neg_l; [lra|];
+   rewrite (Rmult_comm (a + - b + - c + d)%R); apply Rdiv_Rmult_neg_pos_Rle'; auto; try lra;
    stepr R0; [|field]; stepl ((a*(-1)*(-1)+b*(-1)+c*(-1)+d)/(e*(-1)*(-1)+f*(-1)+g*(-1)+h))%R; [|field; ring_exact_R H_efgh1];
    exact (proj2 (H_xi (-1)%R (-1)%R min_one_is_in_base_interval min_one_is_in_base_interval)).
    (* 2r *) 
-   apply Rmult_le_compat_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (a + - b + - c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try Fourier.fourier;
+   apply Rmult_le_compat_l; [lra|];
+   rewrite (Rmult_comm (a + - b + - c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try lra;
    stepr R0; [|field]; stepl ((a*(-1)*(-1)+b*(-1)+c*(-1)+d)/(e*(-1)*(-1)+f*(-1)+g*(-1)+h))%R; [|field; ring_exact_R H_efgh1];
    exact (proj2 (H_xi (-1)%R (-1)%R min_one_is_in_base_interval min_one_is_in_base_interval)).
   (* Refining 3 *)
   destruct (not_Qeq_inf _ _ H_efgh2) as [H_|H_]; apply Q_to_R_Qle; realify_Q; auto;
   intros H_efgh1 H_efgh2 H_efgh3 H_efgh4 H_h H_egh2m.
    (* 3l *)
-   apply Rmult_le_compat_neg_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (-a + - b +  c + d)%R); apply Rdiv_Rmult_pos_neg_Rle'; auto; try Fourier.fourier;
+   apply Rmult_le_compat_neg_l; [lra|];
+   rewrite (Rmult_comm (-a + - b +  c + d)%R); apply Rdiv_Rmult_pos_neg_Rle'; auto; try lra;
    stepl (-1)%R; [|field]; stepr ((a*(-1)*(1)+b*(-1)+c*(1)+d)/(e*(-1)*(1)+f*(-1)+g*(1)+h))%R; [|field; ring_exact_R H_efgh2];
    exact (proj1 (H_xi (-1)%R (1)%R min_one_is_in_base_interval one_is_in_base_interval)).
    (* 3r *) 
-   apply Rmult_le_compat_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (-a + - b + c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try Fourier.fourier;
+   apply Rmult_le_compat_l; [lra|];
+   rewrite (Rmult_comm (-a + - b + c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try lra;
    stepl (-1)%R; [|field]; stepr ((a*(-1)*(1)+b*(-1)+c*(1)+d)/(e*(-1)*(1)+f*(-1)+g*(1)+h))%R; [|field; ring_exact_R H_efgh2];
    exact (proj1 (H_xi (-1)%R (1)%R min_one_is_in_base_interval one_is_in_base_interval)).
   (* Refining 4 *)
   destruct (not_Qeq_inf _ _ H_efgh2) as [H_|H_]; apply Q_to_R_Qle; realify_Q; auto;
   intros H_efgh1 H_efgh2 H_efgh3 H_efgh4 H_h H_egh2m.
    (* 4l *)
-   apply Rmult_le_compat_neg_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (-a + - b +  c + d)%R); apply Rdiv_Rmult_neg_pos_Rle'; auto; try Fourier.fourier;
+   apply Rmult_le_compat_neg_l; [lra|];
+   rewrite (Rmult_comm (-a + - b +  c + d)%R); apply Rdiv_Rmult_neg_pos_Rle'; auto; try lra;
    stepr R0; [|field]; stepl ((a*(-1)*(1)+b*(-1)+c*(1)+d)/(e*(-1)*(1)+f*(-1)+g*(1)+h))%R; [|field; ring_exact_R H_efgh2];
    exact (proj2 (H_xi (-1)%R (1)%R min_one_is_in_base_interval one_is_in_base_interval)).
    (* 4r *) 
-   apply Rmult_le_compat_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (-a + - b + c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try Fourier.fourier;
+   apply Rmult_le_compat_l; [lra|];
+   rewrite (Rmult_comm (-a + - b + c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try lra;
    stepr R0; [|field]; stepl ((a*(-1)*(1)+b*(-1)+c*(1)+d)/(e*(-1)*(1)+f*(-1)+g*(1)+h))%R; [|field; ring_exact_R H_efgh2];
    exact (proj2 (H_xi (-1)%R (1)%R min_one_is_in_base_interval one_is_in_base_interval)).
   (* Refining 5 *)
   destruct (not_Qeq_inf _ _ H_efgh3) as [H_|H_]; apply Q_to_R_Qle; realify_Q; auto;
   intros H_efgh1 H_efgh2 H_efgh3 H_efgh4 H_h H_egh3m.
    (* 5l *)
-   apply Rmult_le_compat_neg_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (-a +  b + -c + d)%R); apply Rdiv_Rmult_pos_neg_Rle'; auto; try Fourier.fourier;
+   apply Rmult_le_compat_neg_l; [lra|];
+   rewrite (Rmult_comm (-a +  b + -c + d)%R); apply Rdiv_Rmult_pos_neg_Rle'; auto; try lra;
    stepl (-1)%R; [|field]; stepr ((a*(1)*(-1)+b*(1)+c*(-1)+d)/(e*(1)*(-1)+f*(1)+g*(-1)+h))%R; [|field; ring_exact_R H_efgh3];
    exact (proj1 (H_xi (1)%R (-1)%R one_is_in_base_interval min_one_is_in_base_interval)).
    (* 5r *) 
-   apply Rmult_le_compat_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (-a +  b + -c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try Fourier.fourier;
+   apply Rmult_le_compat_l; [lra|];
+   rewrite (Rmult_comm (-a +  b + -c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try lra;
    stepl (-1)%R; [|field]; stepr ((a*(1)*(-1)+b*(1)+c*(-1)+d)/(e*(1)*(-1)+f*(1)+g*(-1)+h))%R; [|field; ring_exact_R H_efgh3];
    exact (proj1 (H_xi (1)%R (-1)%R one_is_in_base_interval min_one_is_in_base_interval)).
   (* Refining 6 *)
   destruct (not_Qeq_inf _ _ H_efgh3) as [H_|H_]; apply Q_to_R_Qle; realify_Q; auto;
   intros H_efgh1 H_efgh2 H_efgh3 H_efgh4 H_h H_egh3m.
    (* 6l *)
-   apply Rmult_le_compat_neg_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (-a + b +  -c + d)%R); apply Rdiv_Rmult_neg_pos_Rle'; auto; try Fourier.fourier;
+   apply Rmult_le_compat_neg_l; [lra|];
+   rewrite (Rmult_comm (-a + b +  -c + d)%R); apply Rdiv_Rmult_neg_pos_Rle'; auto; try lra;
    stepr R0; [|field];  stepl ((a*(1)*(-1)+b*(1)+c*(-1)+d)/(e*(1)*(-1)+f*(1)+g*(-1)+h))%R; [|field; ring_exact_R H_efgh3];
    exact (proj2 (H_xi (1)%R (-1)%R one_is_in_base_interval min_one_is_in_base_interval)).
    (* 6r *) 
-   apply Rmult_le_compat_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (-a +  b + -c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try Fourier.fourier;
+   apply Rmult_le_compat_l; [lra|];
+   rewrite (Rmult_comm (-a +  b + -c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try lra;
    stepr R0; [|field]; stepl ((a*(1)*(-1)+b*(1)+c*(-1)+d)/(e*(1)*(-1)+f*(1)+g*(-1)+h))%R; [|field; ring_exact_R H_efgh3];
    exact (proj2 (H_xi (1)%R (-1)%R one_is_in_base_interval min_one_is_in_base_interval)).
   (* Refining 7 *)
   destruct (not_Qeq_inf _ _ H_efgh4) as [H_|H_]; apply Q_to_R_Qle; realify_Q; auto;
   intros H_efgh1 H_efgh2 H_efgh3 H_efgh4 H_h H_egh4m.
    (* 7l *)
-   apply Rmult_le_compat_neg_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (a +  b + c + d)%R); apply Rdiv_Rmult_pos_neg_Rle'; auto; try Fourier.fourier;
+   apply Rmult_le_compat_neg_l; [lra|];
+   rewrite (Rmult_comm (a +  b + c + d)%R); apply Rdiv_Rmult_pos_neg_Rle'; auto; try lra;
    stepl (-1)%R; [|field]; stepr ((a*1*1+b*1+c*1+d)/(e*1*1+f*1+g*1+h))%R; [|field; ring_exact_R H_efgh4];
    exact (proj1 (H_xi (1)%R (1)%R one_is_in_base_interval one_is_in_base_interval)).
    (* 7r *) 
-   apply Rmult_le_compat_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (a +  b + c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try Fourier.fourier;
+   apply Rmult_le_compat_l; [lra|];
+   rewrite (Rmult_comm (a +  b + c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try lra;
    stepl (-1)%R; [|field]; stepr ((a*1*1+b*1+c*1+d)/(e*1*1+f*1+g*1+h))%R; [|field; ring_exact_R H_efgh4];
    exact (proj1 (H_xi (1)%R (1)%R one_is_in_base_interval one_is_in_base_interval)).
   (* Refining 8 *)
   destruct (not_Qeq_inf _ _ H_efgh4) as [H_|H_]; apply Q_to_R_Qle; realify_Q; auto;
   intros H_efgh1 H_efgh2 H_efgh3 H_efgh4 H_h H_egh4m.
    (* 8l *)
-   apply Rmult_le_compat_neg_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (a + b +  c + d)%R); apply Rdiv_Rmult_neg_pos_Rle'; auto; try Fourier.fourier;
+   apply Rmult_le_compat_neg_l; [lra|];
+   rewrite (Rmult_comm (a + b +  c + d)%R); apply Rdiv_Rmult_neg_pos_Rle'; auto; try lra;
    stepr R0; [|field]; stepl ((a*1*1+b*1+c*1+d)/(e*1*1+f*1+g*1+h))%R; [|field; ring_exact_R H_efgh4];
    exact (proj2 (H_xi (1)%R (1)%R one_is_in_base_interval one_is_in_base_interval)).
    (* 8r *) 
-   apply Rmult_le_compat_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (a +  b + c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try Fourier.fourier;
+   apply Rmult_le_compat_l; [lra|];
+   rewrite (Rmult_comm (a +  b + c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try lra;
    stepr R0; [|field]; stepl ((a*1*1+b*1+c*1+d)/(e*1*1+f*1+g*1+h))%R; [|field; ring_exact_R H_efgh4];
    exact (proj2 (H_xi (1)%R (1)%R one_is_in_base_interval one_is_in_base_interval)).
 Qed.
@@ -556,104 +556,104 @@ Proof.
   destruct (not_Qeq_inf _ _ H_efgh1) as [H_|H_]; apply Q_to_R_Qle; realify_Q; auto;
   intros H_efgh1 H_efgh2 H_efgh3 H_efgh4 H_h H_egh1m.
    (* 1l *) 
-   apply Rmult_le_compat_neg_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (a + - b + - c + d)%R); apply Rdiv_Rmult_pos_neg_Rle'; auto; try Fourier.fourier;
+   apply Rmult_le_compat_neg_l; [lra|];
+   rewrite (Rmult_comm (a + - b + - c + d)%R); apply Rdiv_Rmult_pos_neg_Rle'; auto; try lra;
    stepl R0; [|field]; stepr ((a*(-1)*(-1)+b*(-1)+c*(-1)+d)/(e*(-1)*(-1)+f*(-1)+g*(-1)+h))%R; [|field; ring_exact_R H_efgh1];
    exact (proj1 (H_xi (-1)%R (-1)%R min_one_is_in_base_interval min_one_is_in_base_interval)).
    (* 1r *) 
-   apply Rmult_le_compat_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (a + - b + - c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try Fourier.fourier;
+   apply Rmult_le_compat_l; [lra|];
+   rewrite (Rmult_comm (a + - b + - c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try lra;
    stepl R0; [|field]; stepr ((a*(-1)*(-1)+b*(-1)+c*(-1)+d)/(e*(-1)*(-1)+f*(-1)+g*(-1)+h))%R; [|field; ring_exact_R H_efgh1];
    exact (proj1 (H_xi (-1)%R (-1)%R min_one_is_in_base_interval min_one_is_in_base_interval)).
   (* Refining 2 *)
   destruct (not_Qeq_inf _ _ H_efgh1) as [H_|H_]; apply Q_to_R_Qle; realify_Q; auto;
   intros H_efgh1 H_efgh2 H_efgh3 H_efgh4 H_h H_egh1m.
    (* 2l *)
-   apply Rmult_le_compat_neg_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (a + - b + - c + d)%R); apply Rdiv_Rmult_neg_pos_Rle'; auto; try Fourier.fourier;
+   apply Rmult_le_compat_neg_l; [lra|];
+   rewrite (Rmult_comm (a + - b + - c + d)%R); apply Rdiv_Rmult_neg_pos_Rle'; auto; try lra;
    stepr R1; [|field]; stepl ((a*(-1)*(-1)+b*(-1)+c*(-1)+d)/(e*(-1)*(-1)+f*(-1)+g*(-1)+h))%R; [|field; ring_exact_R H_efgh1];
    exact (proj2 (H_xi (-1)%R (-1)%R min_one_is_in_base_interval min_one_is_in_base_interval)).
    (* 2r *) 
-   apply Rmult_le_compat_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (a + - b + - c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try Fourier.fourier;
+   apply Rmult_le_compat_l; [lra|];
+   rewrite (Rmult_comm (a + - b + - c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try lra;
    stepr R1; [|field]; stepl ((a*(-1)*(-1)+b*(-1)+c*(-1)+d)/(e*(-1)*(-1)+f*(-1)+g*(-1)+h))%R; [|field; ring_exact_R H_efgh1];
    exact (proj2 (H_xi (-1)%R (-1)%R min_one_is_in_base_interval min_one_is_in_base_interval)).
   (* Refining 3 *)
   destruct (not_Qeq_inf _ _ H_efgh2) as [H_|H_]; apply Q_to_R_Qle; realify_Q; auto;
   intros H_efgh1 H_efgh2 H_efgh3 H_efgh4 H_h H_egh2m.
    (* 3l *)
-   apply Rmult_le_compat_neg_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (-a + - b +  c + d)%R); apply Rdiv_Rmult_pos_neg_Rle'; auto; try Fourier.fourier;
+   apply Rmult_le_compat_neg_l; [lra|];
+   rewrite (Rmult_comm (-a + - b +  c + d)%R); apply Rdiv_Rmult_pos_neg_Rle'; auto; try lra;
    stepl R0; [|field]; stepr ((a*(-1)*(1)+b*(-1)+c*(1)+d)/(e*(-1)*(1)+f*(-1)+g*(1)+h))%R; [|field; ring_exact_R H_efgh2];
    exact (proj1 (H_xi (-1)%R (1)%R min_one_is_in_base_interval one_is_in_base_interval)).
    (* 3r *) 
-   apply Rmult_le_compat_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (-a + - b + c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try Fourier.fourier;
+   apply Rmult_le_compat_l; [lra|];
+   rewrite (Rmult_comm (-a + - b + c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try lra;
    stepl R0; [|field]; stepr ((a*(-1)*(1)+b*(-1)+c*(1)+d)/(e*(-1)*(1)+f*(-1)+g*(1)+h))%R; [|field; ring_exact_R H_efgh2];
    exact (proj1 (H_xi (-1)%R (1)%R min_one_is_in_base_interval one_is_in_base_interval)).
   (* Refining 4 *)
   destruct (not_Qeq_inf _ _ H_efgh2) as [H_|H_]; apply Q_to_R_Qle; realify_Q; auto;
   intros H_efgh1 H_efgh2 H_efgh3 H_efgh4 H_h H_egh2m.
    (* 4l *)
-   apply Rmult_le_compat_neg_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (-a + - b +  c + d)%R); apply Rdiv_Rmult_neg_pos_Rle'; auto; try Fourier.fourier;
+   apply Rmult_le_compat_neg_l; [lra|];
+   rewrite (Rmult_comm (-a + - b +  c + d)%R); apply Rdiv_Rmult_neg_pos_Rle'; auto; try lra;
    stepr R1; [|field]; stepl ((a*(-1)*(1)+b*(-1)+c*(1)+d)/(e*(-1)*(1)+f*(-1)+g*(1)+h))%R; [|field; ring_exact_R H_efgh2];
    exact (proj2 (H_xi (-1)%R (1)%R min_one_is_in_base_interval one_is_in_base_interval)).
    (* 4r *) 
-   apply Rmult_le_compat_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (-a + - b + c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try Fourier.fourier;
+   apply Rmult_le_compat_l; [lra|];
+   rewrite (Rmult_comm (-a + - b + c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try lra;
    stepr R1; [|field]; stepl ((a*(-1)*(1)+b*(-1)+c*(1)+d)/(e*(-1)*(1)+f*(-1)+g*(1)+h))%R; [|field; ring_exact_R H_efgh2];
    exact (proj2 (H_xi (-1)%R (1)%R min_one_is_in_base_interval one_is_in_base_interval)).
   (* Refining 5 *)
   destruct (not_Qeq_inf _ _ H_efgh3) as [H_|H_]; apply Q_to_R_Qle; realify_Q; auto;
   intros H_efgh1 H_efgh2 H_efgh3 H_efgh4 H_h H_egh3m.
    (* 5l *)
-   apply Rmult_le_compat_neg_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (-a +  b + -c + d)%R); apply Rdiv_Rmult_pos_neg_Rle'; auto; try Fourier.fourier;
+   apply Rmult_le_compat_neg_l; [lra|];
+   rewrite (Rmult_comm (-a +  b + -c + d)%R); apply Rdiv_Rmult_pos_neg_Rle'; auto; try lra;
    stepl R0; [|field]; stepr ((a*(1)*(-1)+b*(1)+c*(-1)+d)/(e*(1)*(-1)+f*(1)+g*(-1)+h))%R; [|field; ring_exact_R H_efgh3];
    exact (proj1 (H_xi (1)%R (-1)%R one_is_in_base_interval min_one_is_in_base_interval)).
    (* 5r *) 
-   apply Rmult_le_compat_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (-a +  b + -c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try Fourier.fourier;
+   apply Rmult_le_compat_l; [lra|];
+   rewrite (Rmult_comm (-a +  b + -c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try lra;
    stepl R0; [|field]; stepr ((a*(1)*(-1)+b*(1)+c*(-1)+d)/(e*(1)*(-1)+f*(1)+g*(-1)+h))%R; [|field; ring_exact_R H_efgh3];
    exact (proj1 (H_xi (1)%R (-1)%R one_is_in_base_interval min_one_is_in_base_interval)).
   (* Refining 6 *)
   destruct (not_Qeq_inf _ _ H_efgh3) as [H_|H_]; apply Q_to_R_Qle; realify_Q; auto;
   intros H_efgh1 H_efgh2 H_efgh3 H_efgh4 H_h H_egh3m.
    (* 6l *)
-   apply Rmult_le_compat_neg_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (-a + b +  -c + d)%R); apply Rdiv_Rmult_neg_pos_Rle'; auto; try Fourier.fourier;
+   apply Rmult_le_compat_neg_l; [lra|];
+   rewrite (Rmult_comm (-a + b +  -c + d)%R); apply Rdiv_Rmult_neg_pos_Rle'; auto; try lra;
    stepr R1; [|field];  stepl ((a*(1)*(-1)+b*(1)+c*(-1)+d)/(e*(1)*(-1)+f*(1)+g*(-1)+h))%R; [|field; ring_exact_R H_efgh3];
    exact (proj2 (H_xi (1)%R (-1)%R one_is_in_base_interval min_one_is_in_base_interval)).
    (* 6r *) 
-   apply Rmult_le_compat_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (-a +  b + -c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try Fourier.fourier;
+   apply Rmult_le_compat_l; [lra|];
+   rewrite (Rmult_comm (-a +  b + -c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try lra;
    stepr R1; [|field]; stepl ((a*(1)*(-1)+b*(1)+c*(-1)+d)/(e*(1)*(-1)+f*(1)+g*(-1)+h))%R; [|field; ring_exact_R H_efgh3];
    exact (proj2 (H_xi (1)%R (-1)%R one_is_in_base_interval min_one_is_in_base_interval)).
   (* Refining 7 *)
   destruct (not_Qeq_inf _ _ H_efgh4) as [H_|H_]; apply Q_to_R_Qle; realify_Q; auto;
   intros H_efgh1 H_efgh2 H_efgh3 H_efgh4 H_h H_egh4m.
    (* 7l *)
-   apply Rmult_le_compat_neg_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (a +  b + c + d)%R); apply Rdiv_Rmult_pos_neg_Rle'; auto; try Fourier.fourier;
+   apply Rmult_le_compat_neg_l; [lra|];
+   rewrite (Rmult_comm (a +  b + c + d)%R); apply Rdiv_Rmult_pos_neg_Rle'; auto; try lra;
    stepl R0; [|field]; stepr ((a*1*1+b*1+c*1+d)/(e*1*1+f*1+g*1+h))%R; [|field; ring_exact_R H_efgh4];
    exact (proj1 (H_xi (1)%R (1)%R one_is_in_base_interval one_is_in_base_interval)).
    (* 7r *) 
-   apply Rmult_le_compat_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (a +  b + c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try Fourier.fourier;
+   apply Rmult_le_compat_l; [lra|];
+   rewrite (Rmult_comm (a +  b + c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try lra;
    stepl R0; [|field]; stepr ((a*1*1+b*1+c*1+d)/(e*1*1+f*1+g*1+h))%R; [|field; ring_exact_R H_efgh4];
    exact (proj1 (H_xi (1)%R (1)%R one_is_in_base_interval one_is_in_base_interval)).
   (* Refining 8 *)
   destruct (not_Qeq_inf _ _ H_efgh4) as [H_|H_]; apply Q_to_R_Qle; realify_Q; auto;
   intros H_efgh1 H_efgh2 H_efgh3 H_efgh4 H_h H_egh4m.
    (* 8l *)
-   apply Rmult_le_compat_neg_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (a + b +  c + d)%R); apply Rdiv_Rmult_neg_pos_Rle'; auto; try Fourier.fourier;
+   apply Rmult_le_compat_neg_l; [lra|];
+   rewrite (Rmult_comm (a + b +  c + d)%R); apply Rdiv_Rmult_neg_pos_Rle'; auto; try lra;
    stepr R1; [|field]; stepl ((a*1*1+b*1+c*1+d)/(e*1*1+f*1+g*1+h))%R; [|field; ring_exact_R H_efgh4];
    exact (proj2 (H_xi (1)%R (1)%R one_is_in_base_interval one_is_in_base_interval)).
    (* 8r *) 
-   apply Rmult_le_compat_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (a +  b + c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try Fourier.fourier;
+   apply Rmult_le_compat_l; [lra|];
+   rewrite (Rmult_comm (a +  b + c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try lra;
    stepr R1; [|field]; stepl ((a*1*1+b*1+c*1+d)/(e*1*1+f*1+g*1+h))%R; [|field; ring_exact_R H_efgh4];
    exact (proj2 (H_xi (1)%R (1)%R one_is_in_base_interval one_is_in_base_interval)).
 Qed.
@@ -674,104 +674,104 @@ Proof.
   destruct (not_Qeq_inf _ _ H_efgh1) as [H_|H_]; apply Q_to_R_Qle; realify_Q; auto;
   intros H_efgh1 H_efgh2 H_efgh3 H_efgh4 H_h H_egh1m.
    (* 1l *) 
-   apply Rmult_le_compat_neg_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (a + - b + - c + d)%R); apply Rdiv_Rmult_pos_neg_Rle'; auto; try Fourier.fourier;
+   apply Rmult_le_compat_neg_l; [lra|];
+   rewrite (Rmult_comm (a + - b + - c + d)%R); apply Rdiv_Rmult_pos_neg_Rle'; auto; try lra;
    stepl ((-1)/3)%R; [|field]; stepr ((a*(-1)*(-1)+b*(-1)+c*(-1)+d)/(e*(-1)*(-1)+f*(-1)+g*(-1)+h))%R; [|field; ring_exact_R H_efgh1];
    exact (proj1 (H_xi (-1)%R (-1)%R min_one_is_in_base_interval min_one_is_in_base_interval)).
    (* 1r *) 
-   apply Rmult_le_compat_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (a + - b + - c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try Fourier.fourier;
+   apply Rmult_le_compat_l; [lra|];
+   rewrite (Rmult_comm (a + - b + - c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try lra;
    stepl ((-1)/3)%R; [|field]; stepr ((a*(-1)*(-1)+b*(-1)+c*(-1)+d)/(e*(-1)*(-1)+f*(-1)+g*(-1)+h))%R; [|field; ring_exact_R H_efgh1];
    exact (proj1 (H_xi (-1)%R (-1)%R min_one_is_in_base_interval min_one_is_in_base_interval)).
   (* Refining 2 *)
   destruct (not_Qeq_inf _ _ H_efgh1) as [H_|H_]; apply Q_to_R_Qle; realify_Q; auto;
   intros H_efgh1 H_efgh2 H_efgh3 H_efgh4 H_h H_egh1m.
    (* 2l *)
-   apply Rmult_le_compat_neg_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (a + - b + - c + d)%R); apply Rdiv_Rmult_neg_pos_Rle'; auto; try Fourier.fourier;
+   apply Rmult_le_compat_neg_l; [lra|];
+   rewrite (Rmult_comm (a + - b + - c + d)%R); apply Rdiv_Rmult_neg_pos_Rle'; auto; try lra;
    stepr (1/3)%R; [|field]; stepl ((a*(-1)*(-1)+b*(-1)+c*(-1)+d)/(e*(-1)*(-1)+f*(-1)+g*(-1)+h))%R; [|field; ring_exact_R H_efgh1];
    exact (proj2 (H_xi (-1)%R (-1)%R min_one_is_in_base_interval min_one_is_in_base_interval)).
    (* 2r *) 
-   apply Rmult_le_compat_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (a + - b + - c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try Fourier.fourier;
+   apply Rmult_le_compat_l; [lra|];
+   rewrite (Rmult_comm (a + - b + - c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try lra;
    stepr (1/3)%R; [|field]; stepl ((a*(-1)*(-1)+b*(-1)+c*(-1)+d)/(e*(-1)*(-1)+f*(-1)+g*(-1)+h))%R; [|field; ring_exact_R H_efgh1];
    exact (proj2 (H_xi (-1)%R (-1)%R min_one_is_in_base_interval min_one_is_in_base_interval)).
   (* Refining 3 *)
   destruct (not_Qeq_inf _ _ H_efgh2) as [H_|H_]; apply Q_to_R_Qle; realify_Q; auto;
   intros H_efgh1 H_efgh2 H_efgh3 H_efgh4 H_h H_egh2m.
    (* 3l *)
-   apply Rmult_le_compat_neg_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (-a + - b +  c + d)%R); apply Rdiv_Rmult_pos_neg_Rle'; auto; try Fourier.fourier;
+   apply Rmult_le_compat_neg_l; [lra|];
+   rewrite (Rmult_comm (-a + - b +  c + d)%R); apply Rdiv_Rmult_pos_neg_Rle'; auto; try lra;
    stepl ((-1)/3)%R; [|field]; stepr ((a*(-1)*(1)+b*(-1)+c*(1)+d)/(e*(-1)*(1)+f*(-1)+g*(1)+h))%R; [|field; ring_exact_R H_efgh2];
    exact (proj1 (H_xi (-1)%R (1)%R min_one_is_in_base_interval one_is_in_base_interval)).
    (* 3r *) 
-   apply Rmult_le_compat_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (-a + - b + c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try Fourier.fourier;
+   apply Rmult_le_compat_l; [lra|];
+   rewrite (Rmult_comm (-a + - b + c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try lra;
    stepl ((-1)/3)%R; [|field]; stepr ((a*(-1)*(1)+b*(-1)+c*(1)+d)/(e*(-1)*(1)+f*(-1)+g*(1)+h))%R; [|field; ring_exact_R H_efgh2];
    exact (proj1 (H_xi (-1)%R (1)%R min_one_is_in_base_interval one_is_in_base_interval)).
   (* Refining 4 *)
   destruct (not_Qeq_inf _ _ H_efgh2) as [H_|H_]; apply Q_to_R_Qle; realify_Q; auto;
   intros H_efgh1 H_efgh2 H_efgh3 H_efgh4 H_h H_egh2m.
    (* 4l *)
-   apply Rmult_le_compat_neg_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (-a + - b +  c + d)%R); apply Rdiv_Rmult_neg_pos_Rle'; auto; try Fourier.fourier;
+   apply Rmult_le_compat_neg_l; [lra|];
+   rewrite (Rmult_comm (-a + - b +  c + d)%R); apply Rdiv_Rmult_neg_pos_Rle'; auto; try lra;
    stepr (1/3)%R; [|field]; stepl ((a*(-1)*(1)+b*(-1)+c*(1)+d)/(e*(-1)*(1)+f*(-1)+g*(1)+h))%R; [|field; ring_exact_R H_efgh2];
    exact (proj2 (H_xi (-1)%R (1)%R min_one_is_in_base_interval one_is_in_base_interval)).
    (* 4r *) 
-   apply Rmult_le_compat_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (-a + - b + c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try Fourier.fourier;
+   apply Rmult_le_compat_l; [lra|];
+   rewrite (Rmult_comm (-a + - b + c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try lra;
    stepr (1/3)%R; [|field]; stepl ((a*(-1)*(1)+b*(-1)+c*(1)+d)/(e*(-1)*(1)+f*(-1)+g*(1)+h))%R; [|field; ring_exact_R H_efgh2];
    exact (proj2 (H_xi (-1)%R (1)%R min_one_is_in_base_interval one_is_in_base_interval)).
   (* Refining 5 *)
   destruct (not_Qeq_inf _ _ H_efgh3) as [H_|H_]; apply Q_to_R_Qle; realify_Q; auto;
   intros H_efgh1 H_efgh2 H_efgh3 H_efgh4 H_h H_egh3m.
    (* 5l *)
-   apply Rmult_le_compat_neg_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (-a +  b + -c + d)%R); apply Rdiv_Rmult_pos_neg_Rle'; auto; try Fourier.fourier;
+   apply Rmult_le_compat_neg_l; [lra|];
+   rewrite (Rmult_comm (-a +  b + -c + d)%R); apply Rdiv_Rmult_pos_neg_Rle'; auto; try lra;
    stepl ((-1)/3)%R; [|field]; stepr ((a*(1)*(-1)+b*(1)+c*(-1)+d)/(e*(1)*(-1)+f*(1)+g*(-1)+h))%R; [|field; ring_exact_R H_efgh3];
    exact (proj1 (H_xi (1)%R (-1)%R one_is_in_base_interval min_one_is_in_base_interval)).
    (* 5r *) 
-   apply Rmult_le_compat_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (-a +  b + -c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try Fourier.fourier;
+   apply Rmult_le_compat_l; [lra|];
+   rewrite (Rmult_comm (-a +  b + -c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try lra;
    stepl ((-1)/3)%R; [|field]; stepr ((a*(1)*(-1)+b*(1)+c*(-1)+d)/(e*(1)*(-1)+f*(1)+g*(-1)+h))%R; [|field; ring_exact_R H_efgh3];
    exact (proj1 (H_xi (1)%R (-1)%R one_is_in_base_interval min_one_is_in_base_interval)).
   (* Refining 6 *)
   destruct (not_Qeq_inf _ _ H_efgh3) as [H_|H_]; apply Q_to_R_Qle; realify_Q; auto;
   intros H_efgh1 H_efgh2 H_efgh3 H_efgh4 H_h H_egh3m.
    (* 6l *)
-   apply Rmult_le_compat_neg_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (-a + b +  -c + d)%R); apply Rdiv_Rmult_neg_pos_Rle'; auto; try Fourier.fourier;
+   apply Rmult_le_compat_neg_l; [lra|];
+   rewrite (Rmult_comm (-a + b +  -c + d)%R); apply Rdiv_Rmult_neg_pos_Rle'; auto; try lra;
    stepr (1/3)%R; [|field];  stepl ((a*(1)*(-1)+b*(1)+c*(-1)+d)/(e*(1)*(-1)+f*(1)+g*(-1)+h))%R; [|field; ring_exact_R H_efgh3];
    exact (proj2 (H_xi (1)%R (-1)%R one_is_in_base_interval min_one_is_in_base_interval)).
    (* 6r *) 
-   apply Rmult_le_compat_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (-a +  b + -c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try Fourier.fourier;
+   apply Rmult_le_compat_l; [lra|];
+   rewrite (Rmult_comm (-a +  b + -c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try lra;
    stepr (1/3)%R; [|field]; stepl ((a*(1)*(-1)+b*(1)+c*(-1)+d)/(e*(1)*(-1)+f*(1)+g*(-1)+h))%R; [|field; ring_exact_R H_efgh3];
    exact (proj2 (H_xi (1)%R (-1)%R one_is_in_base_interval min_one_is_in_base_interval)).
   (* Refining 7 *)
   destruct (not_Qeq_inf _ _ H_efgh4) as [H_|H_]; apply Q_to_R_Qle; realify_Q; auto;
   intros H_efgh1 H_efgh2 H_efgh3 H_efgh4 H_h H_egh4m.
    (* 7l *)
-   apply Rmult_le_compat_neg_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (a +  b + c + d)%R); apply Rdiv_Rmult_pos_neg_Rle'; auto; try Fourier.fourier;
+   apply Rmult_le_compat_neg_l; [lra|];
+   rewrite (Rmult_comm (a +  b + c + d)%R); apply Rdiv_Rmult_pos_neg_Rle'; auto; try lra;
    stepl ((-1)/3)%R; [|field]; stepr ((a*1*1+b*1+c*1+d)/(e*1*1+f*1+g*1+h))%R; [|field; ring_exact_R H_efgh4];
    exact (proj1 (H_xi (1)%R (1)%R one_is_in_base_interval one_is_in_base_interval)).
    (* 7r *) 
-   apply Rmult_le_compat_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (a +  b + c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try Fourier.fourier;
+   apply Rmult_le_compat_l; [lra|];
+   rewrite (Rmult_comm (a +  b + c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try lra;
    stepl ((-1)/3)%R; [|field]; stepr ((a*1*1+b*1+c*1+d)/(e*1*1+f*1+g*1+h))%R; [|field; ring_exact_R H_efgh4];
    exact (proj1 (H_xi (1)%R (1)%R one_is_in_base_interval one_is_in_base_interval)).
   (* Refining 8 *)
   destruct (not_Qeq_inf _ _ H_efgh4) as [H_|H_]; apply Q_to_R_Qle; realify_Q; auto;
   intros H_efgh1 H_efgh2 H_efgh3 H_efgh4 H_h H_egh4m.
    (* 8l *)
-   apply Rmult_le_compat_neg_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (a + b +  c + d)%R); apply Rdiv_Rmult_neg_pos_Rle'; auto; try Fourier.fourier;
+   apply Rmult_le_compat_neg_l; [lra|];
+   rewrite (Rmult_comm (a + b +  c + d)%R); apply Rdiv_Rmult_neg_pos_Rle'; auto; try lra;
    stepr (1/3)%R; [|field]; stepl ((a*1*1+b*1+c*1+d)/(e*1*1+f*1+g*1+h))%R; [|field; ring_exact_R H_efgh4];
    exact (proj2 (H_xi (1)%R (1)%R one_is_in_base_interval one_is_in_base_interval)).
    (* 8r *) 
-   apply Rmult_le_compat_l; [Fourier.fourier|];
-   rewrite (Rmult_comm (a +  b + c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try Fourier.fourier;
+   apply Rmult_le_compat_l; [lra|];
+   rewrite (Rmult_comm (a +  b + c + d)%R); apply Rdiv_Rmult_pos_pos_Rle';  auto; try lra;
    stepr (1/3)%R; [|field]; stepl ((a*1*1+b*1+c*1+d)/(e*1*1+f*1+g*1+h))%R; [|field; ring_exact_R H_efgh4];
    exact (proj2 (H_xi (1)%R (1)%R one_is_in_base_interval one_is_in_base_interval)).
 Qed.

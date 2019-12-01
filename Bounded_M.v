@@ -149,7 +149,7 @@ Proof.
  assert (H_dc:d+c <>Zero);
  [apply Q_to_R_Qneq; realify_Q_goal; stepl (c*1+d)%R; [|ring]; apply (H_denom (1)%R one_is_in_base_interval)|].
  assert (Hd: d<>Zero);
- [apply Q_to_R_Qneq; realify_Q_goal; stepl (c*0+d)%R; [|ring]; apply H_denom; split; Fourier.fourier|].
+ [apply Q_to_R_Qneq; realify_Q_goal; stepl (c*0+d)%R; [|ring]; apply H_denom; split; lra|].
  unfold Incl_M, Bounded_M, map_digits, fst, snd.  
  destruct (Q_zerop c) as [Hc|Hc].
   subst c; destruct (not_Qeq_inf _ _ Hd) as [Hd_sg|Hd_sg].
@@ -207,7 +207,7 @@ Proof.
  intros H1 H2 H3 H4 H5.
  apply Rle_zero_Rminus. 
  stepr (((1-x)*(-c))/((c*1+d)*(c*x+d)))%R; [|field; split; auto].
-  unfold Rdiv; repeat apply Rle_mult_nonneg_nonneg; try Fourier.fourier;
+  unfold Rdiv; repeat apply Rle_mult_nonneg_nonneg; try lra;
   apply Rlt_le; apply Rinv_pos; apply (Bounded_M_twice_pos _ _ _ _ x R1 H_bounded); auto; apply one_is_in_base_interval.
 Qed.
 
@@ -230,7 +230,7 @@ Proof.
  intros H1 H2 H3 H4 H5.
  apply Rle_zero_Rminus. 
  stepr (((x+1)*c)/((c*(-1)+d)*(c*x+d)))%R; [|field; split; auto].
-  unfold Rdiv; repeat simple apply Rle_mult_nonneg_nonneg; try Fourier.fourier;
+  unfold Rdiv; repeat simple apply Rle_mult_nonneg_nonneg; try lra;
   apply Rlt_le; apply Rinv_pos;
   apply (Bounded_M_twice_pos _ _ _ _ x (-1)%R H_bounded); auto; apply min_one_is_in_base_interval.
 Qed.
@@ -253,7 +253,7 @@ Proof.
  intros H1 H2 H3 H4 H5.
  apply Rle_zero_Rminus. 
  stepr (((x+1)*(-c))/((c*(-1)+d)*(c*x+d)))%R; [|field; split; auto].
-  unfold Rdiv; repeat apply Rle_mult_nonneg_nonneg; try Fourier.fourier;
+  unfold Rdiv; repeat apply Rle_mult_nonneg_nonneg; try lra;
   apply Rlt_le; apply Rinv_pos;
   apply (Bounded_M_twice_pos _ _ _ _ x (-1)%R H_bounded); auto; apply min_one_is_in_base_interval.
 Qed.
@@ -276,7 +276,7 @@ Proof.
  intros H1 H2 H3 H4 H5.
  apply Rle_zero_Rminus. 
  stepr (((1-x)*c)/((c*1+d)*(c*x+d)))%R; [|field; split; auto].
-  unfold Rdiv; repeat simple apply Rle_mult_nonneg_nonneg; try Fourier.fourier;
+  unfold Rdiv; repeat simple apply Rle_mult_nonneg_nonneg; try lra;
   apply Rlt_le; apply Rinv_pos; apply (Bounded_M_twice_pos _ _ _ _ x R1 H_bounded); auto; apply one_is_in_base_interval.
 Qed.
 

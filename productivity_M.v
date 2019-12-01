@@ -67,7 +67,7 @@ Proof.
       generalize (Q_to_Rlt _ _ H_mu_2);
       assert (H_diam':(mu_2-mu_1<1/3)%R);
       [ stepl (-(mu_1 - mu_2))%R; [|ring]; generalize (Q_to_Rlt _ _ H_diam); rationalify_R_goal
-      | realify_Q_goal; intros H_mu_2'; fourier
+      | realify_Q_goal; intros H_mu_2'; lra
       ]...
       generalize (det_nonpos_nonincreasing _ _ _ _ r 1 H_bounded H_det Hr one_is_in_base_interval (proj2 Hr));
       unfold mu_1, as_Moebius_Q, as_Moebius; simpl;
@@ -85,7 +85,7 @@ Proof.
       generalize (Q_to_Rlt _ _ H_mu_1);
       assert (H_diam':(mu_2-mu_1<1/3)%R);
       [ stepl (-(mu_1 - mu_2))%R; [|ring]; generalize (Q_to_Rlt _ _ H_diam); rationalify_R_goal
-      | realify_Q_goal; intros H_mu_2'; fourier
+      | realify_Q_goal; intros H_mu_2'; lra
       ]...
   (* 0<=det(mu) *)
   assert (H_mu:=det_nonneg_refining_endpoints _ _ _ _ H_refining H_det); fold mu_1 mu_2 in H_mu.
@@ -122,7 +122,7 @@ Proof.
       generalize (Q_to_Rlt _ _ H_mu_1);
       assert (H_diam':(mu_1-mu_2<1/3)%R);
       [ generalize (Q_to_Rlt _ _ H_diam); rationalify_R_goal
-      | realify_Q_goal; intros H_mu_2'; fourier
+      | realify_Q_goal; intros H_mu_2'; lra
       ]...
       generalize (det_nonneg_nondecreasing _ _ _ _ (-1) r H_bounded H_det min_one_is_in_base_interval Hr (proj1 Hr));
       unfold mu_2, as_Moebius_Q, as_Moebius; simpl;
@@ -140,7 +140,7 @@ Proof.
       generalize (Q_to_Rlt _ _ H_mu_2);
       assert (H_diam':(mu_1-mu_2<1/3)%R);
       [ generalize (Q_to_Rlt _ _ H_diam); rationalify_R_goal
-      | realify_Q_goal; intros H_mu_2'; fourier
+      | realify_Q_goal; intros H_mu_2'; lra
       ]...
 Qed.
 

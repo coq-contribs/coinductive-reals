@@ -68,7 +68,7 @@ Proof.
       generalize (Q_to_Rlt _ _ H_M);
       assert (H_diam':(M-m<1/3)%R);
       [ generalize (Q_to_Rlt _ _ H_diam); rationalify_R_goal
-      | realify_Q_goal; intros H_M'; fourier
+      | realify_Q_goal; intros H_M'; lra
       ]...
       exact (proj1 (denom_nonvanishing_T_within_diameter2 _ H_denom _ _ Hr1 Hr2))...  
      apply Rle_trans with M.
@@ -76,7 +76,7 @@ Proof.
       generalize (Q_to_Rlt _ _ H_m);
       assert (H_diam':(M-m<1/3)%R);
       [ generalize (Q_to_Rlt _ _ H_diam); rationalify_R_goal
-      | realify_Q_goal; intros H_M'; fourier
+      | realify_Q_goal; intros H_M'; lra
       ]...
 Qed.
 

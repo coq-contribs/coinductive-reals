@@ -12,6 +12,7 @@ Require Import Raxioms.
 Require Import RIneq.
 From QArithSternBrocot Require Import R_addenda.
 Require Import Fourier_solvable_ineqs.
+Require Import Lra.
 
 (** Properties of the predicate [Bounded_T]. *)
 
@@ -390,7 +391,7 @@ Proof.
  [apply Q_to_R_Qneq; realify_Q_goal; stepl (e*(1)*(1)+f*(1)+g*(1)+h)%R; [|ring]; 
   apply (H_denom (1)%R (1)%R one_is_in_base_interval one_is_in_base_interval)|].
  assert (Hh: h<>Zero);
- [apply Q_to_R_Qneq; realify_Q_goal; stepl (e*0*0+f*0+g*0+h)%R; [|ring]; apply H_denom; split; fourier.Fourier.fourier|].
+ [apply Q_to_R_Qneq; realify_Q_goal; stepl (e*0*0+f*0+g*0+h)%R; [|ring]; apply H_denom; split; lra|].
  unfold Incl_T, Bounded_T, map_digits, fst, snd.
  destruct (not_Qeq_inf _ _ Hgh) as [Hgh_sg|Hgh_sg].
   (* g+h<Zero *)
