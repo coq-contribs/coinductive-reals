@@ -8,7 +8,6 @@
 
 Require Import Reals.
 From QArithSternBrocot Require Import R_addenda.
-Require Import Fourier_solvable_ineqs.
 Require Import Fourier.
 Require Import digits.
 Require Import ub.
@@ -21,6 +20,7 @@ Import Bounded_T.
 Require Import quadratic.
 Require Import qcorrectness.
 Require Import productivity_M.
+Require Import Fourier_solvable_ineqs.
 
 (** * Obtaining the productivity predicate for the refining tensors. *)
 

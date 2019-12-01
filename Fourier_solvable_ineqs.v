@@ -526,3 +526,39 @@ Proof.
  intros a b c d e f g h r x y Hcyd Hcxd; rewrite Rminus_Rdiv; auto; apply (f_equal2 Rdiv); ring.
 Qed.
  
+(** This is defined in QArithSternBrocot, but not in the 8.9 version of it *)
+(** We override it so that CoinductiveReals 8.9 works with QArith-SternBrocot 8.9 *)
+
+Lemma IZR_Zneg_Zpos : forall p, IZR (Zneg p) = Ropp (IZR (Zpos p)).
+Proof.
+  reflexivity.
+Qed.
+
+Lemma IZR_Zpos_xO : forall p, IZR (Zpos (xO p)) = ((1+1) * (IZR (Zpos p)))%R.
+Proof.
+  intro. unfold IZR, IPR. destruct p; simpl; trivial. rewrite Rmult_1_r. trivial.
+Qed.
+
+Lemma IZR_Zpos_xI : forall p, IZR (Zpos (xI p)) = (1 + (1+1) * IZR (Zpos p))%R.
+Proof.
+  intro. unfold IZR, IPR. destruct p; simpl; trivial. rewrite Rmult_1_r. trivial.
+Qed.
+
+From QArithSternBrocot Require Import Q_to_R.
+
+Ltac Q_to_R.rationalify_R_goal ::=
+ match goal with 
+ | [ |- context [(Rplus (Q_to_R ?X1) (Q_to_R ?X2))] ] => rewrite <- Q_to_Rplus; rationalify_R_goal
+ | [ |- context [(Rminus (Q_to_R ?X1) (Q_to_R ?X2))] ] => rewrite <- Q_to_Rminus; rationalify_R_goal
+ | [ |- context [(Rmult (Q_to_R ?X1) (Q_to_R ?X2))] ] => rewrite <- Q_to_Rmult; rationalify_R_goal
+ | [ |- context [(Rdiv (Q_to_R ?X1) (Q_to_R ?X2))] ] => rewrite <- Q_to_Rdiv; auto; rationalify_R_goal
+ | [ |- context [(Ropp (Q_to_R ?X1)) ]] => rewrite <- Q_to_Ropp; rationalify_R_goal
+ | [ |- context [(Rinv (Q_to_R ?X1))] ] => rewrite <- Q_to_Rinv; auto; rationalify_R_goal
+ | [ |- context [0%R] ] => rewrite <- Q_to_R_Zero; rationalify_R_goal
+ | [ |- context [1%R] ] => rewrite <- Q_to_R_Qone; rationalify_R_goal
+ | [ |- context [(IZR (Zneg ?X1))] ] => rewrite IZR_Zneg_Zpos; rationalify_R_goal
+ | [ |- context [(IZR (Zpos (xI ?X1)))] ] => rewrite IZR_Zpos_xI; rationalify_R_goal
+ | [ |- context [(IZR (Zpos (xO ?X1)))] ] => rewrite IZR_Zpos_xO; rationalify_R_goal
+ | [ |- context [(IZR ?X1)] ] => rewrite <- Z_to_Q_to_R_IZR; realify_Q_goal
+ | [ |- _ ] => idtac
+ end.

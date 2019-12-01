@@ -7,7 +7,6 @@
 (************************************************************************)
 
 From QArithSternBrocot Require Import R_addenda.
-Require Import Fourier_solvable_ineqs.
 Require Import Fourier.
 Require Import digits.
 Require Import ub.
@@ -17,6 +16,7 @@ Require Import hcorrectness.
 Require Import Refining_M.
 Require Import Bounded_M.
 Require Import Incl_M.
+Require Import Fourier_solvable_ineqs.
 
 (** * Obtaining the productivity predicate for the refining Moebius maps. *)
 
