@@ -22,7 +22,7 @@ Lemma lb_Cauchy:forall alpha, Rseries.Cauchy_crit (lb alpha).
 Proof.
  intros alpha.
  intros eps H_eps_pos.
- set (N:=Zabs_nat (up (2 / eps))).
+ set (N:=Z.abs_nat (up (2 / eps))).
  exists N.
  intros m n Hn Hm.
  unfold Rfunctions.R_dist.
@@ -404,7 +404,7 @@ Proof.
  intros alpha r H_rep.
  apply SeqProp.cond_eq.
  intros eps H_eps. 
- set (N:=Zabs_nat (up (2 / eps))).
+ set (N:=Z.abs_nat (up (2 / eps))).
  destruct (rep_interval N _ _ _  (rep_real_value alpha) H_rep) as [H1 H2].
  elim (Raxioms.archimed (2/eps)); intros H_N _.
  rewrite <- (Z_of_nat_Zabs_nat_pos (up(2/eps))) in H_N; [|apply Zlt_le_weak; auto].

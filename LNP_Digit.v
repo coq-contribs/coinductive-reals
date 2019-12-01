@@ -21,9 +21,9 @@ Variable P_is_decidable:forall n (d:Digit), {P n d}+{~(P n d)}.
 
 Variable there_is_a_bound:{n:nat& {d:Digit |P n d}}.
 
-Let n_bound:= projS1 there_is_a_bound.
+Let n_bound:= projT1 there_is_a_bound.
 
-Let n_bound_has_d:= projS2 there_is_a_bound.
+Let n_bound_has_d:= projT2 there_is_a_bound.
 
 Let d_of_n_bound_has_d:= proj1_sig n_bound_has_d.
 

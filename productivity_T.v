@@ -580,7 +580,7 @@ Lemma Is_refining_T_emits_q_pointwise: forall n xi alpha beta H_r,
 Proof.
  induction n;
  intros xi alpha beta H_r smodu Hn;
- set (n':=projS1 smodu);
+ set (n':=projT1 smodu);
  set (d:=(proj1_sig (projT2 smodu)));
  assert (Hn':n'=(projT1 smodu)); trivial;
  assert (Hd:d=(proj1_sig (projT2 smodu))); trivial;
@@ -613,14 +613,14 @@ Lemma Is_refining_T_emits_q: forall xi alpha beta, Is_refining_T xi -> emits_q x
 Proof.
  intros xi alpha beta H_r.
  set (smodu:=semantic_modulus_q xi alpha beta H_r).
- set (n:=projS1 smodu).
+ set (n:=projT1 smodu).
  assert (Hn:n=(projT1 smodu)); trivial.
  apply Is_refining_T_emits_q_pointwise with n H_r; trivial.
 Qed.
 
 Lemma Is_refining_T_depth_q:forall n xi alpha beta (H_r:Is_refining_T xi), 
    let smodu:=semantic_modulus_q xi alpha beta H_r in
-     n= projS1 smodu ->  depth_q xi alpha beta (Is_refining_T_emits_q xi alpha beta H_r) = n.
+     n= projT1 smodu ->  depth_q xi alpha beta (Is_refining_T_emits_q xi alpha beta H_r) = n.
 Proof.
  induction n; intros xi alpha beta H_r smodu Hn;
  set (d:=(proj1_sig (projT2 smodu)));
@@ -662,13 +662,13 @@ Lemma Is_refining_T_modulus_q:forall xi alpha beta (H_r:Is_refining_T xi),
 Proof.
  intros xi alpha beta H_r.
  set (smodu:=semantic_modulus_q xi alpha beta H_r).
- set (n:=projS1 smodu).
+ set (n:=projT1 smodu).
  set (d':=(proj1_sig (projT2 smodu))).
  assert (Hn:n=(projT1 smodu)); trivial.
  assert (Hd':d'=(proj1_sig (projT2 smodu))); trivial.
  assert (H_depth: depth_q xi alpha beta (Is_refining_T_emits_q xi alpha beta H_r) = n);[apply (Is_refining_T_depth_q n _ alpha beta H_r Hn)|].
  destruct (depth_q_modulus_q xi alpha beta (Is_refining_T_emits_q xi alpha beta H_r) n (Is_refining_T_depth_q n _ _ _ _ Hn)) as [d Hd].
- destruct (proj2_sig (projS2 smodu)) as [H_Incl _].
+ destruct (proj2_sig (projT2 smodu)) as [H_Incl _].
  rewrite Hd; simpl.
  apply Incl_T_absorbs_Is_refining_T.
  destruct (depth_q_Incl_T_inf_strong_general _ _ _ (Is_refining_T_emits_q xi alpha beta H_r) n H_depth) as [d'' [Hd''1 Hd''2]].

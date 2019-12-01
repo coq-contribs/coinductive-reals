@@ -338,7 +338,7 @@ Lemma Is_refining_M_emits_h_pointwise: forall n mu alpha H_r,
 Proof.
  induction n;
  intros mu alpha H_r smodu Hn;
- set (n':=projS1 smodu);
+ set (n':=projT1 smodu);
  set (d:=(proj1_sig (projT2 smodu)));
  assert (Hn':n'=(projT1 smodu)); trivial;
  assert (Hd:d=(proj1_sig (projT2 smodu))); trivial;
@@ -369,14 +369,14 @@ Lemma Is_refining_M_emits_h: forall mu alpha, Is_refining_M mu -> emits_h mu alp
 Proof.
  intros mu alpha H_r.
  set (smodu:=semantic_modulus_h mu alpha H_r).
- set (n:=projS1 smodu).
+ set (n:=projT1 smodu).
  assert (Hn:n=(projT1 smodu)); trivial.
  apply Is_refining_M_emits_h_pointwise with n H_r; trivial.
 Qed.
 
 Lemma Is_refining_M_depth_h:forall n mu alpha (H_r:Is_refining_M mu), 
    let smodu:=semantic_modulus_h mu alpha H_r in
-     n= projS1 smodu ->  depth_h mu alpha (Is_refining_M_emits_h mu alpha H_r) = n.
+     n= projT1 smodu ->  depth_h mu alpha (Is_refining_M_emits_h mu alpha H_r) = n.
 Proof.
  induction n; intros mu alpha H_r smodu Hn;
  set (d:=(proj1_sig (projT2 smodu)));
@@ -417,13 +417,13 @@ Lemma Is_refining_M_modulus_h:forall mu alpha (H_r:Is_refining_M mu),
 Proof.
  intros mu alpha H_r.
  set (smodu:=semantic_modulus_h mu alpha H_r).
- set (n:=projS1 smodu).
+ set (n:=projT1 smodu).
  set (d':=(proj1_sig (projT2 smodu))).
  assert (Hn:n=(projT1 smodu)); trivial.
  assert (Hd':d'=(proj1_sig (projT2 smodu))); trivial.
  assert (H_depth: depth_h mu alpha (Is_refining_M_emits_h mu alpha H_r) = n);[apply (Is_refining_M_depth_h n _ alpha H_r Hn)|].
  destruct (depth_h_modulus_h mu alpha (Is_refining_M_emits_h mu alpha H_r) n (Is_refining_M_depth_h n _ _ _ Hn)) as [d Hd].
- destruct (proj2_sig (projS2 smodu)) as [H_Incl _].
+ destruct (proj2_sig (projT2 smodu)) as [H_Incl _].
  rewrite Hd; simpl.
  apply Incl_M_absorbs_Is_refining_M.
  destruct (depth_h_Incl_M_inf_strong_general _ _ (Is_refining_M_emits_h mu alpha H_r) n H_depth) as [d'' [Hd''1 Hd''2]].
