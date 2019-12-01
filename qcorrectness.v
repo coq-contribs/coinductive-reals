@@ -301,7 +301,7 @@ Defined.
 Theorem quadratic_correctness : forall (xi:Tensor) (alpha beta:Reals) (H:productive_q xi alpha beta) (r1 r2:Rdefinitions.R),
      rep alpha r1 ->  rep beta r2-> rep (quadratic xi alpha beta H) (as_Tensor xi r1 r2).
 Proof.
- cofix.
+ cofix quadratic_correctness.
  intros xi alpha beta H_productive r1 r2 Hr1_alpha Hr2_beta;
  destruct (quadratic_emits_strong xi alpha beta H_productive) as [n [[ | | ] [H_productive_dropped [H_Incl H_bis]]]];
  unfold inv_digit in H_bis; unfold inv_digit;

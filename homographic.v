@@ -301,7 +301,7 @@ Defined.
 Lemma homographic_EPI_strong:forall mu mu' alpha alpha' p p', mu=mu'->alpha=alpha'->
                 bisim (homographic mu alpha p)  (homographic mu' alpha' p').
 Proof.
- cofix.
+ cofix homographic_EPI_strong.
  intros;
  rewrite homographic_unfolded;
  rewrite (homographic_unfolded _ _ p');

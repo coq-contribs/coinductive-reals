@@ -372,7 +372,7 @@ Qed.
 
 Theorem rep_real_value : forall alpha, rep alpha (real_value alpha).
 Proof.
- cofix.
+ cofix rep_real_value.
  intros [[ | | ] alpha].
   rewrite real_value_L; apply rep_L with alpha;
    [ apply real_value_base_interval 

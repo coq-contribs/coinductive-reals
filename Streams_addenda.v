@@ -183,7 +183,7 @@ Defined.
 
 Lemma odd_even_tl:forall s, odd s (=) (even (tl s)).
 Proof.
- cofix.
+ cofix odd_even_tl.
  intros [x [y xs]].
  rewrite odd_spelled. 
  simpl.
@@ -244,7 +244,7 @@ Defined.
 
 Lemma combine_odd_even_is_id:forall (s:Str), (combine (even s) (odd s))(=)s.
 Proof.
- cofix.
+ cofix combine_odd_even_is_id.
  intros [x [y xs]].
  rewrite even_spelled.
  rewrite combine_spelled_2.
@@ -260,7 +260,7 @@ Defined.
 
 Lemma combine_odd: forall (xs ys zs: Stream A), combine xs ys (=) zs -> ys (=) odd zs.
 Proof.
- cofix.
+ cofix combine_odd.
  intros [x0 xs] [y0 ys] (z0 & z1 & zs) H_bisim;
  rewrite combine_spelled_3 in H_bisim;
  inversion H_bisim;
@@ -271,7 +271,7 @@ Qed.
   
 Lemma combine_even: forall (xs ys zs: Stream A), combine xs ys (=) zs -> xs (=) even zs.
 Proof.
- cofix.
+ cofix combine_even.
  intros [x0 xs] [y0 ys] (z0 & z1 & zs) H_bisim;
  rewrite combine_spelled_3 in H_bisim;
  inversion H_bisim;
@@ -513,7 +513,7 @@ Fixpoint zipWith (C:Type) (z:A->B->C) (la:list A) (lb:list B) {struct la}: list 
          | _,_ => nil
          end.
 
-Implicit Arguments zipWith [C].
+Arguments zipWith [C].
 
 Definition zip:=zipWith (@pair A B).
 

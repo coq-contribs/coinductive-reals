@@ -25,7 +25,7 @@ CoInductive rep : Reals -> Rdefinitions.R -> Prop :=
 
 Lemma rep_stepl: forall alpha beta x, rep alpha x -> bisim alpha beta -> rep beta x.
 Proof.
- cofix.
+ cofix rep_stepl.
  intros [[ | | ] alpha] [[ | | ] beta] x h_rep h_bisim; try (inversion h_bisim; discriminate H). 
 
   inversion_clear h_rep as 

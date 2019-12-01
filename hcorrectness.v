@@ -333,7 +333,7 @@ Defined.
 Theorem homographic_correctness : forall (mu:Matrix) (alpha : Reals) (H : productive_h mu alpha) (r:R),
      rep alpha r ->  rep (homographic mu alpha H) (as_Moebius mu r).
 Proof.
- cofix.
+ cofix homographic_correctness.
  intros mu alpha H_productive (* H_refining *) r Hr_alpha;
  destruct (homographic_emits_strong mu alpha H_productive) as [n [[ | | ] [H_productive_dropped [H_Incl H_bis]]]];
  unfold inv_digit in H_bis; unfold inv_digit;

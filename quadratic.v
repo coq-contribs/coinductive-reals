@@ -376,7 +376,7 @@ Defined.
 Lemma quadratic_EPI_strong:forall xi xi' alpha alpha' beta beta' p p', xi=xi'->alpha=alpha'->beta=beta'->
                 bisim (quadratic xi alpha beta p)  (quadratic xi' alpha' beta' p').
 Proof.
- cofix.
+ cofix quadratic_EPI_strong.
  intros;
  rewrite quadratic_unfolded;
  rewrite (quadratic_unfolded _ _ _ p');
